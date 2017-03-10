@@ -30,6 +30,14 @@
     var loader = machis.loader(machines);
     var dialogs = mdialogs.new_manager(machines);
 
+    var activePages = require("./active-pages");
+    document.getElementById("pages").addEventListener("click", function(e) {
+        // only consider primary mouse button
+        if (!e || e.button !== 0)
+            return;
+        activePages.showDialog();
+    });
+
     credentials.setup();
 
     var options = {

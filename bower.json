@@ -17,7 +17,6 @@
         "kubernetes-topology-graph": "0.0.23",
         "momentjs": "2.10.6",
         "mustache": "0.8.1",
-        "mutation-observer": "https://raw.githubusercontent.com/webmodules/mutation-observer/cdd0a54475a7d455dfd7de81d56748c80b65214b/index.js",
         "patternfly": "3.4.0",
         "qunit": "1.14.0",
         "qunit-tap": "1.5.0",

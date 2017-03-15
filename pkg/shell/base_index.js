@@ -24,7 +24,6 @@ var phantom_checkpoint = phantom_checkpoint || function () { };
 
     var $ = require("jquery");
     var cockpit = require("cockpit");
-    var MutationObserver = require("mutation-observer");
 
     var shell_embedded = window.location.pathname.indexOf(".html") !== -1;
     var _ = cockpit.gettext;
@@ -131,42 +130,6 @@ var phantom_checkpoint = phantom_checkpoint || function () { };
                     list[component] = frame;
                 }
             }
-
-            function domChangeHandler(mutation) {
-                // we only care about removed elements
-                if (mutation.type != "childList")
-                    return;
-                if (!iframes)
-                    return;
-                var i, node, a, list, c, component, iframeKeys, listKeys;
-                for (i = 0; i < mutation.removedNodes.length; i++) {
-                    node = mutation.removedNodes[i];
-                    // skip anything that isn't an iframe
-                    if (node.nodeName.indexOf("IFRAME") === -1)
-                        continue;
-                    // see if there's any frame registered
-                    iframeKeys = Object.keys(iframes);
-                    for (a = 0; a < iframeKeys.length; a++) {
-                        list = iframes[iframeKeys[a]];
-                        if (!list)
-                            continue;
-                        listKeys = Object.keys(iframes[address]);
-                        for (c = 0; c < listKeys.length; c++) {
-                            component = listKeys[c];
-                            if (list[component] === node) {
-                                delete iframes[address][component];
-                                remove_frame(node);
-                            }
-                        }
-                    }
-                }
-            }
-
-            var observer = new MutationObserver(function(mutations) {
-            	mutations.forEach(domChangeHandler);
-            });
-
-            observer.observe(document.getElementById("content"),  {childList: true});
 
             /* Need to create a new frame */
             if (!frame) {
@@ -807,6 +770,13 @@ var phantom_checkpoint = phantom_checkpoint || function () { };
             }).show();
         }
 
+        function setup_killer(id) {
+            $(id).on("click", function(ev) {
+                if (ev && ev.button === 0)
+                    require("./active-pages").showDialog(self.frames);
+            });
+        }
+
         /* User information */
         function setup_user(id, user) {
             $(id).text(user.full_name || user.name || '???');
@@ -834,6 +804,8 @@ var phantom_checkpoint = phantom_checkpoint || function () { };
 
         if (self.about_sel)
             setup_about(self.about_sel);
+        if (self.killer_sel)
+            setup_killer(self.killer_sel);
 
         if (self.user_sel || self.account_sel) {
             cockpit.user().done(function (user) {

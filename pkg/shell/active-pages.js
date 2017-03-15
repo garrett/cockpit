@@ -25,63 +25,45 @@ var React = require("react");
 var dialogPattern = require("cockpit-components-dialog.jsx");
 var PagesDialog = require("./active-pages-dialog.jsx");
 
-var showDialog = function() {
+// The argument is a Frames object from base_index.js
+var showDialog = function(frames) {
     var dataStore = { };
 
+    // we omit the host for all pages on our current system
+    function displayName(address, component) {
+        if (address == "localhost")
+            return "/" + component;
+        return address + "/:" + component;
+    }
+
     function gatherIframes() {
-        var frames = [];
-        var visibleHost; // we omit the host for all pages on our current system
-        var search = function (iframes) {
-            var n;
-            var element;
-            for (n = 0; n < iframes.length; n++) {
-                if (iframes[n].frames.length > 0)
-                    search(iframes[n].frames);
-                element = {
-                    page: iframes[n],
-                    frame: iframes[n].frameElement
-                };
-                // prepare the frame info
-                if (element.frame.name)
-                    element.name = element.frame.name;
-                else
-                    element.name = element.frame.baseURI;
-                if (element.name.indexOf("cockpit1:") === 0)
-                    element.name = element.name.substring(9);
-                var p = element.name.indexOf("/");
-                if (p !== -1) {
-                    element.hostname = element.name.substring(0, p);
-                    element.name = element.name.substring(p + 1);
-                }
-                frames.push(element);
-                element.visible = (element.frame.style.display.indexOf("block") !== -1);
-                if (element.visible && element.hostname !== undefined)
-                    visibleHost = element.hostname;
+        var result = [ ];
+        var address, component, iframe;
+        for (address in frames.iframes) {
+            for (component in frames.iframes[address]) {
+                iframe = frames.iframes[address][component];
+                console.log("IFRAME", iframe, address, component, iframe.style.display);
+                result.push({
+                    frame: iframe,
+                    component: component,
+                    address: address,
+                    name: iframe.getAttribute("name"),
+                    visible: iframe.style.display.indexOf("block") !== -1,
+                    displayName: displayName(address, component)
+                });
             }
-        };
-        search(window.top.frames);
-        // now update the displayName
-        var n, frame;
-        for (n = 0; n < frames.length; n++) {
-            frame = frames[n];
-            if (frame.hostname == visibleHost)
-                frame.displayName = "/" + frame.name;
-            else
-                frame.displayName = frame.hostname + ":/" + frame.name;
         }
-        return frames;
+        return result;
     }
 
     var selectedFrames = [];
 
     dataStore.closePage = function() {
         // the user wants to close the selected pages
-        var dfd = cockpit.defer();
-        selectedFrames.map(function(frame) {
-            frame.frame.parentNode.removeChild(frame.frame);
+        selectedFrames.forEach(function(element) {
+            frames.remove(element.host, element.component);
         });
-        dfd.resolve();
-        return dfd.promise();
+        return cockpit.resolve();
     };
 
     function selectionChanged(frame, selected) {
@@ -95,9 +77,9 @@ var showDialog = function() {
         }
     }
 
-    var frames = gatherIframes();
+    var iframes = gatherIframes();
     // by default, select currently active (visible) frame
-    frames.forEach(function(f, index) {
+    iframes.forEach(function(f, index) {
         if (f.visible) {
             if (!(f in selectedFrames))
                 selectedFrames.push(f);
@@ -107,7 +89,7 @@ var showDialog = function() {
     dataStore.dialogProps = {
         title: _("Active Pages"),
         id: "active-pages-dialog",
-        body: React.createElement(PagesDialog, { iframes: frames, selectionChanged: selectionChanged }),
+        body: React.createElement(PagesDialog, { iframes: iframes, selectionChanged: selectionChanged }),
     };
 
     dataStore.footerProps = {

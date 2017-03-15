@@ -30,14 +30,6 @@
     var loader = machis.loader(machines);
     var dialogs = mdialogs.new_manager(machines);
 
-    var activePages = require("./active-pages");
-    document.getElementById("pages").addEventListener("click", function(e) {
-        // only consider primary mouse button
-        if (!e || e.button !== 0)
-            return;
-        activePages.showDialog();
-    });
-
     credentials.setup();
 
     var options = {
@@ -49,6 +41,7 @@
         account_sel: "#go-account",
         user_sel: "#content-user-name",
         credential_sel: "#credential-authorize",
+        killer_sel: "#active-pages",
         default_title: "Cockpit"
     };
 

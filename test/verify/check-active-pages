@@ -34,8 +34,8 @@ class TestActivePages(MachineCase):
             # check the pages and make sure there is only one page loaded
             b.switch_to_top()
             b.click("#navbar-dropdown")
-            b.wait_visible("#pages")
-            b.click("#pages")
+            b.wait_visible("#active-pages")
+            b.click("#active-pages")
             b.wait_present("#active-pages-dialog")
             b.call_js_func("ph_count_check", "#active-pages-dialog tbody",  count)
 

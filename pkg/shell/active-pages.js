@@ -42,7 +42,6 @@ var showDialog = function(frames) {
         for (address in frames.iframes) {
             for (component in frames.iframes[address]) {
                 iframe = frames.iframes[address][component];
-                console.log("IFRAME", iframe, address, component, iframe.style.display);
                 result.push({
                     frame: iframe,
                     component: component,

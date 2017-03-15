@@ -581,7 +581,7 @@ var phantom_checkpoint = phantom_checkpoint || function () { };
             }
 
             return null;
-        };
+        }
 
         /* Jumps to a given navigate state */
         self.jump = function (state, replace) {

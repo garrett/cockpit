@@ -32,6 +32,13 @@
 
     credentials.setup();
 
+    /* When Ctrl is held down we display debugging menu items */
+    document.addEventListener("click", function(ev) {
+        var i, advanced = document.querySelectorAll(".navbar-advanced");
+        for (i = 0; i < advanced.length; i++)
+            advanced[i].style.display = !!ev.ctrlKey ? "block" : "none";
+    }, true);
+
     var options = {
         brand_sel: "#index-brand",
         logout_sel: "#go-logout",

@@ -568,7 +568,7 @@ var phantom_checkpoint = phantom_checkpoint || function () { };
             if (shell_embedded) {
                 navbar.hide();
             } else {
-                var local_compiled = new CompiledComponants();
+                var local_compiled = new CompiledComponents();
                 local_compiled.load(cockpit.manifests, "dashboard");
                 navbar.append(local_compiled.ordered("dashboard").map(links));
             }
@@ -845,7 +845,7 @@ var phantom_checkpoint = phantom_checkpoint || function () { };
         }
     }
 
-    function CompiledComponants() {
+    function CompiledComponents() {
         var self = this;
         self.items = {};
 
@@ -920,7 +920,7 @@ var phantom_checkpoint = phantom_checkpoint || function () { };
         },
 
         new_compiled: function () {
-            return new CompiledComponants();
+            return new CompiledComponents();
         },
     };
 }());

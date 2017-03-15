@@ -74,21 +74,21 @@ class TestActivePages(MachineCase):
         b.key_press( key_presses )
 
         # wait for it to be present in ps
-        wait(lambda: m.execute("ps ax | grep {0}".format(command)))
+        wait(lambda: m.execute("ps ax | grep '{0}'".format(command)))
 
         # now close the page
         showPagesAssertCount(3)
 
         # click on the other page as well
-        b.click('tr[data-row-id="system"]')
+        b.click('tr[data-row-id="cockpit1:localhost/system"]')
         # wait until it's highlighted
-        b.wait_present('tr.listing-ct-selected[data-row-id="system"]')
+        b.wait_present('tr.listing-ct-selected[data-row-id="cockpit1:localhost/system/terminal"]')
         # close
         b.click("button.btn-primary")
         b.wait_not_present("#active-pages-dialog")
 
         # running shell command should disappear on the system
-        wait(lambda: not m.execute("ps ax | grep {0}".format(command)))
+        wait(lambda: not m.execute("ps ax | grep '{0}'".format(command)))
 
         # there should only be one page left
         showPagesAssertCount(1)

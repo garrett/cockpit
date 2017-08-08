@@ -169,8 +169,6 @@ var phantom_checkpoint = phantom_checkpoint || function () { };
             update_navbar(machine, state, compiled);
             update_frame(machine, state, compiled);
 
-            index.recalculate_layout();
-
             /* Just replace the state, and URL */
             index.jump(state, true);
         }
@@ -550,8 +548,6 @@ var phantom_checkpoint = phantom_checkpoint || function () { };
             }
             update_navbar(state);
             update_frame(state);
-
-            index.recalculate_layout();
 
             /* Just replace the state, and URL */
             index.jump(state, true);

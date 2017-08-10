@@ -28,8 +28,13 @@
     top: 0;
 }
 
+.nav-sidebar-wrap {
+    flex: auto;
+}
+
 .nav-sidebar {
     position: relative;
+    height: 100%;
 }
 
 .nav-sidebar-wrap:not(.expanded) {
@@ -186,4 +191,26 @@
 #host-apps {
     flex: 1 1 0;
     overflow-y: auto;
+}
+
+@media screen and (max-width: 767px) {
+    .flex-container {
+        flex-flow: column-reverse;
+        height: 100vh;
+    }
+    .flex-sidebar {
+        flex-direction: column-reverse;
+    }
+    .nav-sidebar,
+    .nav-sidebar:hover {
+        width: auto;
+    }
+    #host-nav {
+        height: 20em; /* temporary for development/debugging */
+    }
+
+    .nav-sidebar-wrap,
+    .nav-sidebar {
+        width: auto !important;
+    }
 }

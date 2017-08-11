@@ -730,10 +730,6 @@ var phantom_checkpoint = phantom_checkpoint || function () { };
                 self.navigate(ev.state, true);
             });
 
-            $(window).on('resize', function () {
-                self.recalculate_layout();
-            });
-
             build_navbar();
             self.navigate();
             cockpit.translate();

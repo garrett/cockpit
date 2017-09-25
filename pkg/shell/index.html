@@ -13,7 +13,7 @@
     <script src="../*/po.js"></script>
   </head>
   <body hidden>
-    <div class="flex-container">
+    <div class="flex-layout">
         <nav id="topnav" class="navbar navbar-default navbar-pf navbar-pf-vertical flex-navbar" role="navigation">
           <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-1">
@@ -348,7 +348,7 @@
             </div>
         </div>
 
-        <div class="flex-sidebar">
+        <div class="flex-body">
             <div class="nav-sidebar-wrap" id="multi-dashboard">
                 <div class="nav-sidebar nav-pf-vertical">
                     <ul id="main-navbar" class="list-group">
@@ -389,6 +389,12 @@
                     </ul>
                 </div>
             </div>
+
+          <div id="content" class="flex-content">
+            <!-- Initially populate these frames -->
+            <iframe class="container-frame"
+                name="cockpit1:localhost/system" src="../system/index.html#/"></iframe>
+          </div>
         </div>
 
         <div class="curtains-ct blank-slate-pf" hidden>
@@ -404,11 +410,6 @@
           </div>
         </div>
 
-        <div id="content" class="flex-content">
-          <!-- Initially populate these frames -->
-          <iframe class="container-frame"
-              name="cockpit1:localhost/system" src="../system/index.html#/"></iframe>
-        </div>
     </div>
 
     <script src="index.js"></script>

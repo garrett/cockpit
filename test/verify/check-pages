@@ -116,11 +116,11 @@ WantedBy=default.target
 
         if m.image != "rhel-7-4":
             # The top bar should not be visible on fedora-atomic because no dashboards
-            b.wait_present(".flex-sidebar")
+            b.wait_present(".flex-body")
             if "atomic" in m.image:
-                b.wait_present(".flex-sidebar.single-nav")
+                b.wait_present(".flex-body.single-nav")
             else:
-                b.wait_not_present(".flex-sidebar.single-nav")
+                b.wait_not_present(".flex-body.single-nav")
             b.wait_present("#host-nav")
         elif "fedora-atomic" in m.image:
             b.wait_not_visible("#content-navbar")

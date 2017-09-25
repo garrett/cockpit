@@ -72,9 +72,9 @@
         flex: auto;
     }
 
-    .flex-sidebar:hover {}
+    .flex-body:hover {}
 
-    .flex-sidebar {
+    .flex-body {
         position: relative;
         flex: none;
         z-index: 999;
@@ -174,21 +174,25 @@
         left: 0px;
     }
 
-    .flex-container {
+    .flex-layout {
         display: flex;
         width: 100vw;
         height: 100vh;
-        flex-flow: row wrap;
-        align-content: start;
+        flex-flow: column;
+        align-content: stretch;
     }
 
     .flex-content {
         flex: auto;
+
+        > iframe {
+            height: 100%;
+        }
     }
 }
 
 @media screen and (max-width: 767px) {
-    .flex-navbar, .flex-sidebar, .flex-navbar {
+    .flex-navbar, .flex-body, .flex-navbar {
         /* Use native mobile fonts (when available) for nav & menu text */
         font-family: roboto, san francisco, helvetica light, noto, helvetica, sans-serif;
         font-size: 14px;
@@ -202,14 +206,14 @@
     }
 
     /* Set up grids */
-    .flex-container, .flex-sidebar, .flex-navbar {
+    .flex-layout, .flex-body, .flex-navbar {
         display: grid;
         grid-template-columns: auto 56px;
         grid-template-rows: 56px 1fr 56px;
         align-content: end;
     }
 
-    .flex-container {
+    .flex-layout {
         grid-template-areas:
             "content content"
             "content content"
@@ -219,7 +223,7 @@
         width: 100vw;
     }
 
-    .flex-sidebar {
+    .flex-body {
         /* Stretch the nav wrapper to the same area on the parent grid */
         grid-row: ~"1/4";
         grid-column: ~"1/3";

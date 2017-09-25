@@ -304,7 +304,7 @@ var phantom_checkpoint = phantom_checkpoint || function () { };
             }
             update_machine_links(machine);
 
-            $('.flex-sidebar').toggleClass("single-nav", $(".dashboard-link").length < 2);
+            $('.flex-body').toggleClass("single-nav", $(".dashboard-link").length < 2);
         }
 
         function update_title(label, machine) {
@@ -564,7 +564,7 @@ var phantom_checkpoint = phantom_checkpoint || function () { };
             if (item && item.section == "dashboard")
                 delete state.sidebar;
 
-            $('.flex-sidebar').toggleClass("single-nav", $(".dashboard-link").length < 2);
+            $('.flex-body').toggleClass("single-nav", $(".dashboard-link").length < 2);
 
         }
 

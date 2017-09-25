@@ -13,7 +13,7 @@
     <script src="../*/po.js"></script>
   </head>
   <body hidden>
-    <div class="flex-container">
+    <div class="flex-layout">
         <nav id="topnav" class="navbar navbar-default navbar-pf navbar-pf-vertical flex-navbar" role="navigation">
           <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-1">
@@ -125,7 +125,7 @@
           </div>
         </div>
 
-        <div class="flex-sidebar">
+        <div class="flex-body">
             <div class="nav-sidebar-wrap" id="multi-dashboard">
                 <div class="nav-sidebar nav-pf-vertical">
                     <ul id="main-navbar" class="list-group">
@@ -166,6 +166,9 @@
                     </ul>
                 </div>
             </div>
+
+            <div id="content" class="flex-content">
+            </div>
         </div>
 
         <div class="curtains-ct blank-slate-pf" hidden>
@@ -179,9 +182,6 @@
             <button id="machine-reconnect" class="btn btn-primary btn-lg" translatable="yes">Reconnect</button>
             <button id="machine-troubleshoot" class="btn btn-primary btn-lg" translatable="yes">Troubleshoot</button>
           </div>
-        </div>
-
-        <div id="content" class="flex-content">
         </div>
     </div>
 

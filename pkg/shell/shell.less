@@ -326,6 +326,48 @@ html.index-page body {
         top: 6rem;
         right: -4em;
         left: auto;
+
+
+        overflow: hidden;
+        padding: 0;
+
+        > .form-group {
+            padding: 10px;
+            margin: 0;
+            position: relative;
+
+            .form-control-feedback {
+                color: #aaa;
+                margin: 11px;
+                padding: 1ex;
+            }
+        }
+
+        > ul[role="menu"] {
+            max-height: 75vh;
+            overflow: auto;
+            overflow-x: hidden;
+            padding: 0;
+            position: relative;
+
+            > li {
+                position: relative;
+                padding: 0;
+
+                a {
+                    padding: 1ex 2ex;
+                    display: block;
+                }
+            }
+
+            .fa-li {
+                position: static;
+                width: auto;
+                padding: 0 1ex 0 0;
+                font-size: 16px;
+                vertical-align: baseline;
+            }
+        }
     }
 
     #machine-link {

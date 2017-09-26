@@ -429,11 +429,12 @@ var phantom_checkpoint = phantom_checkpoint || function () { };
 
             var list = $("#machine-dropdown ul");
             var links = machines.list.map(function(machine) {
-                var text = $("<span>").text(machine.label);
-                return $("<li role='presentation'>")
-                    .append($("<i>")
+                var text = $("<span>")
+                    .text(machine.label)
+                    .prepend($("<i>")
                         .attr("class", "fa-li fa fa-circle")
-                        .css("color", machine.color || ""))
+                        .css("color", machine.color || ""));
+                return $("<li role='presentation'>")
                     .append($("<a>")
                         .attr("role", "menuitem")
                         .attr("tabindex", "-1")

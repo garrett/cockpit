@@ -1,4 +1,4 @@
-@mobile-button-width: 56px;
+@mobile-button-size: 56px;
 
 /* Navigation base, used for both desktop & mobile navigation */
 
@@ -81,7 +81,7 @@
     display: none;
 
     &.dashboard-link {
-        display: block
+        display: block;
     }
 }
 
@@ -93,6 +93,14 @@
 #host-apps {
     flex: 1 1 0;
     overflow-y: auto;
+}
+
+#main-navbar {
+    li.dashboard-link:not(.active) {
+        .fa {
+            color: #72767b !important;
+        }
+    }
 }
 
 .flex-content > iframe {
@@ -247,7 +255,7 @@
     However, display: container and subgrids are not implemented in Chrome yet.
     To work around this, we do a little more complex gridding by overlapping
     child grids on top of the parent grid. We basically set up the main grid
-    as with a gutter of @mobile-button-width ("56px") on the top, right side,
+    as with a gutter of @mobile-button-size ("56px") on the top, right side,
     and bottom. We then stretch the child grids to this.
 
     The elements are then assigned grid names with 'grid-area' and placed in the
@@ -270,8 +278,8 @@
 
     .flex-layout, .flex-body, .flex-navbar {
         display: grid;
-        grid-template-columns: auto @mobile-button-width;
-        grid-template-rows: @mobile-button-width 1fr @mobile-button-width;
+        grid-template-columns: auto @mobile-button-size;
+        grid-template-rows: @mobile-button-size 1fr @mobile-button-size;
         align-content: end;
     }
 
@@ -319,8 +327,8 @@
         grid-area: topbar;
         grid-column: ~"1/3"; /* Expand to the whole column */
         grid-row: ~"2/4";
-        grid-template-rows: auto @mobile-button-width;
-        grid-template-columns: minmax(@mobile-button-width, auto) auto @mobile-button-width;
+        grid-template-rows: auto @mobile-button-size;
+        grid-template-columns: minmax(@mobile-button-size, auto) auto @mobile-button-size;
 
         z-index: 3;
 
@@ -369,7 +377,7 @@
     .nav-sidebar-wrap {
         grid-area: nav;
         z-index: 3;
-        max-width: ~"calc(100vw - @{mobile-button-width})";
+        max-width: ~"calc(100vw - @{mobile-button-size})";
         overflow: auto;
         overflow-y: hidden;
         position: relative;
@@ -406,9 +414,14 @@
         overflow: hidden;
         overflow-x: auto;
 
+        ul, li {
+            padding: 0;
+            margin: 0;
+        }
+
         .list-group-item {
             width: auto !important;
-            height: auto !important;
+            height: 100% !important;
             margin: 0 !important;
 
             a {
@@ -419,14 +432,26 @@
                 width: auto !important;
                 min-width: 20vw;
                 width: 100% !important;
+                height: @mobile-button-size !important;
+                margin-bottom: 12px; // Hack to hide the scrollbar
             }
 
             &.active {
-                background: #393f44 !important;
                 z-index: 2;
 
+                a {
+                    background: #393f44 !important;
+                }
+
                 a:before {
-                    display: none !important;
+                    // display: none !important;
+                    bottom: 0 !important;
+                    left: 0 !important;
+                    right: 0 !important;
+                    top: auto !important;
+                    height: 3px !important;
+                    width: auto !important;
+                    z-index: 3;
                 }
             }
         }
@@ -460,7 +485,7 @@
         grid-area: navmenu;
         height: 75mm;
         // Limit the menu's height to leave mobile-button space above and below
-        max-height: ~"calc(100vh - (@{mobile-button-width} * 2))";
+        max-height: ~"calc(100vh - (@{mobile-button-size} * 2))";
         grid-column: 1;
         grid-row: 2;
         z-index: 2;
@@ -469,8 +494,8 @@
 
         .dropdown-menu {
             width: auto !important;
-            left: @mobile-button-width / 2 !important;
-            right: @mobile-button-width / -2 !important;
+            left: @mobile-button-size / 2 !important;
+            right: @mobile-button-size / -2 !important;
             animation: navFadeInSlideDown 600ms;
         }
     }

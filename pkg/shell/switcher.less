@@ -489,6 +489,7 @@
     }
 
     #host-nav {
+        display: flex !important;
         align-self: end;
         grid-area: navmenu;
         max-height: 100%;
@@ -496,19 +497,23 @@
         grid-row: 2;
         z-index: 2;
         position: relative;
-        display: none !important;
-        animation: navSlideDown 300ms;
+        overflow: hidden;
+        bottom: ~"-100vh";
+        opacity: 0;
+        transition: all 300ms ease-in;
+
+        &.interact {
+            bottom: 0;
+            opacity: 1;
+            overflow: visible;
+            transition: bottom 300ms ease-out, box-shadow 300ms ease-out;
+        }
 
         .dropdown-menu {
             width: auto !important;
             left: @mobile-button-size / 2 !important;
             right: @mobile-button-size / -2 !important;
             animation: navFadeInSlideDown 600ms;
-        }
-
-        &.interact {
-            animation: navSlideUp 300ms;
-            display: flex !important;
         }
     }
 
@@ -533,13 +538,4 @@
 @keyframes navFadeInSlideDown {
     from { opacity: 0; max-height: 0; }
     to { opacity: 1; max-height: auto; }
-}
-
-@keyframes navSlideUp {
-    from {
-        position: relative;
-        overflow: hidden;
-        bottom: ~"-100vh";
-    }
-    to { bottom: 0; }
 }

@@ -491,14 +491,13 @@
     #host-nav {
         align-self: end;
         grid-area: navmenu;
-        height: 72mm;
-        // Limit the menu's height to leave mobile-button space above and below
-        max-height: ~"calc(100vh - (@{mobile-button-size} * 2))";
+        max-height: 100%;
         grid-column: 1;
         grid-row: 2;
         z-index: 2;
         position: relative;
-        animation: navSlideUp 600ms;
+        display: none !important;
+        animation: navSlideDown 300ms;
 
         .dropdown-menu {
             width: auto !important;
@@ -506,6 +505,16 @@
             right: @mobile-button-size / -2 !important;
             animation: navFadeInSlideDown 600ms;
         }
+
+        &.interact {
+            animation: navSlideUp 300ms;
+            display: flex !important;
+        }
+    }
+
+    #host-apps {
+        flex: auto;
+        max-height: 100%;
     }
 
     .navbar-collapse > ul,

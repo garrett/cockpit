@@ -56,10 +56,12 @@ var phantom_checkpoint = phantom_checkpoint || function () { };
         var troubleshooting = false;
 
         $("#host-nav-item").on("click", function (ev) {
-            $("#host-nav").toggleClass("interact", true);
             if ($(this).hasClass("active")) {
+                $("#host-nav").toggleClass("interact");
                 ev.preventDefault();
                 return false;
+            } else {
+                $("#host-nav").toggleClass("interact", true);
             }
         });
 

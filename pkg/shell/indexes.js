@@ -55,6 +55,14 @@ var phantom_checkpoint = phantom_checkpoint || function () { };
         /* Is troubleshooting dialog open */
         var troubleshooting = false;
 
+        $("#host-nav-item").on("click", function (ev) {
+            $("#host-nav").toggleClass("interact", true);
+            if ($(this).hasClass("active")) {
+                ev.preventDefault();
+                return false;
+            }
+        });
+
         /* Reconnect button */
         $("#machine-reconnect").on("click", function(ev) {
             if (watchdog_problem) {
@@ -133,6 +141,7 @@ var phantom_checkpoint = phantom_checkpoint || function () { };
         /* Handles navigation */
         function navigate(state, reconnect) {
             var machine;
+            $("#host-nav").toggleClass("interact", false);
 
             /* If this is a watchdog problem or we are troubleshooting
              * let the dialog handle it */

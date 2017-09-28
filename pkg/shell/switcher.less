@@ -315,6 +315,9 @@
         /* Stretch the nav wrapper to the same area on the parent grid */
         grid-column: ~"1/3";
         grid-row: ~"1/4";
+        // As Chrome on Mobile is wonky,
+        // here's an alternate way to set the size that works everywhere
+        grid-template-rows: ~"@{mobile-button-size} calc(100% - @{mobile-button-size} * 2) @{mobile-button-size}";
         z-index: 2;
 
         /* Pass through mouse events */

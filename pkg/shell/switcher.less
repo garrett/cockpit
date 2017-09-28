@@ -402,30 +402,6 @@
         overflow: auto;
         overflow-y: hidden;
         position: relative;
-
-        /* Fade start and end of the dashboard switcher bar on mobile */
-
-        &:before,
-        &:after {
-            content: '';
-            display: block;
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 15px;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        &:before {
-            background: linear-gradient(to right, #292e34, transparent);
-            left: 0;
-        }
-
-        &:after {
-            background: linear-gradient(to left, #292e34, transparent);
-            right: 0;
-        }
     }
 
     .nav-sidebar {
@@ -440,18 +416,29 @@
             margin: 0;
         }
 
+        .list-group {
+            position: relative;
+            display: flex;
+
+            li {
+                flex: auto;
+            }
+        }
+
         .list-group-item {
             width: auto !important;
             height: 100% !important;
             margin: 0 !important;
+            padding: 0 !important;
+            position: static;
 
             a {
                 display: inline-block !important;
-                padding: 5px 15px !important;
+                padding: 6px 12px !important;
                 padding: 0;
                 text-align: center;
                 width: auto !important;
-                min-width: 20vw;
+                min-width: 80px;
                 width: 100% !important;
                 height: @mobile-button-size !important;
                 margin-bottom: 12px; // Hack to hide the scrollbar
@@ -478,27 +465,24 @@
 
         }
 
-        .list-group {
-            display: flex;
-
-            li {
-                flex: auto;
-            }
+        .fa,
+        .pficon-container-node,
+        .list-group-item-value {
+            display: inline-block;
+            line-height: 1 !important;
+            font-weight: 400;
         }
 
         .fa,
         .pficon-container-node {
-            line-height: 1 !important;
-            float: none !important;
             margin: 0 auto !important;
+            float: none !important;
             font-size: 24px !important;
         }
 
         .list-group-item-value {
-            font-weight: 400;
-            line-height: 1 !important;
-            margin: 0 auto !important;
             overflow: visible !important;
+            font-size: 12px !important;
         }
     }
 

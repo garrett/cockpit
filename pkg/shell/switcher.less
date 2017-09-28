@@ -481,8 +481,13 @@
         }
 
         .list-group-item-value {
-            overflow: visible !important;
             font-size: 12px !important;
+            line-height: 2 !important;
+            margin-top: -6px; // Half font size, to offset double line-height
+        }
+
+        #host-nav-link .list-group-item-value {
+            max-width: ~"calc(20vw - 24px) !important";
         }
     }
 

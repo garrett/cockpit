@@ -54,6 +54,22 @@ var phantom_checkpoint = phantom_checkpoint || function () { };
 
         /* Is troubleshooting dialog open */
         var troubleshooting = false;
+        var machines_timer = null;
+
+        $("#machine-dropdown").on("hide.bs.dropdown", function () {
+            $("#find-machine").val("");
+            $("#machine-dropdown ul li").toggleClass("hidden", false);
+        });
+
+        $("#find-machine").on("keyup", function (ev) {
+            if (machines_timer)
+                window.clearTimeout(machines_timer);
+
+            machines_timer = window.setTimeout(function () {
+                filter_machines();
+                machines_timer = null;
+            }, 250);
+        });
 
         $("#host-nav-item").on("click", function (ev) {
             if ($(this).hasClass("active")) {
@@ -454,6 +470,18 @@ var phantom_checkpoint = phantom_checkpoint || function () { };
                         .append(text));
                 });
             list.empty().append(links);
+        }
+
+        function filter_machines () {
+            var val = $("#find-machine").val().toLowerCase();
+            $("#machine-dropdown ul li").each(function() {
+                var el = $(this);
+                var a = el.find('a').first();
+                var txt = a.text().toLowerCase();
+                var addr = a.attr("data-address") ? a.attr("data-address").toLowerCase() : "";
+                var hide = !!val && txt.indexOf(val) !== 0 && addr.indexOf(val) !== 0;
+                el.toggleClass("hidden", hide);
+            });
         }
 
         function compatibility(machine) {

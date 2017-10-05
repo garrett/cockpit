@@ -73,7 +73,8 @@
         height: 2rem;
         pointer-events: none;
         z-index: 1;
-        margin-right: 12px; // Accomodate scrollbars
+        /* Accomodate scrollbars with margin (IE11 needs 18px; rest are less) */
+        margin-right: 18px;
     }
 
     .dropdown-toggle:after {

@@ -103,6 +103,12 @@
     border-bottom: 1px solid #4d5258;
 }
 
+#machine-link span,
+#host-apps a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 #host-apps {
     flex: 1 1 0;
     overflow-y: auto;
@@ -261,6 +267,10 @@
 
     .flex-content {
         flex: auto;
+    }
+
+    #host-nav {
+        max-width: 20em;
     }
 }
 

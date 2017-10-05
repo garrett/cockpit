@@ -145,6 +145,9 @@
         flex: auto;
         z-index: 3;
         display: flex;
+        /* IE11 needs to have the flex-basis set to page max,
+           else it stretches too tall */
+        flex-basis: 100vh;
     }
 
     .nav-pf-vertical {

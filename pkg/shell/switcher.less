@@ -139,6 +139,16 @@
 
     .flex-content {
         flex: auto;
+
+        /* Position as absolute to make things work on old Chrome versions,
+           mainly to make tests pass */
+        > iframe {
+            position: absolute;
+        }
+
+        > .curtains-ct {
+            position: absolute !important;
+        }
     }
 
     .flex-body {
@@ -177,7 +187,8 @@
     }
 
     .nav-sidebar {
-        position: relative;
+        /* Use absolute position to make old Chrome (2015 Dec) tests pass */
+        position: absolute !important;
         height: 100%;
         transition: all 150ms ease-out;
         box-shadow: 0 0;

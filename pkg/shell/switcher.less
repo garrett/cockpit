@@ -78,13 +78,13 @@
     }
 
     .dropdown-toggle:after {
-        background: linear-gradient(to bottom, #393f44, transparent);
+        background: linear-gradient(to bottom, #393f44, rgba(57, 63, 68, 0));
         top: 100%;
         margin-top: 1px;
     }
 
     &:after {
-        background: linear-gradient(to top, #393f44, transparent);
+        background: linear-gradient(to top, #393f44, rgba(57, 63, 68, 0));
         bottom: 0;
         height: 4rem;
     }
@@ -279,6 +279,12 @@
 
     #host-nav {
         max-width: 20em;
+    }
+
+    .nav-sidebar-wrap,
+    #host-nav,
+    .flex-content {
+        display: table-cell;
     }
 }
 

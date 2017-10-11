@@ -178,7 +178,7 @@
         display: flex;
         /* IE11 needs to have the flex-basis set to page max,
            else it stretches too tall */
-        flex-basis: 100vh;
+        flex-basis: 100%;
     }
 
     .nav-pf-vertical {
@@ -273,8 +273,8 @@
 
     .flex-layout {
         display: flex;
-        width: 100vw;
-        height: 100vh;
+        width: 100%;
+        height: 100%;
         flex-flow: column;
         align-content: stretch;
     }
@@ -285,12 +285,6 @@
 
     #host-nav {
         max-width: 20em;
-    }
-
-    .nav-sidebar-wrap,
-    #host-nav,
-    .flex-content {
-        display: table-cell;
     }
 }
 

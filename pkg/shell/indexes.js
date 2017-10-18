@@ -284,7 +284,6 @@ var phantom_checkpoint = phantom_checkpoint || function () { };
             $("#host-nav-item span.pficon-container-node").css("color", color);
 
             if (machine) {
-
                 $("#machine-link span").text(machine.label);
                 $("#machine-link").attr("title", machine.label);
             } else {
@@ -323,14 +322,11 @@ var phantom_checkpoint = phantom_checkpoint || function () { };
             });
 
             $("#host-nav-item").toggleClass("active", !!machine);
-            if (machine) {
+            if (machine)
                 update_sidebar(machine, state, compiled);
-                $("#host-nav").show();
-            } else {
-                $("#host-nav").hide();
-            }
-            update_machine_links(machine);
 
+            $("#host-nav").toggleClass("hidden", !machine);
+            update_machine_links(machine);
             $('.flex-body').toggleClass("single-nav", $(".dashboard-link").length < 2);
         }
 

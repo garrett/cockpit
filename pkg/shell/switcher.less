@@ -1,5 +1,11 @@
 @mobile-button-size: 56px;
 
+/* Disable all animations */
+* {
+    transition: none !important;
+    transition-property: none !important;
+}
+
 /* Navigation base, used for both desktop & mobile navigation */
 
 .nav-sidebar .dashboard-link:not(.active) a:hover {
@@ -615,10 +621,4 @@
 @keyframes navFadeInSlideDown {
     from { opacity: 0; max-height: 0; }
     to { opacity: 1; max-height: auto; }
-}
-
-/* Disable all animations */
-* {
-    transition: none !important;
-    transition-property: none !important;
 }

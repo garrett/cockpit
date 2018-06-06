@@ -49,6 +49,7 @@
 
 /* Make things line up */
 .table tbody tr td:first-child,
+.table tbody tr th,
 .table thead tr th:first-child {
     padding-left: 15px;
 }
@@ -59,7 +60,9 @@
 }
 
 .info-table-ct > tr > td,
-.info-table-ct > tbody > tr > td {
+.info-table-ct > tbody > tr > td,
+.info-table-ct > tr > th,
+.info-table-ct > tbody > tr > th {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -70,7 +73,10 @@
 }
 
 .info-table-ct > tr > td:first-child,
-.info-table-ct > tbody > tr > td:first-child {
+.info-table-ct > tbody > tr > td:first-child,
+.info-table-ct > tr > th,
+.info-table-ct > tbody > tr > th {
+    font-weight: normal;
     text-align: right;
     color: #888888;
 }
@@ -101,6 +107,7 @@
     vertical-align: top;
 }
 
+.form-table-ct th,
 .form-table-ct td:first-child {
     text-align: right;
     white-space: nowrap;

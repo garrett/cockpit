@@ -74,6 +74,7 @@ static MetricDescription metric_descriptions[] = {
   { "memory.used",      "bytes", "instant", FALSE, MEMORY_SAMPLER },
   { "memory.cached",    "bytes", "instant", FALSE, MEMORY_SAMPLER },
   { "memory.swap-used", "bytes", "instant", FALSE, MEMORY_SAMPLER },
+  { "memory.unavailable", "bytes", "instant", FALSE, MEMORY_SAMPLER },
 
   { "block.device.read",    "bytes", "counter", TRUE, BLOCK_SAMPLER },
   { "block.device.written", "bytes", "counter", TRUE, BLOCK_SAMPLER },

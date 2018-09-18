@@ -143,15 +143,11 @@ a.disabled {
 }
 
 .server-graph-legend .memory-cached i {
-    color: #ff7f00;
+    color: #4daf4a;
 }
 
 .server-graph-legend .memory-used i {
     color: #377eb8;
-}
-
-.server-graph-legend .memory-free i {
-    color: #4daf4a;
 }
 
 #cpu_status_title {

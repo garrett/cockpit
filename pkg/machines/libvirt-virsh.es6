@@ -473,12 +473,12 @@ function parseDomstats(dispatch, connectionName, name, domstats) {
     if (state === Enum.VIR_DOMAIN_SHUTOFF)
         rssMemory = 0.0;
     // TODO: Add network usage statistics
+    let retParams = {connectionName, name, actualTimeInMs, disksStats: parseDomstatsForDisks(lines), rssMemory};
 
     if (cpuTime) {
-        return {connectionName, name, actualTimeInMs, cpuTime, rssMemory};
+        retParams['cpuTime'] = cpuTime;
     }
-
-    return {connectionName, name, disksStats: parseDomstatsForDisks(lines), rssMemory};
+    return retParams;
 }
 
 function parseDomstatsForDisks(domstatsLines) {

@@ -94,7 +94,7 @@ let clientLibvirt = {};
 /* Default timeout for libvirt-dbus method calls */
 const TIMEOUT = { timeout: 30000 };
 
-const Enum = {
+export const Enum = {
     VIR_DOMAIN_AFFECT_CURRENT: 0,
     VIR_DOMAIN_AFFECT_LIVE: 1,
     VIR_DOMAIN_AFFECT_CONFIG: 2,
@@ -102,8 +102,10 @@ const Enum = {
     VIR_DOMAIN_UNDEFINE_SNAPSHOTS_METADATA: 2,
     VIR_DOMAIN_UNDEFINE_NVRAM: 4,
     VIR_DOMAIN_STATS_BALLOON: 4,
+    VIR_DOMAIN_SHUTOFF: 5,
     VIR_DOMAIN_STATS_VCPU: 8,
     VIR_DOMAIN_STATS_BLOCK: 32,
+    VIR_DOMAIN_STATS_STATE: 1,
     VIR_DOMAIN_XML_INACTIVE: 2,
     VIR_CONNECT_LIST_NETWORKS_ACTIVE: 2,
     VIR_CONNECT_LIST_STORAGE_POOLS_ACTIVE: 2,
@@ -781,7 +783,7 @@ function doUsagePolling(name, connectionName, objPath) {
             logDebug(`doUsagePolling(${name}, ${connectionName}): usage polling disabled, stopping loop`);
             return;
         }
-        let flags = Enum.VIR_DOMAIN_STATS_BALLOON | Enum.VIR_DOMAIN_STATS_VCPU | Enum.VIR_DOMAIN_STATS_BLOCK;
+        let flags = Enum.VIR_DOMAIN_STATS_BALLOON | Enum.VIR_DOMAIN_STATS_VCPU | Enum.VIR_DOMAIN_STATS_BLOCK | Enum.VIR_DOMAIN_STATS_STATE;
 
         call(connectionName, objPath, 'org.libvirt.Domain', 'GetStats', [flags, 0], { timeout: 5000 })
                 .done(info => {
@@ -792,6 +794,8 @@ function doUsagePolling(name, connectionName, objPath) {
 
                         if ('balloon.rss' in info)
                             props['rssMemory'] = info['balloon.rss'].v.v;
+                        else if ('state.state' in info && info['state.state'].v.v == Enum.VIR_DOMAIN_SHUTOFF)
+                            props['rssMemory'] = 0.0;
                         for (var i = 0; i < info['vcpu.maximum'].v.v; i++) {
                             if (!(`vcpu.${i}.time` in info))
                                 continue;

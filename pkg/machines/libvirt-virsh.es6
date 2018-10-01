@@ -78,6 +78,7 @@ import {
 } from './libvirt-common.es6';
 
 import VMS_CONFIG from './config.es6';
+import Enum from './libvirt-dbus.es6';
 
 const _ = cockpit.gettext;
 
@@ -461,29 +462,23 @@ function parseDominfo(dispatch, connectionName, name, domInfo) {
     }
 }
 
-function parseDommemstat(dispatch, connectionName, name, dommemstat) {
-    const lines = parseLines(dommemstat);
-
-    let rssMemory = getValueFromLine(lines, 'rss'); // in KiB
-
-    if (rssMemory) {
-        dispatch(updateVm({connectionName, name, rssMemory}));
-    }
-}
-
 function parseDomstats(dispatch, connectionName, name, domstats) {
     const actualTimeInMs = Date.now();
 
     const lines = parseLines(domstats);
 
     const cpuTime = getValueFromLine(lines, 'cpu.time=');
+    const state = getValueFromLine(lines, 'state.state=');
+    let rssMemory = getValueFromLine(lines, 'balloon.rss=');
+    if (state === Enum.VIR_DOMAIN_SHUTOFF)
+        rssMemory = 0.0;
     // TODO: Add network usage statistics
 
     if (cpuTime) {
-        return {connectionName, name, actualTimeInMs, cpuTime};
+        return {connectionName, name, actualTimeInMs, cpuTime, rssMemory};
     }
 
-    return {connectionName, name, disksStats: parseDomstatsForDisks(lines)};
+    return {connectionName, name, disksStats: parseDomstatsForDisks(lines), rssMemory};
 }
 
 function parseDomstatsForDisks(domstatsLines) {
@@ -570,13 +565,7 @@ function doUsagePolling (name, connectionName) {
         // Do polling even if following virsh calls fails. Might fail i.e. if a VM is not (yet) started
         dispatch(delayPolling(doUsagePolling(name, connectionName), null, name, connectionName));
 
-        return spawnVirshReadOnly({ connectionName, method: 'dommemstat', name, failHandler: canFailHandler })
-                .then(dommemstat => {
-                    if (dommemstat) { // is undefined if vm is not running
-                        parseDommemstat(dispatch, connectionName, name, dommemstat);
-                        return spawnVirshReadOnly({ connectionName, method: 'domstats', name, failHandler: canFailHandler });
-                    }
-                })
+        return spawnVirshReadOnly({ connectionName, method: 'domstats', name, failHandler: canFailHandler })
                 .then(domstats => {
                     if (domstats) {
                         let domstatsParams = parseDomstats(dispatch, connectionName, name, domstats);

@@ -90,6 +90,56 @@ class TestMachinesDBus(machineslib.TestMachines):
         b.click("#vm-subVmTest1-disks-vdc-detach")
         b.wait_not_present("vm-subVmTest1-disks-vdc-target")
 
+    def testNetworkSettings(self):
+        b = self.browser
+        m = self.machine
+
+        self.startVm("subVmTest1")
+
+        self.login_and_go("/machines")
+        b.wait_in_text("body", "Virtual Machines")
+        b.wait_present("tbody tr th")
+        b.wait_in_text("tbody tr th", "subVmTest1")
+
+        b.click("tbody tr th") # click on the row header
+        b.wait_present("#vm-subVmTest1-state")
+        b.wait_in_text("#vm-subVmTest1-state", "running")
+
+        b.wait_present("#vm-subVmTest1-networks") # wait for the tab
+        b.click("#vm-subVmTest1-networks") # open the "Networks" subtab
+
+        # Wait for the edit button
+        b.wait_present("#vm-subVmTest1-network-1-edit-dialog")
+        b.click("#vm-subVmTest1-network-1-edit-dialog")
+
+        # Wait for the footer warning to appear
+        b.wait_present("#vm-subVmTest1-network-1-edit-dialog-idle-message")
+
+        # Cancel dialog
+        b.click("#vm-subVmTest1-network-1-edit-dialog-cancel")
+        b.wait_not_present("#vm-subVmTest1-network-1-edit-dialog-modal-window")
+
+        current_model_type =  b.text("#vm-subVmTest1-network-1-model");
+
+        # Reopen dialog modal
+        b.wait_present("#vm-subVmTest1-network-1-edit-dialog")
+        b.click("#vm-subVmTest1-network-1-edit-dialog")
+
+        # Change network model type of a running domain
+        self._selectFromDropdown("#vm-subVmTest1-network-1-select-model", "e1000e")
+        b.click("#vm-subVmTest1-network-1-edit-dialog-save")
+        b.wait_not_present("#vm-subVmTest1-network-1-edit-dialog-modal-window")
+        b.wait_in_text("#vm-subVmTest1-network-1-model", current_model_type)
+        b.wait_present("#vm-subVmTest1-network-1-model-tooltip")
+
+        # Shut off domain and check changes are applied
+        b.click("#vm-subVmTest1-off-caret")
+        b.wait_visible("#vm-subVmTest1-forceOff")
+        b.click("#vm-subVmTest1-forceOff")
+        b.wait_in_text("#vm-subVmTest1-state", "shut off")
+        b.wait_in_text("#vm-subVmTest1-network-1-model", "e1000e")
+        b.wait_not_present("#vm-subVmTest1-network-1-model-tooltip")
+
 
 if __name__ == '__main__':
     test_main()

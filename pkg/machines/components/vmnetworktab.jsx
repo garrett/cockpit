@@ -23,11 +23,29 @@ import { changeNetworkState } from "../actions/provider-actions.es6";
 import VmLastMessage from './vmLastMessage.jsx';
 import { Listing, ListingRow } from 'cockpit-components-listing.jsx';
 import { rephraseUI, vmId } from "../helpers.es6";
+import EditNICAction from './nicEdit.jsx';
+import { Tooltip } from 'cockpit-components-tooltip.jsx';
+import './nicEdit.css';
 
 const _ = cockpit.gettext;
 
-const VmNetworkTab = function ({ vm, dispatch, hostDevices }) {
+const VmNetworkTab = function ({ vm, dispatch, config, hostDevices, networks }) {
     const id = vmId(vm.name);
+
+    const warningInactive = (id) => {
+        return (
+            <Tooltip tip={_("Changes will apply on VM restart")} pos='top'>
+                <span id={id} className='fa-stack fa-sm'>
+                    <i className='fa fa-circle-thin fa-stack-2x fa-stack-xs' />
+                    <i className='fa fa-hourglass fa-stack-1x fa-stack-xs' />
+                </span>
+            </Tooltip>
+        );
+    };
+
+    const nicLookupByMAC = (interfacesList, mac) => {
+        return interfacesList.filter(iface => iface.mac == mac)[0];
+    };
 
     if (!vm.interfaces || vm.interfaces.length === 0) {
         return (<div>{_("No network interfaces defined for this VM")}</div>);
@@ -65,8 +83,24 @@ const VmNetworkTab = function ({ vm, dispatch, hostDevices }) {
 
     // Network data mapping to rows
     const detailMap = [
-        { name: _("Type"), value: (network, networkId) => <div id={`${id}-network-${networkId}-type`}>{rephraseUI('networkType', network.type)}</div>, header: true },
-        { name: _("Model type"), value: 'model' },
+        { name: _("Type"), value: (network, networkId) => {
+            let inactiveNIC = nicLookupByMAC(vm.inactiveXML.interfaces, network.mac);
+            return (
+                <div id={`${id}-network-${networkId}-type`}>
+                    {network.type}
+                    {inactiveNIC.type !== network.type && warningInactive(`${id}-network-${networkId}-type-tooltip`)}
+                </div>
+            );
+        }},
+        { name: _("Model type"), value: (network, networkId) => {
+            let inactiveNIC = nicLookupByMAC(vm.inactiveXML.interfaces, network.mac);
+            return (
+                <div id={`${id}-network-${networkId}-model`}>
+                    {network.model}
+                    {inactiveNIC.model !== network.model && warningInactive(`${id}-network-${networkId}-model-tooltip`)}
+                </div>
+            );
+        }},
         { name: _("MAC Address"), value: 'mac' },
         { name: _("Source"), value: (network, networkId) => {
             const setSourceClass = (source) => checkDeviceAviability(source) ? "machines-network-source-link" : undefined;
@@ -80,7 +114,14 @@ const VmNetworkTab = function ({ vm, dispatch, hostDevices }) {
                 udp: addressPortSource,
             };
             if (mapSource[network.type] !== undefined) {
-                return <div id={`${id}-network-${networkId}-source`}>{mapSource[network.type](network.source, networkId)}</div>;
+                let inactiveNIC = nicLookupByMAC(vm.inactiveXML.interfaces, network.mac);
+                return (
+                    <div id={`${id}-network-${networkId}-source`}>
+                        {mapSource[network.type](network.source, networkId)}
+                        {inactiveNIC.source[inactiveNIC.type] !== network.source[network.type] && warningInactive(`${id}-network-${networkId}-source-tooltip`)}
+
+                    </div>
+                );
             } else {
                 return null;
             }
@@ -90,14 +131,20 @@ const VmNetworkTab = function ({ vm, dispatch, hostDevices }) {
         }},
         { name: _(""), value: (network, networkId) => {
             const isUp = network.state === 'up';
+            const editNICAction = (providerName) => {
+                if (providerName === "LibvirtDBus")
+                    return <EditNICAction dispatch={dispatch} idPrefix={`${id}-network-${networkId}`} vm={vm} network={network} networks={networks} />;
+            };
 
-            return (<div className='machines-network-state' id={`${id}-network-${networkId}-state-btn`}>
-                <button className='btn btn-default' onClick={onChangeState(network)} title={`${isUp ? _("Unplug") : _("Plug")}`}>
-                    {isUp ? 'Unplug' : 'Plug'}
-                </button>
-            </div>);
-        }
-        },
+            return (
+                <div className='machines-network-actions'>
+                    <button className='btn btn-default' onClick={onChangeState(network)} title={`${isUp ? _("Unplug") : _("Plug")}`}>
+                        {isUp ? 'Unplug' : 'Plug'}
+                    </button>
+                    {editNICAction(config.provider.name)}
+                </div>
+            );
+        }},
     ];
 
     let networkId = 1;
@@ -108,7 +155,7 @@ const VmNetworkTab = function ({ vm, dispatch, hostDevices }) {
         <div className="machines-network-list">
             {message}
             <Listing columnTitles={detailMap.map(target => target.name)} actions={null} emptyCaption=''>
-                {vm.interfaces.sort().map(target => {
+                {vm.interfaces.map(target => {
                     const columns = detailMap.map(d => {
                         let column = null;
                         if (typeof d.value === 'string') {

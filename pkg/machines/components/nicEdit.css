@@ -1,69 +1,28 @@
-.dialog-field {
-    display: inline-flex;
-    padding: 0px;
+.nic-edit > .modal-dialog {
+    width: 70rem;
 }
 
-.dialog-field > label {
-    white-space: nowrap;
-    color: #888888;
-    float: right;
-    width: 100%;
-    text-align: right;
+.nic-edit .form-group > div {
+    padding-right: 0;
+}
+.nic-edit .form-group > div:first-child {
+    padding-left: 0;
 }
 
-.dialog-field .form-control {
-    margin-left: 5px !important;
-}
-
-.modal-body .edit-nic-dialog {
-    height: 16em;
-    padding-bottom: 0px !important;
-}
-
-.edit-nic-body .row,
-.edit-nic-dialog .row {
-    padding-bottom: 0.5em;
-}
-
-.edit-nic-body .row:first-child {
-    padding-bottom: 2em;
-    padding-top: 1em;
-}
-
-.edit-nic-body .row:nth-child(2) {
-    padding-bottom: 2em;
-    padding-top: 1em;
-}
-
-.edit-nic-body .row:last-child {
-    padding-top: 1em;
-}
-
-.edit-nic-source > label {
-    width: auto;
-    padding-left: 2em;
-}
-
-.fa-hourglass {
-    color: orange;
-}
-
-.fa-circle-thin {
-    color: orange;
-}
-
-.line-nic-hourglass {
-    padding-left: 1em;
-}
-
-.dialog-wait-ct span {
-    vertical-align: middle !important;
+.nic-edit .mac-address {
+    text-align: left;
 }
 
 .nic-edit-idle-message {
-    float: left !important;
+    align-items: center;
+    display: flex;
+    float: left;
+    line-height: 24px; /* Same height as a button */
 }
 
-.dialog-field-readonly {
-    padding-left: 0.5em;
+.nic-edit .pficon-pending {
+    color: #ec7a08; /* pf-orange-400 */
+    font-size: 16px;
+    line-height: inherit;
+    margin-right: 0.5rem;
 }

@@ -47,13 +47,13 @@ const NetworkModelRow = ({ idPrefix, onValueChanged, dialogValues, network, osTy
     }
 
     return (
-        <div className='row'>
-            <div className='col-md-2 dialog-field'>
+        <div className='form-group'>
+            <div className='col-sm-2 control-label'>
                 <label htmlFor={`${idPrefix}-select-model`}>
                     {_('Model')}
                 </label>
             </div>
-            <div className='col-md-4 dialog-field'>
+            <div className='col-sm-4'>
                 <Select.Select id={`${idPrefix}-select-model`}
                                onChange={value => onValueChanged('networkModel', value)}
                                initial={defaultModelType}
@@ -113,13 +113,13 @@ const NetworkTypeAndSourceRow = ({ idPrefix, onValueChanged, dialogValues, netwo
     }
 
     return (
-        <div className='row'>
-            <div className='col-md-2 dialog-field'>
+        <div className='form-group'>
+            <div className='col-sm-2 control-label'>
                 <label htmlFor={`${idPrefix}-select-type`}>
                     {_('Network Type')}
                 </label>
             </div>
-            <div className='col-md-4 dialog-field'>
+            <div className='col-sm-4'>
                 <Select.Select id={`${idPrefix}-select-type`}
                                onChange={value => onValueChanged('networkType', value)}
                                initial={defaultNetworkType}
@@ -135,17 +135,21 @@ const NetworkTypeAndSourceRow = ({ idPrefix, onValueChanged, dialogValues, netwo
                 </Select.Select>
             </div>
             {(dialogValues.networkType === 'network') && (
-                <div className='col-md-6 dialog-field edit-nic-source'>
-                    <label htmlFor={`${idPrefix}-select-source`}>
-                        {_('Network Source')}
-                    </label>
-                    <Select.Select id={`${idPrefix}-select-source`}
-                                   onChange={value => onValueChanged('networkSource', value)}
-                                   initial={defaultNetworkSource}
-                                   extraClass='form-control'>
-                        {networkSourcesContent}
-                    </Select.Select>
-                </div>
+                <React.Fragment>
+                    <div className='col-sm-2 edit-nic-source control-label'>
+                        <label htmlFor={`${idPrefix}-select-source`}>
+                            {_('Source')}
+                        </label>
+                    </div>
+                    <div className='col-sm-4'>
+                        <Select.Select id={`${idPrefix}-select-source`}
+                                       onChange={value => onValueChanged('networkSource', value)}
+                                       initial={defaultNetworkSource}
+                                       extraClass='form-control'>
+                            {networkSourcesContent}
+                        </Select.Select>
+                    </div>
+                </React.Fragment>
             )}
         </div>
     );
@@ -153,14 +157,16 @@ const NetworkTypeAndSourceRow = ({ idPrefix, onValueChanged, dialogValues, netwo
 
 const NetworkMacRow = ({ network }) => {
     return (
-        <div className='row'>
-            <div className='col-md-2 dialog-field'>
+        <div className='form-group'>
+            <div className='col-sm-2 control-label'>
                 <label>
                     {_('MAC Address')}
                 </label>
             </div>
-            <div className='col-md-4 dialog-field dialog-field-readonly'>
-                {network.mac}
+            <div className='col-sm-2 mac-address control-label'>
+                <samp>
+                    {network.mac}
+                </samp>
             </div>
         </div>
     );
@@ -229,8 +235,8 @@ export class EditNICAction extends React.Component {
     render() {
         const { idPrefix, vm, network, networks } = this.props;
         const defaultBody = (
-            <div className='modal-body edit-nic-dialog'>
-                <div className='container-fluid edit-nic-body'>
+            <div className='container-fluid edit-nic-dialog'>
+                <form className='form-horizontal'>
                     <NetworkTypeAndSourceRow idPrefix={idPrefix}
                                              dialogValues={this.state}
                                              onValueChanged={this.onValueChanged}
@@ -246,15 +252,12 @@ export class EditNICAction extends React.Component {
                                      osTypeMachine={vm.emulatedMachines}
                                      isRunning={vm.state == 'running'} />
                     <NetworkMacRow network={network} />
-                </div>
+                </form>
             </div>
         );
         const footerWarning = (
             <span id={`${idPrefix}-edit-dialog-idle-message`} className='nic-edit-idle-message'>
-                <span className='fa-stack'>
-                    <i className='fa fa-circle-thin fa-stack-2x fa-stack-md' />
-                    <i className='fa fa-hourglass fa-stack-1x fa-stack-md' />
-                </span>
+                <i className='pficon pficon-pending'></i>
                 <span>{'Changes will apply on VM restart'}</span>
             </span>
         );
@@ -265,7 +268,7 @@ export class EditNICAction extends React.Component {
                     {_('Edit')}
                 </Button>
 
-                <Modal id={`${idPrefix}-edit-dialog-modal-window`} show={this.state.showModal} onHide={this.close}>
+                <Modal id={`${idPrefix}-edit-dialog-modal-window`} show={this.state.showModal} onHide={this.close} className='nic-edit'>
                     <Modal.Header>
                         <Modal.CloseButton onClick={this.close} />
                         <Modal.Title> {`${network.mac} Virtual Network Interface Settings`} </Modal.Title>

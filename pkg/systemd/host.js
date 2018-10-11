@@ -1568,8 +1568,8 @@ PageMemoryStatus.prototype = {
                 { name: "memory.cached" },
             ];
             var series = [
-                { color: "#377eb8", label: _("Used") },
-                { color: "#4daf4a", label: _("Cached") },
+                { color: "#0088ce", label: _("Used") },
+                { color: "#e4f5bc", label: _("Cached") },
             ];
 
             if (info.swap) {

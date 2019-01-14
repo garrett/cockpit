@@ -20,6 +20,40 @@ a.disabled {
     white-space: nowrap;
 }
 
+@supports (display: grid) {
+  .page-ct {
+    display: grid;
+    grid-template-areas: ". ." "info graphs";
+    grid-template-columns: minmax(min-content, 33%) 1fr;
+    grid-template-rows: "max-content" "1fr";
+    grid-gap: 1rem;
+  }
+
+  .page-ct > .info-table-ct-container,
+  .page-ct > #server-graph-columns {
+    margin: 0;
+    padding: 0;
+    width: 100%
+  }
+
+  .page-ct > .info-table-ct-container {
+    grid-area: info;
+  }
+
+  .page-ct > #server-graph-columns {
+    grid-area: graphs;
+  }
+}
+
+.info-table-ct-container th {
+  text-align: right;
+}
+.info-table-ct-container th, td {
+  vertical-align: baseline;
+  padding-top: 0.25em;
+  line-height: inherit;
+}
+
 .systime-inline form .pficon-close,
 .systime-inline form .fa-plus {
     height: 26px;

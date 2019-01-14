@@ -85,48 +85,48 @@
         <div class="col-md-4 col-lg-3 info-table-ct-container">
             <table class="info-table-ct">
                 <tr>
-                    <td translatable="yes">Hardware</td>
+                    <th translatable="yes">Hardware</th>
                     <td><a id="system_information_hardware_text"></a></td>
                 </tr>
                 <tr id="system-info-asset-row">
-                    <td translatable="yes">Asset Tag</td>
+                    <th translatable="yes">Asset Tag</th>
                     <td id="system_information_asset_tag_text"></td>
                 </tr>
                 <tr id="system_information_machine_id_row">
-                    <td translatable="yes">Machine ID</td>
+                    <th translatable="yes">Machine ID</th>
                     <td><span id="system_machine_id"></span></td>
                 </tr>
                 <tr id="system_information_os">
-                    <td translatable="yes">Operating System</td>
+                    <th translatable="yes">Operating System</th>
                     <td id="system_information_os_text"></td>
                 </tr>
                 <tr id="system_information_updates">
-                    <td>
+                    <th>
                         <span id="system_information_updates_icon" hidden></span>
-                    </td>
+                    </th>
                     <td id="system_information_updates_text"></td>
                 </tr>
                 <tr id="system-ssh-keys">
-                    <td translatable="yes">Secure Shell Keys</td>
+                    <th translatable="yes">Secure Shell Keys</th>
                     <td><a id="system-ssh-keys-link" translatable="yes" data-toggle="modal"
                            data-target="#system_information_ssh_keys">Show fingerprints</a></td>
                 </tr>
                 <tr id="system-ostree-version" class="hidden">
-                    <td translatable="yes">Version</td>
+                    <th translatable="yes">Version</th>
                     <td><a id="system-ostree-version-link"></a></td>
                 </tr>
                 <tr>
-                    <td translatable="yes">Host Name</td>
+                    <th translatable="yes">Host Name</th>
                     <td><span id="hostname-tooltip"><a class="hostname-privileged"
                             id="system_information_hostname_button"></a></span></td>
                 </tr>
                 <tr id="system-info-domain" hidden>
-                    <td translatable="yes">Domain</td>
+                    <th translatable="yes">Domain</th>
                     <td class="button-location">
                     </td>
                 </tr>
                 <tr>
-                    <td translatable="yes">System Time</td>
+                    <th translatable="yes">System Time</th>
                     <td><span id="systime-tooltip">
                         <a class="systime-privileged"
                            id="system_information_systime_button"></a></span>
@@ -137,7 +137,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td translatable="yes" id="system_information_power_options_label">Power Options</td>
+                    <th translatable="yes" id="system_information_power_options_label">Power Options</th>
                     <td id="shutdown-group">
                         <div class="btn-group">
                             <button class="btn btn-default btn-danger shutdown-privileged" data-action="restart"
@@ -160,12 +160,12 @@
                     </td>
                 </tr>
                 <tr id="system-info-performance" hidden>
-                    <td translatable="yes">Performance Profile</td>
+                    <th translatable="yes">Performance Profile</th>
                     <td class="button-location">
                     </td>
                 </tr>
                 <tr id="server-pmlogger-onoff-row" hidden>
-                    <td translatable="yes">Store metrics</td>
+                    <th translatable="yes">Store metrics</th>
                     <td>
                         <div class="btn-group btn-onoff-ct" id="server-pmlogger-switch" data-toggle="buttons">
                             <label class="btn">
@@ -180,7 +180,7 @@
                     </td>
                 </tr>
                 <tr id="system-information-enable-pcp" hidden>
-                    <td></td>
+                    <th></th>
                     <td>
                         <a id="system-information-enable-pcp-link">
                             <span class="pficon pficon-info"></span>
@@ -318,19 +318,19 @@
                 <div class="modal-body">
                     <table class="form-table-ct">
                         <tr>
-                            <td>
+                            <th>
                                 <label class="control-label" for="sich-pretty-hostname"
                                     translatable="yes">Pretty Host Name</label>
-                            </td>
+                            </th>
                             <td>
                                 <input id="sich-pretty-hostname" class="form-control">
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <th>
                                 <label class="control-label" for="sich-hostname"
                                     translatable="yes">Real Host Name</label>
-                            </td>
+                            </th>
                             <td>
                                 <div id=sich-hostname-error>
                                     <input id="sich-hostname" class="form-control">
@@ -338,7 +338,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td></td>
+                            <th></th>
                             <td>
                                 <div class="has-error">
                                     <span id="sich-note-1" class="help-block"></span>
@@ -346,7 +346,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td></td>
+                            <th></th>
                             <td>
                                 <div class="has-error">
                                     <span id="sich-note-2" class="help-block"></span>

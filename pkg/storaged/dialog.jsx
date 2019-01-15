@@ -219,6 +219,8 @@ import { show_modal_dialog } from "cockpit-components-dialog.jsx";
 import { StatelessSelect, SelectEntry } from "cockpit-components-select.jsx";
 import { fmt_size, block_name, format_size_and_text } from "./utils.js";
 
+import "form-layout.less";
+
 const _ = cockpit.gettext;
 
 const Validated = ({ errors, error_key, explanation, children }) => {
@@ -229,7 +231,7 @@ const Validated = ({ errors, error_key, explanation, children }) => {
     // errors are cleared.  Otherwise the DOM changes enough
     // for the Browser to remove focus.
     return (
-        <div className={error ? "has-error" : ""}>
+        <div className={error ? "ct-validation-wrapper has-error" : "ct-validation-wrapper"}>
             { children }
             { (text && text !== true) ? <span className="help-block dialog-error">{text}</span> : null }
         </div>
@@ -253,17 +255,13 @@ const Row = ({ tag, title, errors, options, children }) => {
                     </React.Fragment>
                 );
             return (
-                <tr>
-                    <td className="top">{title}</td>
-                    <td>{validated}</td>
-                </tr>
+                <React.Fragment>
+                    <label className="control-label">{title}</label>
+                    <React.Fragment>{validated}</React.Fragment>
+                </React.Fragment>
             );
         } else {
-            return (
-                <tr>
-                    <td colSpan="2">{validated}</td>
-                </tr>
-            );
+            return validated;
         }
     } else {
         return children;
@@ -297,11 +295,9 @@ const Body = ({body, fields, values, errors, onChange}) => {
         <div className="modal-body">
             { body || null }
             { fields.length > 0
-                ? <table className="form-table-ct">
-                    <tbody>
-                        { fields.map(make_row) }
-                    </tbody>
-                </table> : null
+                ? <form className="ct-form-layout">
+                    { fields.map(make_row) }
+                </form> : null
             }
         </div>
     );
@@ -709,6 +705,45 @@ export const CheckBox = (tag, title, options) => {
     };
 };
 
+export const FieldSet = (tag, title, options) => {
+    return {
+        tag: tag,
+        title: title,
+        options: options,
+        initial_value: options.value || { },
+
+        render: (val, change) => {
+            let fieldset = options.fields.map(field => {
+                let ftag = tag + "." + field.tag;
+                let fval = val[field.tag];
+                function fchange(newval) {
+                    val[field.tag] = newval;
+                    change(val);
+                }
+
+                if (field.type == "checkbox")
+                    return <CheckBoxComponent key={`checkbox-${ftag}`}
+                                              tag={ftag}
+                                              val={fval}
+                                              title={field.title}
+                                              update_function={fchange} />;
+                else if (field.type == "checkboxWithInput")
+                    return <TextInputCheckedComponent key={`checkbox-with-text-${ftag}`}
+                                                      tag={ftag}
+                                                      val={fval}
+                                                      title={field.title}
+                                                      update_function={fchange} />;
+            });
+
+            return (
+                <div role="group">
+                    { fieldset }
+                </div>
+            );
+        }
+    };
+};
+
 const TextInputCheckedComponent = ({ tag, val, title, update_function }) => {
     return (
         <React.Fragment key={tag}>
@@ -752,7 +787,7 @@ export const Skip = (className, options) => {
         initial_value: false,
 
         render: () => {
-            return <tr><td className={className} /></tr>;
+            return <div className={className} />;
         }
     };
 };

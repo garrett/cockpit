@@ -100,7 +100,8 @@
   }
 
   // Auto-relax inputs with size
-  > input[size] {
+  > input[size],
+  > .ct-validation-wrapper > input[size] {
     justify-self: start;
   }
 
@@ -110,28 +111,36 @@
   }
 
   // Special considerations for widgets (and widget-like elements)
-  > input,
-  > textarea,
-  > select,
-  > .bootstrap-select,
-  > .dropdown,
-  > .combobox-container,
-  > fieldset,
-  > [role=group],
-  > .form-group,
-  > .btn-group,
-  > .checkbox-inline,
-  > .radio-inline {
-    // Vertically align elements with text
-    margin-top: -(@padding-small-vertical - @padding-base-vertical);
-    // Ensure widgets are a at least a minimum widget size
-    min-height: @widget-height;
-
-    // Some elements need special width considerations
-    // as PatternFly normally fixes the width
-    &:not(.ct-form-layout-relax) {
-      width: auto !important;
+  // This is a LESS mixin that will not be in the compiled CSS.
+  .widget-rules() {
+    > input,
+    > textarea,
+    > select,
+    > .bootstrap-select,
+    > .dropdown,
+    > .combobox-container,
+    > fieldset,
+    > [role=group],
+    > [data-field],
+    > .form-group,
+    > .btn-group,
+    > .checkbox-inline,
+    > .radio-inline {
+      // Vertically align elements with text
+      margin-top: -(@padding-small-vertical - @padding-base-vertical);
+      // Ensure widgets are a at least a minimum widget size
+      min-height: @widget-height;
     }
+  }
+
+  &, > .ct-validation-wrapper {
+    .widget-rules();
+  }
+
+  // Some elements need special width considerations
+  // as PatternFly normally fixes the width
+  > :not(.ct-form-layout-relax) {
+    width: auto !important;
   }
 
   // Elements with role="group" are used to group elements —
@@ -146,7 +155,8 @@
   //
   // And non-div elements are also supported.
   fieldset,
-  > [role=group] {
+  > [role=group],
+  > .ct-validation-wrapper > [role=group] {
     // appearance: none is needed for WebKit
     -webkit-appearance: none;
     appearance: none;

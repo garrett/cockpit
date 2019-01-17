@@ -683,6 +683,19 @@ export const SelectSpace = (tag, title, options) => {
     };
 };
 
+const CheckBoxComponent = ({ tag, val, title, update_function }) => {
+    return (
+        <div key={tag} className="checkbox">
+            <label key={tag}>
+                <input type="checkbox" data-field={tag} data-field-type="checkbox"
+                       checked={val}
+                       onChange={event => update_function(event.target.checked)} />
+                {title}
+            </label>
+        </div>
+    );
+};
+
 export const CheckBox = (tag, title, options) => {
     return {
         tag: tag,
@@ -691,16 +704,7 @@ export const CheckBox = (tag, title, options) => {
         initial_value: options.value || false,
 
         render: (val, change) => {
-            return (
-                <div className="checkbox">
-                    <label>
-                        <input type="checkbox" data-field={tag} data-field-type="checkbox"
-                               checked={val}
-                               onChange={event => change(event.target.checked)} />
-                        {title}
-                    </label>
-                </div>
-            );
+            return <CheckBoxComponent tag={tag} val={val} title={title} update_function={change} />;
         }
     };
 };

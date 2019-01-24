@@ -170,12 +170,11 @@ class CreateVM extends React.Component {
             if (family === DIVIDER_FAMILY) {
                 return;
             }
-            vendorSelectEntries.push((<Select.SelectHeader key={family}>{family}</Select.SelectHeader>));
 
-            vendors.forEach((vendor) => {
-                vendorSelectEntries.push((
-                    <Select.SelectEntry data={vendor} key={vendor}>{vendor}</Select.SelectEntry>));
-            });
+           let children = vendors.map(vendor => { return <Select.SelectEntry data={vendor} key={vendor}>{vendor}</Select.SelectEntry> });
+            vendorSelectEntries.push(
+                <Select.SelectGroup key={family} label={family} children={children} />
+            );
         });
 
         const osEntries = (

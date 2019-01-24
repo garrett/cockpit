@@ -182,14 +182,17 @@ export class SelectEntry extends React.Component {
  * (which looks tacky) */
 export const SelectDivider = () => <option role="separator" className="divider" disabled>---</option>;
 
-/* Header
- * Example: <SelectHeader>Some header</SelectHeader>
+/* Group
+ * Example:
+ * <SelectGroup>
+ *    <SelectEntry data="foo">Some entry</SelectEntry>
+ * </SelectGroup>
  */
-export const SelectHeader = ({ children }) => {
-    const value = (children !== undefined) ? children : textForUndefined;
-    /* HACK: The optgroup should (optionally) wrap options */
+export const SelectGroup = ({ label, children }) => {
     return (
-        <optgroup label={value} />
+        <optgroup label={label}>
+            { children }
+        </optgroup>
     );
 };
 

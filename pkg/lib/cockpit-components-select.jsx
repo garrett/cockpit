@@ -92,42 +92,17 @@ export class StatelessSelect extends React.Component {
     }
 
     render() {
-        const getItemData = (item) => (item && item.props && ('data' in item.props) ? item.props.data : undefined);
-        const getItemValue = (item) => (item && item.props && (item.props.children !== undefined) ? item.props.children : textForUndefined);
-
-        const entries = React.Children.toArray(this.props.children).filter(item => item && item.props && ('data' in item.props));
-
-        let selectedEntries = entries.filter(item => this.props.selected === getItemData(item));
-
-        let selectedEntry;
-        if (selectedEntries.length > 0)
-            selectedEntry = selectedEntries[0];
-        else if (entries.length > 0)
-            selectedEntry = entries[0]; // default to first item if selected item not found
-
-        const currentValue = getItemValue(selectedEntry);
-
-        let classes = "btn-group bootstrap-select dropdown";
+        let classes = "btn-group bootstrap-select dropdown ct-debug";
         if (this.state.open)
             classes += " open";
         if (this.props.extraClass) {
             classes += " " + this.props.extraClass;
         }
 
-        let buttonClasses = "btn btn-default dropdown-toggle";
-        if (this.props.enabled === false)
-            buttonClasses += " disabled";
-
         return (
-            <div className={classes} onClick={this.clickHandler} id={this.props.id}>
-                <button className={buttonClasses} type="button">
-                    <span className="pull-left">{currentValue}</span>
-                    <span className="caret" />
-                </button>
-                <ul className="dropdown-menu">
-                    {this.props.children}
-                </ul>
-            </div>
+            <select className={classes} onClick={this.clickHandler} id={this.props.id}>
+                {this.props.children}
+            </select>
         );
     }
 }
@@ -136,7 +111,6 @@ StatelessSelect.propTypes = {
     selected: PropTypes.any,
     onChange: PropTypes.func,
     id: PropTypes.string,
-    enabled: PropTypes.bool,
     extraClass: PropTypes.string,
 };
 
@@ -162,13 +136,13 @@ export class Select extends React.Component {
 
     render() {
         return (
-            <StatelessSelect onChange={this.onChange}
+            <select onChange={this.onChange}
                              selected={this.state.currentData}
                              id={this.props.id}
                              enabled={this.props.enabled}
                              extraClass={this.props.extraClass}>
                 {this.props.children}
-            </StatelessSelect>
+            </select>
         );
     }
 }
@@ -192,10 +166,10 @@ export class SelectEntry extends React.Component {
     render() {
         const value = (this.props.children !== undefined) ? this.props.children : textForUndefined;
         return (
-            <li key={value} className={this.props.disabled ? "disabled" : ""}
+            <option key={value} disabled={this.props.disabled}
                 data-value={value} data-data={this.props.data}>
-                <a>{value}</a>
-            </li>
+                {value}
+            </option>
         );
     }
 }
@@ -203,15 +177,19 @@ export class SelectEntry extends React.Component {
 /* Divider
  * Example: <SelectDivider/>
  */
-export const SelectDivider = () => <li role="separator" className="divider" />;
+/* HACK: dividers do not exist in HTML selects — people either use blank
+ * space (which we probably want to do) or a disabled text, like these dashes
+ * (which looks tacky) */
+export const SelectDivider = () => <option role="separator" className="divider" disabled>---</option>;
 
 /* Header
  * Example: <SelectHeader>Some header</SelectHeader>
  */
 export const SelectHeader = ({ children }) => {
     const value = (children !== undefined) ? children : textForUndefined;
+    /* HACK: The optgroup should (optionally) wrap options */
     return (
-        <li className="dropdown-header">{value}</li>
+        <optgroup label={value} />
     );
 };
 

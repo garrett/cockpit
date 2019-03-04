@@ -267,7 +267,7 @@ $(function() {
         mustache.parse(units_template);
 
         function render_now() {
-            var pattern = $('#services-filter li.active').attr('data-pattern');
+            var pattern = $('#services-filter li.active a').attr('data-pattern');
             var current_text_filter = $('#services-text-filter').val()
                     .toLowerCase();
             var current_type_filter = parseInt($('#current-service-type').attr("data-num"));
@@ -491,14 +491,16 @@ $(function() {
         });
 
         function service_type_change(obj, keep_focus) {
-            $('#services-filter li')
-                    .removeClass('active')
+            $('#services-filter a')
                     .attr('aria-selected', false)
                     .removeAttr('aria-current');
+            $('#services-filter li')
+                    .removeClass('active');
             $(obj)
-                    .addClass('active')
                     .attr('aria-selected', true)
                     .attr('aria-current', true);
+            $(obj).parent()
+                    .addClass('active');
             if (keep_focus)
                 $(obj).focus();
             else
@@ -506,21 +508,21 @@ $(function() {
             render();
         }
 
-        $('#services-filter').on('focus', function() { $('#services-filter li .active').focus() });
-        $('#services-filter li').on('click', function() { service_type_change(this) });
-        $('#services-filter li').on('keydown', function(e) {
+        $('#services-filter').on('focus', function() { $('#services-filter li.active a').focus() });
+        $('#services-filter a').on('click', function() { service_type_change(this, false) });
+        $('#services-filter a').on('keydown', function(e) {
+            var li = $(this).parent();
             if (e.keyCode === 37) { // left
-                var prev = $(this).prev();
-                console.log(prev);
-                if (prev.length)
-                    service_type_change(prev[0], true);
+                var prev = $(li).prev()
+                        .children()[0];
+                if (prev)
+                    service_type_change(prev, true);
             } else if (e.keyCode === 39) { // right
-                var next = $(this).next();
-                console.log(next);
-                if (next.length)
-                    service_type_change(next[0], true);
-            } else if (e.keyCode === 32 || e.keyCode === 13) // enter or space
-                service_type_change(this);
+                var next = $(li).next()
+                        .children()[0];
+                if (next)
+                    service_type_change(next, true);
+            }
         });
 
         $('#services-dropdown .dropdown-menu li').on('click', function() {
@@ -927,7 +929,7 @@ $(function() {
             cockpit.location = '';
         }
         $("body").show();
-        $("#services-filter li:first-child").focus();
+        $("#services-filter li:first-child a").focus();
     }
 
     $(cockpit).on("locationchanged", update);

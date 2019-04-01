@@ -25,7 +25,10 @@ var firewall = {
     enabled: false,
     readonly: true,
     services: {},
-    enabledServices: new Set()
+    enabledServices: new Set(),
+    zones: {},
+    activeZones: new Set(),
+    defaultZone: '',
 };
 
 cockpit.event_target(firewall);
@@ -47,7 +50,9 @@ function initFirewalldDbus() {
             return;
         }
 
-        getServices();
+        getZones()
+                .then(() => getServices())
+                .catch(error => console.warn(error));
     });
 
     firewalld_dbus.subscribe({
@@ -55,13 +60,12 @@ function initFirewalldDbus() {
         path: '/org/fedoraproject/FirewallD1',
         member: 'ServiceAdded'
     }, (path, iface, signal, args) => {
+        const zone = args[0];
         const service = args[1];
-
-        fetchServiceInfos([service])
-                .then(info => {
-                    firewall.enabledServices.add(info[0].id);
-                    firewall.dispatchEvent('changed');
-                })
+        fetchZoneInfos([zone])
+                .then(() => fetchServiceInfos([service]))
+                .then(info => firewall.enabledServices.add(info[0].id))
+                .then(() => firewall.dispatchEvent('changed'))
                 .catch(error => console.warn(error));
     });
 
@@ -73,7 +77,7 @@ function initFirewalldDbus() {
         const service = args[1];
 
         firewall.enabledServices.delete(service);
-        firewall.dispatchEvent('changed');
+        getServices();
     });
 
     firewalld_dbus.subscribe({
@@ -105,15 +109,34 @@ firewalld_service.addEventListener('changed', () => {
     firewall.dispatchEvent('changed');
 });
 
-function getServices() {
-    firewall.enabledServices = new Set();
-    firewalld_dbus.call('/org/fedoraproject/FirewallD1',
-                        'org.fedoraproject.FirewallD1.zone',
-                        'getServices', [''])
-            .then(reply => fetchServiceInfos(reply[0]))
-            .then(services => services.map(s => firewall.enabledServices.add(s.id)))
+function getZones() {
+    return firewalld_dbus.call('/org/fedoraproject/FirewallD1',
+                               'org.fedoraproject.FirewallD1.zone',
+                               'getActiveZones', [])
+            .then(reply => fetchZoneInfos(reply[0]))
+            .then(zones => zones.map(z => firewall.activeZones.add(z.id)))
+            .then(() => firewalld_dbus.call('/org/fedoraproject/FirewallD1',
+                                            'org.fedoraproject.FirewallD1',
+                                            'getDefaultZone', []))
+            .then(reply => {
+                firewall.defaultZone = reply[0];
+                return Promise.resolve();
+            })
             .then(() => firewall.dispatchEvent('changed'))
             .catch(error => console.warn(error));
+}
+
+function getServices() {
+    firewall.enabledServices = new Set();
+    firewall.activeZones.forEach(z => {
+        firewalld_dbus.call('/org/fedoraproject/FirewallD1',
+                            'org.fedoraproject.FirewallD1.zone',
+                            'getServices', [z])
+                .then(reply => fetchServiceInfos(reply[0]))
+                .then(services => services.map(s => firewall.enabledServices.add(s.id)))
+                .then(() => firewall.dispatchEvent('changed'))
+                .catch(error => console.warn(error));
+    });
 }
 
 function fetchServiceInfos(services) {
@@ -153,6 +176,31 @@ function fetchServiceInfos(services) {
     });
 }
 
+function fetchZoneInfos(zones) {
+    let zoneNames = Array.isArray(zones) ? zones : Object.keys(zones);
+    var promises = Promise.all(zoneNames.map(zone => {
+        return firewalld_dbus.call('/org/fedoraproject/FirewallD1',
+                                   'org.fedoraproject.FirewallD1',
+                                   'getZoneSettings', [zone])
+                .then(reply => {
+                    const [, name, description, , target, services, ports, , , , interfaces, source] = reply[0];
+                    let info = {
+                        id: zone,
+                        name: name,
+                        description: description,
+                        target: target,
+                        services: services,
+                        ports: ports.map(p => ({ port: p[0], protocol: p[1] })),
+                        interfaces: interfaces,
+                        source: source,
+                    };
+                    firewall.zones[zone] = info;
+                    return info;
+                });
+    }));
+    return promises;
+}
+
 initFirewalldDbus();
 
 cockpit.spawn(['sh', '-c', 'pkcheck --action-id org.fedoraproject.FirewallD1.all --process $$ --allow-user-interaction 2>&1'])
@@ -188,7 +236,7 @@ function getDefaultZonePath() {
                                                'org.fedoraproject.FirewallD1.config',
                                                'getZoneByName', [reply[0]]))
             .then(reply => reply[0])
-            .catch(error => console.log(error));
+            .catch(error => console.warn(error));
 }
 
 /*
@@ -236,7 +284,8 @@ firewall.addService = (service) => {
                                'addService', ['', service, 0])
             .then(reply => getDefaultZonePath())
             .then(path => firewalld_dbus.call(path, 'org.fedoraproject.FirewallD1.config.zone',
-                                              'addService', [service]));
+                                              'addService', [service]))
+            .catch(error => console.warn(error));
 };
 
 /*

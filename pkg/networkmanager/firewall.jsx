@@ -81,6 +81,10 @@ function ServiceRow(props) {
         <div>
             { udp.map(p => p.port).join(', ') }
         </div>,
+        <div>
+            { props.zones.filter(z => z.services.indexOf(props.service.id) !== -1).map(z => z.name || z.id)
+                    .join(', ') }
+        </div>,
         deleteButton
     ];
 
@@ -92,6 +96,23 @@ function ServiceRow(props) {
                        rowId={props.service.id}
                        columns={columns}
                        tabRenderers={tabs} />;
+}
+
+function ZoneRow(props) {
+    let columns = [
+        { name: props.zone.name, header: true },
+        <div>
+            { props.zone.id === firewall.defaultZone ? <span className="fa-check">default</span> : "" }
+        </div>,
+        <div>
+            { props.zone.interfaces.join(', ') }
+        </div>,
+        <div>
+            { props.zone.source.length > 0 ? props.zone.source.join(', ') : '*' }
+        </div>,
+    ];
+    return <ListingRow key={props.zone.id}
+                       columns={columns} />;
 }
 
 class SearchInput extends React.Component {
@@ -577,6 +598,12 @@ export class Firewall extends React.Component {
         });
         services.sort((a, b) => a.name.localeCompare(b.name));
 
+        var zones = [...this.state.firewall.activeZones].map(id => {
+            const zone = this.state.firewall.zones[id];
+            zone.name = zone.name || id; // TODO needed?
+            return zone;
+        });
+
         var enabled = this.state.pendingTarget !== null ? this.state.pendingTarget : this.state.firewall.enabled;
 
         return (
@@ -591,17 +618,31 @@ export class Firewall extends React.Component {
                                  enabled={this.state.pendingTarget === null}
                                  onChange={this.onSwitchChanged} />
                 </h1>
-                { enabled && <Listing title={_("Allowed Services")}
-                         columnTitles={[ _("Service"), _("TCP"), _("UDP"), "" ]}
-                         emptyCaption={_("No open ports")}
-                         actions={addServiceAction}>
-                    {
-                        services.map(s => <ServiceRow key={s.id}
+                <div id="zones-listing">
+                    { enabled && <Listing title={_("Active zones")}
+                             columnTitles={[ _("Zone"), "", _("Interfaces"), _("IP Range") ]}
+                             emptyCaption={_("No active zones")}>
+                        {
+                            zones.map(z => <ZoneRow key={z.id}
+                                                    zone={z}
+                                                    readonly={this.state.firewall.readonly} />)
+                        }
+                    </Listing> }
+                </div>
+                <div id="services-listing">
+                    { enabled && <Listing title={_("Allowed Services")}
+                             columnTitles={[ _("Service"), _("TCP"), _("UDP"), _("Zones"), "" ]}
+                             emptyCaption={_("No open ports")}
+                             actions={addServiceAction}>
+                        {
+                            services.map(s => <ServiceRow key={s.id}
                                                       service={s}
+                                                      zones={zones}
                                                       readonly={this.state.firewall.readonly}
                                                       onRemoveService={this.onRemoveService} />)
-                    }
-                </Listing> }
+                        }
+                    </Listing> }
+                </div>
                 { this.state.showModal && <AddServicesModal close={this.close} /> }
             </div>
         );

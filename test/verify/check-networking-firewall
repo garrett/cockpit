@@ -106,7 +106,7 @@ class TestFirewall(MachineCase):
         # all services should be shown after the one we added above is
         # visible, so do a basic sanity check now
         active_rules = m.execute("firewall-cmd --list-services").split()
-        b.call_js_func("ph_count_check", "tr.listing-ct-item", len(active_rules))
+        b.call_js_func("ph_count_check", "#services-listing tr.listing-ct-item", len(active_rules))
 
         b.click("tr[data-row-id='pop3'] .listing-ct-toggle")
         b.wait_in_text("tbody.open tr.listing-ct-panel", "Post Office Protocol")

@@ -146,7 +146,9 @@ function fetchServiceInfos(services) {
      * Work around `cockpit.all()` returning results in individual arguments -
      * that's just confusing and doesn't work with ES6 style functions.
      */
-    return promises.then(function () {
+    return promises.then(function (services) {
+        if (Array.isArray(services) && services.length === 0)
+            return [];
         return Array.prototype.slice.call(arguments);
     });
 }

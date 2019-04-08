@@ -452,6 +452,7 @@ export const TextInput = (tag, title, options) => {
 
         render: (val, change) =>
             <input data-field={tag} data-field-type="text-input"
+                   id={"storage-input-" + tag}
                    className="form-control" type="text" value={val}
                    disabled={options.disabled}
                    onChange={event => change(event.target.value)} />
@@ -467,6 +468,7 @@ export const PassInput = (tag, title, options) => {
 
         render: (val, change) =>
             <input data-field={tag} data-field-type="text-input"
+                   id={"storage-input-" + tag}
                    className="form-control" type="password" value={val}
                    onChange={event => change(event.target.value)} />
     };
@@ -525,7 +527,7 @@ export const ComboBox = (tag, title, options) => {
         initial_value: options.value || "",
 
         render: (val, change) =>
-            <div data-field={tag} data-field-type="combobox">
+            <div data-field={tag} id={"storage-combo-" + tag} data-field-type="combobox">
                 <ComboboxElement value={val} choices={options.choices}
                                  disabled={options.disabled} onChange={change} />
             </div>
@@ -735,9 +737,9 @@ export const CheckBoxes = (tag, title, options) => {
             });
 
             return (
-                <div role="group" className="ct-form-layout-vertical">
+                <React.Fragment>
                     { fieldset }
-                </div>
+                </React.Fragment>
             );
         }
     };

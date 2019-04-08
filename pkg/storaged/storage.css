@@ -437,8 +437,10 @@ td.vgroup-action {
 }
 
 .dialog-checkbox-text :nth-child(2) {
+/*
     flex: 1;
     margin-left: 0.5em;
+    */
 }
 
 .form-control[hidden] {
@@ -713,10 +715,14 @@ td.storage-action {
 }
 
 .select-space-row :nth-child(1) {
+/*
     margin-top: 0px;
+    */
 }
 
 .select-space-row :nth-child(2) {
+/*
     flex-grow: 1;
     margin-left: 10px;
+    */
 }

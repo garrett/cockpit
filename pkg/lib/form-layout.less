@@ -176,7 +176,8 @@
     // Only support 2 splits for now (can change to 3 later, if needed)
     grid-template-columns: repeat(2, auto);
 
-    &.ct-form-layout-vertical {
+    &.ct-form-layout-vertical,
+    &.ct-form-layout-horizontal {
       > :not(.ct-form-layout-split) {
         // Stretch across the grid (unless it's a split)
         grid-column: ~"1 / -1";
@@ -213,7 +214,7 @@
   .radio > label,
   .checkbox-inline,
   .radio-inline {
-    display: inline-flex;
+    display: flex;
     padding-left: 0;
     padding-right: @padding-small-horizontal;
     align-items: center;
@@ -225,11 +226,29 @@
       // Baseline alignment needs an offset to compensate for size difference
       @baseline-offset: (@widget-height - @checkradio-height) / 2;
       align-self: baseline;
+      align-self: center;
       height: @checkradio-height;
       margin: 0 0.5rem 0 0;
       position: relative;
+      /*
       top: @baseline-offset;
+      top: calc(1em - @widget-height / 2);
+      top: calc((@widget-height - @checkradio-height) / 4);
+      */
     }
+  }
+
+  .checkbox, .label {
+    &:first-child {
+        margin-top: 0;
+    }
+    &:last-child {
+        margin-bottom: 0;
+    }
+  }
+  .checkbox-inline,
+  .radio-inline {
+    display: inline-flex;
   }
 
   // Remove vertical spacing for fieldsets,
@@ -258,13 +277,18 @@
     padding: 0;
 
     label {
-      display: flex;
-      padding: 0.5rem 1rem;
       align-items: first baseline;
+      cursor: pointer;
+      display: flex;
+      margin: 0;
+      padding: 0.5rem 1rem;
 
       > input[type=checkbox],
       > input[type=radio] {
-        top: 3px;
+        //margin: 0 0.5rem 0 0;
+        position: relative;
+        position: static;
+        //top: 3px;
       }
     }
   }

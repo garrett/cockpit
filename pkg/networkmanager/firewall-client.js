@@ -19,6 +19,7 @@
 
 import cockpit from 'cockpit';
 import * as service from 'service';
+import { debounce } from 'throttle-debounce';
 
 var firewall = {
     installed: true,
@@ -50,6 +51,15 @@ function initFirewalldDbus() {
             return;
         }
 
+        /* As certain dbus signal callbacks might change the firewall frequently
+         * in a short period of time, prevent rapid succession of renders by
+         * debouncing the ('changed') event */
+        firewall.debouncedEvent = debounce(300, event => firewall.dispatchEvent(event));
+
+        /* As a service might be removed from multiple zones at the same time,
+         * prevent rapid succession of GetServices call */
+        firewall.debouncedGetServices = debounce(300, getServices);
+
         getZones()
                 .then(() => getServices())
                 .catch(error => console.warn(error));
@@ -65,7 +75,7 @@ function initFirewalldDbus() {
         fetchZoneInfos([zone])
                 .then(() => fetchServiceInfos([service]))
                 .then(info => firewall.enabledServices.add(info[0].id))
-                .then(() => firewall.dispatchEvent('changed'))
+                .then(() => firewall.debouncedEvent('changed'))
                 .catch(error => console.warn(error));
     });
 
@@ -74,10 +84,12 @@ function initFirewalldDbus() {
         path: '/org/fedoraproject/FirewallD1',
         member: 'ServiceRemoved'
     }, (path, iface, signal, args) => {
+        const zone = args[0];
         const service = args[1];
 
+        firewall.zones[zone].services = firewall.zones[zone].services.filter(s => s !== service);
         firewall.enabledServices.delete(service);
-        getServices();
+        firewall.debouncedGetServices();
     });
 
     firewalld_dbus.subscribe({
@@ -134,7 +146,7 @@ function getServices() {
                             'getServices', [z])
                 .then(reply => fetchServiceInfos(reply[0]))
                 .then(services => services.map(s => firewall.enabledServices.add(s.id)))
-                .then(() => firewall.dispatchEvent('changed'))
+                .then(() => firewall.debouncedEvent('changed'))
                 .catch(error => console.warn(error));
     });
 }
@@ -240,17 +252,20 @@ function getDefaultZonePath() {
 }
 
 /*
- * Remove a service from the default zone (i.e., close its ports).
+ * Remove a service from the specified zone (i.e., close its ports).
  *
  * Returns a promise that resolves when the service is removed.
  */
-firewall.removeService = (service) => {
+firewall.removeService = (zone, service) => {
     return firewalld_dbus.call('/org/fedoraproject/FirewallD1',
                                'org.fedoraproject.FirewallD1.zone',
-                               'removeService', ['', service])
-            .then(reply => getDefaultZonePath())
-            .then(path => firewalld_dbus.call(path, 'org.fedoraproject.FirewallD1.config.zone',
-                                              'removeService', [service]));
+                               'removeService', [zone, service])
+            .then(reply => firewalld_dbus.call('/org/fedoraproject/FirewallD1/config',
+                                               'org.fedoraproject.FirewallD1.config',
+                                               'getZoneByName', [zone]))
+            .then(path => firewalld_dbus.call(path[0], 'org.fedoraproject.FirewallD1.config.zone',
+                                              'removeService', [service]))
+            .catch(error => console.warn(error));
 };
 
 /*
@@ -266,36 +281,50 @@ firewall.createService = (service, name, ports) => {
                                ]);
 };
 
-firewall.enableService = (service) => {
-    return getDefaultZonePath()
-            .then(path => firewalld_dbus.call(path, 'org.fedoraproject.FirewallD1.config.zone',
-                                              'addService', [service]));
+firewall.enableService = (zones, service) => {
+    // We can't use Promise.all() here until cockpit is able to dispatch es2015 promises
+    // https://github.com/cockpit-project/cockpit/issues/10956
+    // eslint-disable-next-line cockpit/no-cockpit-all
+    return cockpit.all(
+        zones.map(z => firewalld_dbus.call('/org/fedoraproject/FirewallD1/config',
+                                           'org.fedoraproject.FirewallD1.config',
+                                           'getZoneByName', [z])
+                .then(path => firewalld_dbus.call(path[0], 'org.fedoraproject.FirewallD1.config.zone',
+                                                  'addService', [service]))
+                .then(() => getZones())
+                .catch(error => console.warn(error))));
 };
 
 /*
- * Add a predefined firewalld service to the default zone (i.e., open its
+ * Add a predefined firewalld service to the specified zone (i.e., open its
  * ports).
  *
  * Returns a promise that resolves when the service is added.
  */
-firewall.addService = (service) => {
+firewall.addService = (zone, service) => {
     return firewalld_dbus.call('/org/fedoraproject/FirewallD1',
                                'org.fedoraproject.FirewallD1.zone',
-                               'addService', ['', service, 0])
-            .then(reply => getDefaultZonePath())
-            .then(path => firewalld_dbus.call(path, 'org.fedoraproject.FirewallD1.config.zone',
+                               'addService', [zone, service, 0])
+            .then(reply => firewalld_dbus.call('/org/fedoraproject/FirewallD1/config',
+                                               'org.fedoraproject.FirewallD1.config',
+                                               'getZoneByName', [zone]))
+            .then(path => firewalld_dbus.call(path[0], 'org.fedoraproject.FirewallD1.config.zone',
                                               'addService', [service]))
             .catch(error => console.warn(error));
 };
 
 /*
  * Like addService(), but adds multiple predefined firewalld services at once
- * to the default zone.
+ * to the specified zones.
  *
  * Returns a promise that resolves when all services are added.
  */
-firewall.addServices = (services) => {
-    return Promise.all(services.map(s => firewall.addService(s)));
+firewall.addServices = (zones, services) => {
+    return Promise.all(zones.map(z => services.map(s => firewall.addService(z, s))));
+};
+
+firewall.removeServiceFromZones = (zones, service) => {
+    return Promise.all(zones.map(z => firewall.removeService(z, service)));
 };
 
 export default firewall;

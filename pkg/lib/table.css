@@ -11,16 +11,23 @@
 .panel-heading {
     background: #F5F5F5;
     display: flex;
-    justify-content: space-between;
     align-items: end;
     flex-wrap: wrap;
     padding: 5px 5px 5px 10px;
 }
 
+.panel-heading > a,
 .panel-heading > div:not(:empty),
 .panel-heading > span:not(:empty) {
     /* 26px widget size - 2px for the border */
     min-height: 24px;
+}
+
+.panel-heading > :last-child:not(:first-child),
+.panel-heading > .pull-right,
+.panel-heading > .panel-heading-actions {
+    flex: auto;
+    text-align: right;
 }
 
 .panel-heading > .pull-right {
@@ -29,11 +36,10 @@
     /* Solution: Fix document order when pull-right is used. */
     order: 100;
 }
-
-.panel-heading-actions {
-    /*
-    margin: -5px -5px -5px 0;
-    */
+.panel-heading > .pull-right:first-child ~ :last-child {
+    /* Undo :last-child above for cases where pull-right is used before */
+    flex: none;
+    text-align: left;
 }
 
 /*

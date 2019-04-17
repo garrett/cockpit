@@ -10,12 +10,30 @@
 
 .panel-heading {
     background: #F5F5F5;
-    height: 44px;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    flex-wrap: wrap;
+    padding: 5px 5px 5px 10px;
 }
 
-/* Vertically center dropdown buttons in panel headers */
-.panel-heading .btn {
-    margin-top: -3px;
+.panel-heading > div:not(:empty),
+.panel-heading > span:not(:empty) {
+    /* 26px widget size - 2px for the border */
+    min-height: 24px;
+}
+
+.panel-heading > .pull-right {
+    /* HACK: Pull right shouldn't be used to change document order. */
+    /* This CSS _also_ changes document order to replicate the float. */
+    /* Solution: Fix document order when pull-right is used. */
+    order: 100;
+}
+
+.panel-heading-actions {
+    /*
+    margin: -5px -5px -5px 0;
+    */
 }
 
 /*

@@ -8,12 +8,16 @@
     border-bottom: none;
 }
 
+/* Fix panel heading alignment & mobile layout */
+
 .panel-heading {
     background: #F5F5F5;
     display: flex;
     align-items: end;
     flex-wrap: wrap;
     padding: 5px 5px 5px 10px;
+    position: relative;
+    z-index: 100;
 }
 
 .panel-heading > a,
@@ -30,6 +34,18 @@
     text-align: right;
 }
 
+@supports (gap: 0) {
+    /* Use flex with gap instead to have vertical spacing between items too */
+    .panel-heading > :last-child:not(:first-child),
+    .panel-heading > .pull-right,
+    .panel-heading > .panel-heading-actions {
+        display: flex;
+        justify-content: end;
+        gap: 5px;
+        flex-flow: wrap;
+    }
+}
+
 .panel-heading > .pull-right {
     /* HACK: Pull right shouldn't be used to change document order. */
     /* This CSS _also_ changes document order to replicate the float. */
@@ -40,6 +56,48 @@
     /* Undo :last-child above for cases where pull-right is used before */
     flex: none;
     text-align: left;
+}
+
+@media screen and (max-width: 640px) {
+    .panel {
+        overflow-x: auto;
+        /* Background fade */
+        --hi-color: #d1d1d1;
+        --hi-color2: #eee;
+        --bg-color: white;
+        --hi-width: 20px;
+        --hi-width3: calc(var(--hi-width) * 3);
+        margin-top: -10px; /* Compensate for container-fluid padding */
+        max-width: 100vw;
+        overflow: auto;
+        position: relative;
+        background-image:
+          linear-gradient(to left, var(--bg-color) var(--hi-width), transparent var(--hi-width3)),
+          linear-gradient(to left, var(--hi-color) 1px, transparent 2px, var(--hi-color2) 4px, var(--bg-color) var(--hi-width)),
+          linear-gradient(to right, var(--bg-color) var(--hi-width), transparent var(--hi-width3)),
+          linear-gradient(to right, var(--hi-color) 1px, transparent 2px, var(--hi-color2) 4px, var(--bg-color) var(--hi-width));
+        background-attachment: local, scroll, local, scroll;
+        background-position: right, right, left, left;
+        background-repeat: no-repeat;
+        background-size: var(--hi-width3) 100%;
+    }
+
+    .panel > .panel-heading {
+        position: sticky;
+        left: 0;
+        top: 0;
+    }
+
+    .panel .table thead th {
+        white-space: nowrap;
+    }
+
+    .panel .table:not(:hover):not(:focus):not(:active) {
+        background: transparent;
+    }
+    .panel .table thead:not(:hover):not(:focus):not(:active) {
+        background: transparent;
+    }
 }
 
 /*

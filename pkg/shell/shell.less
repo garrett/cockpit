@@ -44,6 +44,12 @@ html.index-page body {
     position: static;
 }
 
+#dashboard-hosts {
+    /* Dashboard list is narrow enough in extreme mobile mode to not overflow */
+    /* This is a work-around to enable tooltips to escape panel bounds. */
+    overflow: visible;
+}
+
 #dashboard-hosts .list-group-item {
     border-left-width: 7px;
     border-left-style: solid;

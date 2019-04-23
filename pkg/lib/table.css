@@ -63,18 +63,19 @@
         /* Background fade */
         --hi-color: #d1d1d1;
         --hi-color2: #eee;
-        --bg-color: white;
+        --bg-color: #fff;
         --hi-width: 20px;
         --hi-width3: calc(var(--hi-width) * 3);
+        --transparent: rgba(255,255,255,0); /* WebKit needs white transparent */
         margin-top: -10px; /* Compensate for container-fluid padding */
         max-width: 100vw;
         overflow: auto;
         position: relative;
         background-image:
-          linear-gradient(to left, var(--bg-color) var(--hi-width), transparent var(--hi-width3)),
-          linear-gradient(to left, var(--hi-color) 1px, transparent 2px, var(--hi-color2) 4px, var(--bg-color) var(--hi-width)),
-          linear-gradient(to right, var(--bg-color) var(--hi-width), transparent var(--hi-width3)),
-          linear-gradient(to right, var(--hi-color) 1px, transparent 2px, var(--hi-color2) 4px, var(--bg-color) var(--hi-width));
+          linear-gradient(to left, var(--bg-color) var(--hi-width), var(--transparent) var(--hi-width3)),
+          linear-gradient(to left, var(--hi-color) 1px, var(--transparent) 2px, var(--hi-color2) 4px, var(--bg-color) var(--hi-width)),
+          linear-gradient(to right, var(--bg-color) var(--hi-width), var(--transparent) var(--hi-width3)),
+          linear-gradient(to right, var(--hi-color) 1px, var(--transparent) 2px, var(--hi-color2) 4px, var(--bg-color) var(--hi-width));
         background-attachment: local, scroll, local, scroll;
         background-position: right, right, left, left;
         background-repeat: no-repeat;

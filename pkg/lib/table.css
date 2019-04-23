@@ -62,7 +62,8 @@
     /* to maximize space, but still keep the boxy panel look */
     /* (container-fluid & page-ct adds 20px, so we remove 1/2 of that) */
     .page-ct > .panel,
-    .container-fluid > .panel {
+    .container-fluid > .panel,
+    .col-md-12 > .panel {
         margin-left: -10px;
         margin-right: -10px;
     }

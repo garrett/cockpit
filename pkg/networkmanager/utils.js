@@ -212,3 +212,24 @@ export function ip6_from_text(text, empty_is_zero) {
 
     return cockpit.base64_encode(bytes);
 }
+
+export function list_interfaces() {
+    let client = cockpit.dbus("org.freedesktop.NetworkManager");
+
+    return client.call('/org/freedesktop/NetworkManager',
+                       'org.freedesktop.NetworkManager',
+                       'GetAllDevices', [])
+            .then(reply => {
+                return Promise.all(reply[0].map(device => {
+                    return client.call(device,
+                                       'org.freedesktop.DBus.Properties',
+                                       'Get', ['org.freedesktop.NetworkManager.Device', 'Interface'])
+                            .then(reply => { return reply[0] });
+                }));
+            })
+            .then(interfaces => {
+                client.close();
+                return Promise.resolve(interfaces.map(i => i.v));
+            })
+            .catch(error => console.warn(error));
+}

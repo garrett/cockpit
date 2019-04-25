@@ -284,5 +284,37 @@ h1 .btn-onoff-ct {
 }
 
 form.horizontal fieldset {
-  flex-direction: row;
+    flex-direction: row;
+}
+
+div.vertical {
+    display: flex;
+    flex-direction: column;
+}
+
+div.vertical fieldset {
+    display: flex;
+    flex-direction: column;
+    border: 0;
+    position: relative;
+    padding: 0;
+    margin: 0;
+}
+
+div.vertical fieldset::before {
+    content: "";
+    border-left: 1px solid red;
+    top: 1em;
+    bottom: 1em;
+    left: 7px;
+    position: absolute;
+    z-index: 1;
+}
+
+div.vertical label {
+    z-index: 2;
+}
+
+small {
+    font-weight: 300;
 }

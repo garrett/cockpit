@@ -99,6 +99,26 @@ function ServiceRow(props) {
 }
 
 function ZoneRow(props) {
+    function onRemoveZone(event) {
+        if (event.button !== 0)
+            return;
+
+        props.onRemoveZone(props.zone.id);
+        event.stopPropagation();
+    }
+
+    let deleteButton;
+    if (props.readonly) {
+        deleteButton = (
+            <OverlayTrigger className="pull-right" placement="top"
+                            overlay={ <Tooltip id="tip-auth">{ _("You are not authorized to modify the firewall.") }</Tooltip> } >
+                <button className="btn btn-danger pficon pficon-delete" disabled />
+            </OverlayTrigger>
+        );
+    } else {
+        deleteButton = <button className="btn btn-danger pficon pficon-delete" onClick={onRemoveZone} />;
+    }
+
     let columns = [
         { name: props.zone.name, header: true },
         <div>
@@ -110,8 +130,10 @@ function ZoneRow(props) {
         <div>
             { props.zone.source.length > 0 ? props.zone.source.join(', ') : '*' }
         </div>,
+        deleteButton,
     ];
     return <ListingRow key={props.zone.id}
+                       rowId={props.zone.id}
                        columns={columns} />;
 }
 
@@ -589,6 +611,113 @@ class RemoveServicesModal extends React.Component {
     }
 }
 
+class ActivateZoneModal extends React.Component {
+    constructor() {
+        super();
+
+        this.state = {
+            ipRange: "",
+            ipRangeValue: "",
+            zone: "",
+            interfaces: [],
+        };
+        this.onInterfaceChange = this.onInterfaceChange.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.save = this.save.bind(this);
+    }
+
+    onInterfaceChange(event) {
+        let int = event.target.value;
+        this.setState(state => {
+            let interfaces = int === "all" ? [] : state.interfaces;
+            if (state.interfaces.indexOf(int) === -1)
+                return { interfaces: interfaces.concat(int) };
+            return { interfaces: interfaces.filter(i => i !== int) };
+        });
+    }
+
+    onChange(key, value) {
+        this.setState({ [key]: value });
+    }
+
+    save() {
+        let interfaces = this.state.interfaces.concat().filter(i => i !== "all");
+        let sources = this.state.ipRange === "ip-range" ? this.state.ipRangeValue.split(",").map(ip => ip.trim()) : [];
+        firewall.activateZone(this.state.zone, interfaces, sources).then(() => this.props.close());
+    }
+
+    render() {
+        let zones = Object.keys(firewall.zones).filter(z => firewall.zones[z].target === "default" && !firewall.activeZones.has(z));
+        return (
+            <Modal id="add-zone-dialog" show onHide={this.props.close}>
+                <Modal.Header>
+                    <Modal.Title>{ _("Add Zone") }</Modal.Title>
+                </Modal.Header>
+                <Modal.Body id="add-zone-dialog-body">
+                    <form className="ct-form-layout">
+                        <label htmlFor="add-zone-services-readonly" className="control-label">
+                            <div className="vertical">{ _("Trust level") }<small>{ _("Sorted from least") }<br />{ _("trust to most trust") }</small></div>
+                        </label>
+                        <div className="vertical">
+                            <fieldset>
+                                { zones.filter(z => firewall.predefinedZones.has(z)).map(z =>
+                                    <label className="radio" key={z}><input type="radio" name="zone" value={z} onChange={e => this.onChange("zone", e.target.value)} />{ firewall.zones[z].id }</label>
+                                )}
+                            </fieldset>
+                        </div>
+                        { zones.filter(z => !firewall.predefinedZones.has(z)).map(z =>
+                            <label className="radio" key={z}><input type="radio" name="zone" value={z} onChange={e => this.onChange("zone", e.target.value)} />{ firewall.zones[z].id }</label>
+                        )}
+
+                        <label htmlFor="add-zone-description-readonly" className="control-label">{ _("Description") }</label>
+                        <div id="add-zone-description-readonly">
+                            { (this.state.zone && firewall.zones[this.state.zone].description) || _("No description available") }
+                        </div>
+
+                        <label htmlFor="add-zone-services-readonly" className="control-label">{ _("Included services") }</label>
+                        <div id="add-zone-services-readonly">
+                            { (this.state.zone && firewall.zones[this.state.zone].services.join(", ")) || _("None") }
+                        </div>
+
+                        <label htmlFor="add-zone-interface" className="control-label">{ _("Interfaces") }</label>
+                        <label className="radio" key="all">
+                            <input type="checkbox" value="all" onChange={this.onInterfaceChange} checked={this.state.interfaces.indexOf("all") !== -1} />
+                            { _("All") }
+                        </label>
+                        <fieldset>
+                            { firewall.availableInterfaces.map(i =>
+                                <label className="radio" key={i}>
+                                    <input type="checkbox" value={i} onChange={this.onInterfaceChange} checked={this.state.interfaces.indexOf(i) !== -1} disabled={this.state.interfaces.indexOf("all") !== -1} />{ i }
+                                </label>) }
+                        </fieldset>
+
+                        <label htmlFor="add-zone-ip" className="control-label">{ _("Allowed Addresses") }</label>
+                        <label className="radio" key="ip-entire-subnet">
+                            <input type="radio" name="add-zone-ip" value="ip-entire-subnet" onChange={e => this.onChange("ipRange", e.target.value)} defaultChecked />
+                            { _("Entire subnet") }
+                        </label>
+                        <div role="group">
+                            <label className="radio" key="ip-range">
+                                <input type="radio" name="add-zone-ip" value="ip-range" onChange={e => this.onChange("ipRange", e.target.value)} />
+                                { _("Range") }
+                            </label>
+                            { this.state.ipRange === "ip-range" && <input id="add-zone-ip" onChange={e => this.onChange("ipRangeValue", e.target.value)} /> }
+                        </div>
+                    </form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button bsStyle="default" className="btn-cancel" onClick={this.props.close}>
+                        { _("Cancel") }
+                    </Button>
+                    <Button bsStyle="primary" onClick={this.save} disabled={this.state.zone === "" || this.state.interfaces.length === 0}>
+                        { _("Add zone") }
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        );
+    }
+}
+
 export class Firewall extends React.Component {
     constructor() {
         super();
@@ -603,7 +732,8 @@ export class Firewall extends React.Component {
         this.onFirewallChanged = this.onFirewallChanged.bind(this);
         this.onSwitchChanged = this.onSwitchChanged.bind(this);
         this.onRemoveService = this.onRemoveService.bind(this);
-        this.open = this.open.bind(this);
+        this.openServicesDialog = this.openServicesDialog.bind(this);
+        this.openAddZoneDialog = this.openAddZoneDialog.bind(this);
         this.close = this.close.bind(this);
     }
 
@@ -629,6 +759,10 @@ export class Firewall extends React.Component {
         this.setState({ showRemoveServicesModal: service });
     }
 
+    onRemoveZone(zone) {
+        firewall.deactiveateZone(zone);
+    }
+
     componentDidMount() {
         firewall.addEventListener("changed", this.onFirewallChanged);
     }
@@ -638,11 +772,19 @@ export class Firewall extends React.Component {
     }
 
     close() {
-        this.setState({ showAddServicesModal: false, showRemoveServicesModal: false });
+        this.setState({
+            showAddServicesModal: false,
+            showRemoveServicesModal: false,
+            showActivateZoneModal: false,
+        });
     }
 
-    open() {
+    openServicesDialog() {
         this.setState({ showAddServicesModal: true });
+    }
+
+    openAddZoneDialog() {
+        this.setState({ showActivateZoneModal: true });
     }
 
     render() {
@@ -661,7 +803,7 @@ export class Firewall extends React.Component {
             );
         }
 
-        var addServiceAction;
+        var addServiceAction, addZoneAction;
         if (this.state.firewall.readonly) {
             addServiceAction = (
                 <OverlayTrigger className="pull-right" placement="top"
@@ -669,10 +811,21 @@ export class Firewall extends React.Component {
                     <Button bsStyle="primary" className="pull-right" disabled> {_("Add Services")} </Button>
                 </OverlayTrigger>
             );
+            addZoneAction = (
+                <OverlayTrigger className="pull-right" placement="top"
+                                overlay={ <Tooltip id="tip-auth">{ _("You are not authorized to modify the firewall.") }</Tooltip> } >
+                    <Button bsStyle="primary" className="pull-right" disabled> {_("Add Zone")} </Button>
+                </OverlayTrigger>
+            );
         } else {
             addServiceAction = (
-                <Button bsStyle="primary" onClick={this.open} className="pull-right">
+                <Button bsStyle="primary" onClick={this.openServicesDialog} className="pull-right" id="add-services-button">
                     {_("Add Services")}
+                </Button>
+            );
+            addZoneAction = (
+                <Button bsStyle="primary" onClick={this.openAddZoneDialog} className="pull-right" id="add-zone-button">
+                    {_("Add Zone")}
                 </Button>
             );
         }
@@ -707,11 +860,13 @@ export class Firewall extends React.Component {
                 <div id="zones-listing">
                     { enabled && <Listing title={_("Active zones")}
                              columnTitles={[ _("Zone"), "", _("Interfaces"), _("IP Range") ]}
-                             emptyCaption={_("No active zones")}>
+                             emptyCaption={_("No active zones")}
+                             actions={addZoneAction}>
                         {
                             zones.map(z => <ZoneRow key={z.id}
                                                     zone={z}
-                                                    readonly={this.state.firewall.readonly} />)
+                                                    readonly={this.state.firewall.readonly}
+                                                    onRemoveZone={this.onRemoveZone} />)
                         }
                     </Listing> }
                 </div>
@@ -731,6 +886,7 @@ export class Firewall extends React.Component {
                 </div>
                 { this.state.showAddServicesModal && <AddServicesModal close={this.close} /> }
                 { this.state.showRemoveServicesModal && <RemoveServicesModal service={this.state.showRemoveServicesModal} close={this.close} /> }
+                { this.state.showActivateZoneModal && <ActivateZoneModal close={this.close} /> }
             </div>
         );
     }

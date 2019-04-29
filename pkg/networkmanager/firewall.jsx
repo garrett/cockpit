@@ -658,16 +658,18 @@ class ActivateZoneModal extends React.Component {
                         <label htmlFor="add-zone-services-readonly" className="control-label">
                             <div className="vertical">{ _("Trust level") }<small>{ _("Sorted from least") }<br />{ _("trust to most trust") }</small></div>
                         </label>
-                        <div className="vertical">
-                            <fieldset>
+                        <div role="group" className="add-zone-zones">
+                            <fieldset className="add-zone-zones-firewalld">
                                 { zones.filter(z => firewall.predefinedZones.has(z)).map(z =>
                                     <label className="radio" key={z}><input type="radio" name="zone" value={z} onChange={e => this.onChange("zone", e.target.value)} />{ firewall.zones[z].id }</label>
                                 )}
                             </fieldset>
+                            <fieldset className="add-zone-zones-custom">
+                                { zones.filter(z => !firewall.predefinedZones.has(z)).map(z =>
+                                    <label className="radio" key={z}><input type="radio" name="zone" value={z} onChange={e => this.onChange("zone", e.target.value)} />{ firewall.zones[z].id }</label>
+                                )}
+                            </fieldset>
                         </div>
-                        { zones.filter(z => !firewall.predefinedZones.has(z)).map(z =>
-                            <label className="radio" key={z}><input type="radio" name="zone" value={z} onChange={e => this.onChange("zone", e.target.value)} />{ firewall.zones[z].id }</label>
-                        )}
 
                         <label htmlFor="add-zone-description-readonly" className="control-label">{ _("Description") }</label>
                         <div id="add-zone-description-readonly">

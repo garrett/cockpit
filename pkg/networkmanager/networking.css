@@ -283,6 +283,27 @@ h1 .btn-onoff-ct {
     }
 }
 
+.add-zone-zones {
+    display: baseline;
+}
+
+.add-zone-zones > fieldset {
+}
+
+.add-zone-zones-firewalld {
+    background: #eee;
+}
+
+.add-zone-zones-firewalld > label.radio {
+    margin: 0;
+    flex-flow: row;
+    padding: 0;
+}
+
+.add-zone-zones-custom {
+    background: #fee;
+}
+
 form.horizontal fieldset {
     flex-direction: row;
 }
@@ -292,7 +313,7 @@ div.vertical {
     flex-direction: column;
 }
 
-div.vertical fieldset {
+fieldset.vertical {
     display: flex;
     flex-direction: column;
     border: 0;
@@ -301,9 +322,9 @@ div.vertical fieldset {
     margin: 0;
 }
 
-div.vertical fieldset::before {
+fieldset.vertical::before {
     content: "";
-    border-left: 1px solid red;
+    border-left: 1px solid #d1d1d1; /* pf-black-300 */
     top: 1em;
     bottom: 1em;
     left: 7px;

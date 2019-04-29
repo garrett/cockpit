@@ -243,8 +243,8 @@ tr.listing-ct-item.listing-ct-selected .badge {
 }
 
 .listing-ct-head .listing-ct-actions {
-    margin-top: -7px;
     order: -1;
+    padding: 0.5rem;
 }
 
 /* The last column of a listing is always right aligned */
@@ -302,9 +302,8 @@ tbody.active .listing-ct-head {
 
 .listing-ct-head .nav li a {
     font-size: 13px;
-    /* Counteract listing-ct-head padding */
-    margin-top: -@listing-ct-padding;
     margin: 0;
+    height: 100%;
 }
 
 .listing-ct-head .nav-tabs {
@@ -312,8 +311,8 @@ tbody.active .listing-ct-head {
 }
 
 .listing-ct-head .nav-tabs-pf {
-    /* Counteract listing-ct-head padding */
-    margin: -@listing-ct-padding 0 0 -@listing-ct-padding;
+    display: flex;
+    flex-flow: row wrap;
     flex: auto;
 }
 
@@ -553,6 +552,8 @@ tbody + thead.listing-ct-empty {
 }
 
 div.listing-ct-head {
+    padding: 0;
+    align-items: center;
     overflow: visible;
 }
 

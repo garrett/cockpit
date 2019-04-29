@@ -259,13 +259,13 @@ export class ListingRow extends React.Component {
                     <tr className="listing-ct-panel">
                         <td colSpan={ headerEntries.length + (expandToggle ? 1 : 0) + (this.props.addCheckbox ? 1 : 0) }>
                             <div className="listing-ct-head">
+                                <ul className="nav nav-tabs nav-tabs-pf">
+                                    {links}
+                                </ul>
                                 <div className="listing-ct-actions">
                                     {listingDetail}
                                     {this.props.listingActions}
                                 </div>
-                                <ul className="nav nav-tabs nav-tabs-pf">
-                                    {links}
-                                </ul>
                             </div>
                             {tabs}
                         </td>

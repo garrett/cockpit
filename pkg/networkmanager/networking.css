@@ -311,10 +311,25 @@ div.vertical fieldset::before {
     z-index: 1;
 }
 
-div.vertical label {
+fieldset.vertical label {
     z-index: 2;
 }
 
 small {
     font-weight: 300;
+}
+
+.add-zone-interfaces {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
+    grid-gap: 0 0.5rem;
+    padding-bottom: 0.5rem;
+    /* 70px seems to be minimum UI padding width */
+    /* This is needed for iPhone SE sizes, but does not affect other sizes */
+    /* Needs !important to override specificity of "100%" */
+    max-width: calc(100vw - 70px) !important;
+}
+
+.add-zone-interfaces > label.radio {
+    margin: 0;
 }

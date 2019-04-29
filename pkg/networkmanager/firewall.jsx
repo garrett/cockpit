@@ -684,7 +684,7 @@ class ActivateZoneModal extends React.Component {
                             <input type="checkbox" value="all" onChange={this.onInterfaceChange} checked={this.state.interfaces.indexOf("all") !== -1} />
                             { _("All") }
                         </label>
-                        <fieldset>
+                        <fieldset className="add-zone-interfaces">
                             { firewall.availableInterfaces.map(i =>
                                 <label className="radio" key={i}>
                                     <input type="checkbox" value={i} onChange={this.onInterfaceChange} checked={this.state.interfaces.indexOf(i) !== -1} disabled={this.state.interfaces.indexOf("all") !== -1} />{ i }

@@ -283,25 +283,41 @@ h1 .btn-onoff-ct {
     }
 }
 
-.add-zone-zones {
-    display: baseline;
+#add-zone-dialog .add-zone-zones {
+    display: flex;
+    flex-flow: row wrap;
 }
 
-.add-zone-zones > fieldset {
-}
-
-.add-zone-zones-firewalld {
-    background: #eee;
-}
-
-.add-zone-zones-firewalld > label.radio {
+#add-zone-dialog .add-zone-zones label.radio {
     margin: 0;
-    flex-flow: row;
-    padding: 0;
+    flex-flow: column;
+    padding: 0 0.5rem;
 }
 
-.add-zone-zones-custom {
-    background: #fee;
+/* Move firewalld zones higher in z-index (so lines can go behind) */
+.add-zone-zones-firewalld input {
+    position: relative;
+    z-index: 2;
+}
+
+/* Add lines behind the radio buttons */
+.add-zone-zones-firewalld > label::after {
+    border-bottom: 1px solid #d1d1d1; /* pf-black-300 */
+    content: "";
+    position: absolute;
+    top: 1em;
+    right: 0;
+    left: 0;
+}
+
+/* Start line at the midpoint for the first radio */
+.add-zone-zones-firewalld > label:first-of-type::after {
+    left: 50%;
+}
+
+/* End line at the midpoint for the last radio */
+.add-zone-zones-firewalld > label:last-of-type::after {
+    right: 50%;
 }
 
 form.horizontal fieldset {

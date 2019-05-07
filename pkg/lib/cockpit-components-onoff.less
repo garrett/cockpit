@@ -1,0 +1,100 @@
+label.onoff-ct {
+  --switch-width: 40px;
+  --switch-height: 24px;
+  --switch-background: #d1d1d1;
+  --switch-text: inherit;
+  --switch-dot-size: 14px;
+  --switch-dot: #fff;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  > .switch-on,
+  > .switch-off,
+  > input ~ .switch-toggle,
+  > input ~ .switch-toggle::after {
+    transition: all 300ms ease-in-out;
+  }
+
+  > .switch-on,
+  > .switch-off {
+    color: var(--switch-text);
+  }
+
+  > input {
+    visibility: hidden;
+    position: absolute;
+
+    // Base toggle graphic
+    ~ .switch-toggle {
+      --switch-dot-offset-x: calc(var(--switch-dot-size)/3);
+      --switch-dot-offset-y: calc(50% - 14px / 2);
+      background: var(--switch-background);
+      border-radius: var(--switch-height);
+      width: var(--switch-width);
+      height: var(--switch-height);
+      display: inline-block;
+      position: relative;
+      margin: 0 0.5em 0 0;
+      cursor: pointer;
+
+      // Dot graphic
+      &::after {
+        background: var(--switch-dot);
+        display: inline-block;
+        content: "";
+        height: var(--switch-dot-size);
+        width: var(--switch-dot-size);
+        border-radius: 50%;
+        top: var(--switch-dot-offset-y);
+        left: var(--switch-dot-offset-x);
+        position: absolute;
+      }
+    }
+
+    ~ .switch-off {
+      --switch-text: #72767b;
+    }
+
+    &:checked {
+      ~ .switch-toggle {
+        --switch-background: #0088ce;
+        --switch-dot-offset-x: calc(100% - var(--switch-dot-size) * 1.333333);
+
+        &:last-child::before {
+          content: "";
+          font-family: FontAwesome;
+          // FIXME: This is a hack to avoid huge check marks when embedding in <h1> or other envs with non-default fonts
+          font-size: 12px;
+          color: var(--switch-dot);
+          position: absolute;
+          left: 6px;
+          top: 50%;
+          transform: translateY(-50%);
+          opacity: 0.75; /* PF3's check is heavier than PF4 */
+        }
+      }
+    }
+
+    &:disabled ~ .switch-toggle {
+      --switch-background: #72767b;
+      --switch-dot: #d1d1d1;
+    }
+
+    &:disabled ~ * {
+      cursor: not-allowed;
+    }
+
+    &:checked ~ .switch-off,
+    &:not(:checked) ~ .switch-on {
+      display: none;
+    }
+  }
+
+  :disabled {
+    ~ .switch-on,
+    ~ .switch-off {
+      --switch-text: #72767b;
+    }
+  }
+}

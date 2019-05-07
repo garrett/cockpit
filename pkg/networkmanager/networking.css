@@ -164,7 +164,8 @@ span.inverted-switchbox {
     margin-right: 20px;
 }
 
-h1 .btn-onoff-ct {
+/* FIXME: This doesn't work, On/Off button is misaligned */
+h1 .onoff-ct {
     margin-left: 1.5em;
     vertical-align: text-bottom;
 }

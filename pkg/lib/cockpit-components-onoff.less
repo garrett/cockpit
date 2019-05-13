@@ -8,6 +8,9 @@ label.onoff-ct {
   position: relative;
   display: inline-flex;
   align-items: center;
+  margin-bottom: 0;
+  padding: 1px 0; /* Height is 24px; bump to 26px like other widgets */
+  vertical-align: middle;
 
   > .switch-on,
   > .switch-off,
@@ -97,4 +100,8 @@ label.onoff-ct {
       --switch-text: #72767b;
     }
   }
+}
+
+h1 label.onoff-ct {
+  vertical-align: bottom;
 }

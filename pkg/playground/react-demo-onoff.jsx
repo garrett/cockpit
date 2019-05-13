@@ -51,7 +51,8 @@ class OnOffDemo extends React.Component {
                     </tr>
                     <tr>
                         <td><span>Regular with text</span></td>
-                        <td><OnOffSwitch state={this.state.onOffB} onChange={this.onChangeB} text="Description" /></td>
+                        <td><OnOffSwitch state={this.state.onOffB} onChange={this.onChangeB}
+                                         text={ this.state.onOffB ? "Description for On" : "Description for Off" } /></td>
                     </tr>
                     <tr>
                         <td><span>Disabled On</span></td>

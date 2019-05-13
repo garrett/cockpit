@@ -2,6 +2,9 @@ label.onoff-ct {
   --switch-width: 40px;
   --switch-height: 24px;
   --switch-background: #d1d1d1;
+  --switch-border-color: transparent;
+  --switch-border-style: solid;
+  --switch-border-width: 1px;
   --switch-text: inherit;
   --switch-dot-size: 14px;
   --switch-dot: #fff;
@@ -25,15 +28,25 @@ label.onoff-ct {
   }
 
   > input {
-    visibility: hidden;
+    opacity: 0;
     position: absolute;
+
+    &:before {
+      content: "test";
+      display: block;
+      position: absolute;
+    }
 
     // Base toggle graphic
     ~ .switch-toggle {
-      --switch-dot-offset-x: calc(var(--switch-dot-size)/3);
+      --switch-dot-offset-x: calc(var(--switch-dot-size)/3 - var(--switch-border-width));
       --switch-dot-offset-y: calc(50% - 14px / 2);
+      /* Don't let the border draw over the background */
+      background-clip: content-box;
       background: var(--switch-background);
       border-radius: var(--switch-height);
+      border: var(--switch-border-width) var(--switch-border-style) var(--switch-border-color);
+      box-shadow: inset 0 0 0 1px transparent;
       width: var(--switch-width);
       height: var(--switch-height);
       display: inline-block;
@@ -62,19 +75,18 @@ label.onoff-ct {
     &:checked {
       ~ .switch-toggle {
         --switch-background: #0088ce;
-        --switch-dot-offset-x: calc(100% - var(--switch-dot-size) * 1.333333);
+        --switch-dot-offset-x: calc(100% - var(--switch-dot-size) * 1.333333 + var(--switch-border-width));
 
         &:last-child::before {
           content: "";
           font-family: FontAwesome;
-          // FIXME: This is a hack to avoid huge check marks when embedding in <h1> or other envs with non-default fonts
-          font-size: 12px;
+          font-size: calc(var(--switch-height) / 2);
           color: var(--switch-dot);
           position: absolute;
-          left: 6px;
+          left: calc(var(--switch-height) / 4 - var(--switch-border-width));
           top: 50%;
           transform: translateY(-50%);
-          opacity: 0.75; /* PF3's check is heavier than PF4 */
+          opacity: 0.75; /* PF3's check icon is heavier than PF4 */
         }
       }
     }
@@ -99,6 +111,25 @@ label.onoff-ct {
     ~ .switch-off {
       --switch-text: #72767b;
     }
+  }
+
+  :focus:not(:hover) ~ .switch-toggle {
+    --switch-border-color: rgba(0, 0, 0, 0.5);
+    --switch-border-style: dashed;
+    /* background-clip: border-box; */
+    /* Stroke for a heavier inset, to improve contrast with focus ring */
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  }
+
+  :checked:focus:not(:hover) ~ .switch-toggle {
+    /* Darken border, as background is darker */
+    --switch-border-color: rgba(0, 0, 0, 0.75);
+  }
+
+  /* Don't show the focus ring for mouse clicks (when browsers support :focus-visible) */
+  :focus:not(:focus-visible) ~ .switch-toggle {
+    --switch-border-color: transparent;
+    box-shadow: none;
   }
 }
 

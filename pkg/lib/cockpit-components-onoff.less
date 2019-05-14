@@ -1,7 +1,7 @@
 label.onoff-ct {
   --switch-width: 40px;
   --switch-height: 24px;
-  --switch-background: #d1d1d1;
+  --switch-background: #d1d1d1; /* pf-black-300 */
   --switch-border-color: transparent;
   --switch-border-style: solid;
   --switch-border-width: 1px;
@@ -14,6 +14,7 @@ label.onoff-ct {
   margin-bottom: 0;
   padding: 1px 0; /* Height is 24px; bump to 26px like other widgets */
   vertical-align: middle;
+  user-select: none;
 
   > .switch-on,
   > .switch-off,
@@ -24,6 +25,7 @@ label.onoff-ct {
 
   > .switch-on,
   > .switch-off {
+    user-select: auto;
     color: var(--switch-text);
   }
 
@@ -65,41 +67,36 @@ label.onoff-ct {
         top: var(--switch-dot-offset-y);
         left: var(--switch-dot-offset-x);
         position: absolute;
+        pointer-events: none;
       }
     }
 
     ~ .switch-off {
-      --switch-text: #72767b;
+      --switch-text: #72767b; /* pf-black-600 */
     }
 
     &:checked {
       ~ .switch-toggle {
-        --switch-background: #0088ce;
+        --switch-background: #0088ce; /* pf-blue-400 */
         --switch-dot-offset-x: calc(100% - var(--switch-dot-size) * 1.333333 + var(--switch-border-width));
 
-        &:last-child::before {
-          content: "";
-          font-family: FontAwesome;
-          font-size: calc(var(--switch-height) / 2);
-          color: var(--switch-dot);
-          position: absolute;
-          left: calc(var(--switch-height) / 4 - var(--switch-border-width));
-          top: 50%;
-          transform: translateY(-50%);
-          opacity: 0.75; /* PF3's check icon is heavier than PF4 */
+        &:last-child {
+          // Show a check if there's no label
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10.583 6.35'%3E%3Cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-width='.529' d='M2.252 3.365l.756.758L4.48 2.65' opacity='.75'/%3E%3C/svg%3E");
         }
       }
     }
 
     &:disabled ~ .switch-toggle {
-      --switch-background: #72767b;
-      --switch-dot: #d1d1d1;
+      --switch-background: #72767b; /* pf-black-600 */
+      --switch-dot: #d1d1d1; /* pf-black-300 */
     }
 
     &:disabled ~ * {
       cursor: not-allowed;
     }
 
+    // Hide unused switch label
     &:checked ~ .switch-off,
     &:not(:checked) ~ .switch-on {
       display: none;
@@ -109,27 +106,32 @@ label.onoff-ct {
   :disabled {
     ~ .switch-on,
     ~ .switch-off {
-      --switch-text: #72767b;
+      --switch-text: #72767b; /* pf-black-600 */
     }
   }
 
-  :focus:not(:hover) ~ .switch-toggle {
-    --switch-border-color: rgba(0, 0, 0, 0.5);
-    --switch-border-style: dashed;
-    /* background-clip: border-box; */
-    /* Stroke for a heavier inset, to improve contrast with focus ring */
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  /* Focus ring */
+  :focus ~ .switch-toggle::before {
+    border: 1px dotted rgba(0, 0, 0, 0.75);
+    border-radius: calc(var(--switch-width) - 10px);
+    position: absolute;
+    content: '';
+    top: -4px;
+    bottom: -4px;
+    left: -4px;
+    width: calc(var(--switch-width) + 6px);
+    transition: all 300ms ease-in-out;
+    /* HACK: Keyboard has nothing to transition from, but hover does */
+    /* (as it changes the ring to transparent and back). */
+    /* So we delay the hover to not have the focus ring on hover out. */
+    /* This makes the focus ring show up for keyboard users, but not on a mouse click. */
+    transition-delay: 600s;
+    z-index: 1;
   }
 
-  :checked:focus:not(:hover) ~ .switch-toggle {
-    /* Darken border, as background is darker */
-    --switch-border-color: rgba(0, 0, 0, 0.75);
-  }
-
-  /* Don't show the focus ring for mouse clicks (when browsers support :focus-visible) */
-  :focus:not(:focus-visible) ~ .switch-toggle {
-    --switch-border-color: transparent;
-    box-shadow: none;
+  /* Don't show the focus ring for mouse clicks (when hovering) */
+  :focus:hover ~ .switch-toggle::before {
+    border-color: transparent;
   }
 }
 

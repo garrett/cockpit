@@ -23,22 +23,37 @@ import * as Select from "cockpit-components-select.jsx";
 
 import { digitFilter, toFixedPrecision, units } from "../helpers.js";
 
+import './sliderInputSelect.css';
+
 const _ = cockpit.gettext;
 
-const MemorySelectRow = ({ id, value, maxValue, initialUnit, onValueChange, onUnitChange }) => {
+const SliderInputSelect = ({ id, value, minValue, maxValue, initialUnit, onValueChange, onUnitChange }) => {
     return (
-        <div role="group">
+        <div className='slider-grid'>
+            { (minValue != undefined && maxValue != undefined && value >= minValue)
+                ? <div className='slider-pf'>
+                    <b>{minValue}</b>
+                    <input className='slider'
+                        type='range'
+                        name={id + "-slider"}
+                        id={id + "-slider"}
+                        min={minValue}
+                        max={maxValue}
+                        value={value}
+                        onChange={e => onValueChange(e.target.value)} />
+                    <b> {maxValue}</b>
+                </div> : null}
             <input id={id} className="form-control"
-                   type="number"
-                   value={toFixedPrecision(value)}
-                   onKeyPress={digitFilter}
-                   step={1}
-                   min={0}
-                   max={maxValue}
-                   onChange={onValueChange} />
+                type="number"
+                min={minValue}
+                max={maxValue}
+                value={toFixedPrecision(value)}
+                onKeyPress={digitFilter}
+                step={1}
+                onChange={e => onValueChange(e.target.value)} />
             <Select.Select id={id + "-unit-select"}
-                           initial={initialUnit}
-                           onChange={onUnitChange}>
+                initial={initialUnit}
+                onChange={onUnitChange}>
                 <Select.SelectEntry data={units.MiB.name} key={units.MiB.name}>
                     {_("MiB")}
                 </Select.SelectEntry>
@@ -50,4 +65,4 @@ const MemorySelectRow = ({ id, value, maxValue, initialUnit, onValueChange, onUn
     );
 };
 
-export default MemorySelectRow;
+export default SliderInputSelect;

@@ -1,0 +1,25 @@
+.slider-grid {
+    display: grid;
+    grid-template-columns: 1fr repeat(2, max-content);
+    grid-gap: 0.25rem;
+    align-items: center;
+}
+
+.slider-grid .slider-pf b {
+    min-width: 1em;
+    font: inherit;
+    font-size: var(--pf-global--FontSize--sm);
+}
+
+.slider-grid .slider-pf b:last-child {
+    min-width: 2em;
+    text-align: left;
+}
+
+.slider-grid *:not(:last-child) {
+    margin-right: 0.5rem;
+}
+
+.slider-grid input[type=number] {
+    max-width: 5rem;
+}

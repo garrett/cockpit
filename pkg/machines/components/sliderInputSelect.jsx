@@ -31,7 +31,7 @@ const SliderInputSelect = ({ id, value, minValue, maxValue, initialUnit, onValue
     return (
         <div className='slider-grid'>
             { (minValue != undefined && maxValue != undefined && value >= minValue)
-                ? <div className='slider-pf'>
+                ? <div className='ct-slider'>
                     <b>{minValue}</b>
                     <input className='slider'
                         type='range'

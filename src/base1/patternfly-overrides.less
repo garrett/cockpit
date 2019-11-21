@@ -649,6 +649,8 @@ th > label {
   font-size: 1rem;
 }
 
+// HACK: Simulate PF4 new style dialogs
+// (left-aligned button order & cancel buttons that look like links)
 .modal-footer {
   display: flex;
   grid-gap: 0.5rem;
@@ -662,6 +664,17 @@ th > label {
 
   .btn {
     margin: 0 !important;
+  }
+
+  // Make cancel buttons look like links
+  .btn-default:not(:only-child) {
+    border-color: transparent !important;
+
+    &:hover {
+      color: var(--pf-global--primary-color--200);
+      box-shadow: none !important;
+      text-decoration: underline;
+    }
   }
 }
 

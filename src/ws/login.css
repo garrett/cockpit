@@ -411,18 +411,51 @@ label.checkbox {
   margin: 0.25rem 1rem;
 }
 
-.alert {
-  padding: 7px 11px;
-  margin-bottom: 20px;
-  border: 2px solid transparent;
-  border-radius: 1px;
+/* Alerts */
+.pf-c-alert {
+    color: #151515;
+    position: relative;
+    grid-template-columns: max-content 1fr max-content;
+    grid-template-rows: 1fr auto;
+    grid-template-areas: "title action" "content content";
+    background-color: #fff;
 }
 
-.alert-danger {
-  background: #c00;
-  border-color: #c00;
-  color: #fff;
-  font-weight: 700;
+.pf-c-alert.pf-m-inline {
+    border: solid #ededed;
+    border-width: 1px 1px 1px 0;
+}
+
+.pf-c-alert.pf-m-inline::before {
+    position: absolute;
+    top: -1px;
+    bottom: -1px;
+    left: 0;
+    width: 3px;
+    content: "";
+}
+
+.pf-c-alert__title {
+  grid-area: title;
+  padding: 0 0 0 1rem;
+  font-size: 1rem;
+  margin: 0.5rem;
+}
+
+.pf-c-alert.pf-m-danger .pf-c-alert__title {
+    color: #a30000;
+}
+
+.pf-c-alert.pf-m-info .pf-c-alert__title {
+    color: #004368;
+}
+
+.pf-c-alert.pf-m-inline.pf-m-danger::before {
+    background-color: #c9190b;
+}
+
+.pf-c-alert.pf-m-inline.pf-m-info::before {
+    background-color: #73bcf7;
 }
 
 #server-group:before {

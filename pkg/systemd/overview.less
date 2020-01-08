@@ -27,11 +27,17 @@
   &-hostname {
     align-items: baseline;
     flex: auto;
+    /* Collapse down to 15rem, to help preserve button on the right */
+    flex-basis: 15rem;
 
     > h1 {
-      padding-right: 1rem;
       font-size: var(--pf-global--FontSize--2xl);
     }
+  }
+
+  &-hostname > h1,
+  &-subheading {
+    padding-right: 1rem;
   }
 
   &-actions {

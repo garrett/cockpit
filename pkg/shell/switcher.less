@@ -790,6 +790,20 @@
     }
 }
 
+
+/* Optimize for VMs  */
+@media (max-width: 1024px) and (max-height: 768px) and (orientation: landscape) {
+  .area-ct-subnav {
+    flex: 0 1 12em;
+  }
+
+  .nav-sidebar-wrap.expanded .nav-sidebar .list-group-item > a {
+    min-height: 0;
+    padding: 0.25rem 0.5rem;
+  }
+}
+
+
 /* Apply Cockpit colors to main nav */
 .main-navbar .list-group-item {
     border-color: var(--color-ct-nav-main-border);

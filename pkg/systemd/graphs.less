@@ -218,7 +218,21 @@
   align-items: baseline;
 
   .server-graph {
+    /* Use grid for sandwiching flot graphs, not absolute positioning */
+    display: grid;
     grid-column: ~"1 / -1";
+    position: relative;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden;
+
+    > * {
+      position: relative !important;
+      grid-row: ~"1 / -1";
+      grid-column: ~"1 / -1";
+      max-height: 100%;
+      max-width: 100%;
+    }
   }
 }
 

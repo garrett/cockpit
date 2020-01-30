@@ -106,6 +106,7 @@ tbody > tr.listing-ct-item.listing-ct-warning {
     background-color: $listing-ct-warning-color;
 }
 
+table.pf-c-table tbody.pf-m-expanded > tr,
 tbody.open > tr.listing-ct-item,
 tbody.open > tr.listing-ct-panel {
     background-color: $listing-ct-active;
@@ -115,27 +116,36 @@ tbody.open > tr.listing-ct-panel {
     border-right: 1px solid $listing-ct-border;
     transition: all 200ms;
 }
+tbody.open > tr.listing-ct-panel {
+    background-color: $listing-ct-active;
+}
 
 tbody.open > tr.listing-ct-item td,
-tbody.open > tr.listing-ct-item th {
+tbody.pf-m-expanded > tr:first-child td,
+tbody.open > tr.listing-ct-item th,
+tbody.pf-m-expanded > tr:first-child th {
     border-top: 1px solid $listing-ct-border;
 }
 
-tbody.open td div.listing-ct-head {
+tbody.open td div.listing-ct-head,
+tbody.pf-m-expanded td div.listing-ct-head {
     background-color: $color-pf-white;
     align-items: end;
 }
 
-tbody.open > .listing-ct-panel > td > .listing-ct-body {
+tbody.open > .listing-ct-panel > td > .listing-ct-body,
+tbody.pf-m-expanded > .pf-c-table__expandable-row > td > div > .listing-ct-body {
     border: none;
     overflow: auto;
 }
 
-tbody.open > tr.listing-ct-panel + tr.listing-ct-body {
+tbody.open > tr.listing-ct-panel + tr.listing-ct-body,
+tbody.pf-m-expanded > tr.pf-c-table__expandable-row > td > div > div.listing-ct-body {
     border-top: none;
 }
 
-tbody.open > tr.listing-ct-panel td div.listing-ct-head {
+tbody.open > tr.listing-ct-panel td div.listing-ct-head,
+tbody.pf-m-expanded > tr.pf-c-table__expandable-row td div.listing-ct-head {
     border: none;
     border-bottom: 1px solid $listing-ct-border;
     padding-top: 0;
@@ -510,6 +520,7 @@ tbody.active .listing-ct-head {
 /* (HACK: Special-case the user auth dialog) */
 tbody:not(.ssh-key-body) > tr.listing-ct-head,
 tbody > tr.listing-ct-panel,
+tbody > tr.pf-c-table__expandable-row,
 tbody > tr.listing-ct-body {
     display: none;
 
@@ -522,6 +533,7 @@ tbody > tr.listing-ct-body {
 /* ... unless they are in the right state */
 tbody.open > tr.listing-ct-head,
 tbody.open > tr.listing-ct-panel,
+tbody.pf-m-expanded > tr.pf-c-table__expandable-row,
 tbody.open > tr.listing-ct-body {
     display: table-row;
 }
@@ -561,7 +573,8 @@ tbody.open div.listing-ct-head + div.listing-ct-body:not([hidden]):last-child {
     }
 }
 
-tbody.open tr.listing-ct-head {
+tbody.open tr.listing-ct-head,
+tbody.pf-m-expanded tr.listing-ct-head {
     border-color: $listing-ct-border;
     border-style: solid;
     border-width: 1px 1px 0 1px;
@@ -650,4 +663,9 @@ tbody tr.listing-ct-noexpand {
 .listing-ct-body {
     /* 42 = (20px padding + 1px border) * 2 */
     max-width: calc(100vw - 42px);
+}
+
+// FIXME: (Garrett) table-grid.css rules mess with our form-layout.less
+.pf-m-grid-md.pf-c-table tr.pf-c-table__expandable-row [data-label] * {
+    grid-column: unset;
 }

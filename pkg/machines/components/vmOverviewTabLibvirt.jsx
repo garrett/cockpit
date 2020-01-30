@@ -80,7 +80,12 @@ class VmOverviewTabLibvirt extends React.Component {
         this.onAutostartChanged = this.onAutostartChanged.bind(this);
     }
 
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     componentDidMount() {
+        this._isMounted = true;
         getDomainCapabilities(this.props.vm.connectionName)
                 .done(domCaps => {
                     const parser = new DOMParser();
@@ -92,7 +97,8 @@ class VmOverviewTabLibvirt extends React.Component {
                     const osElem = domainCapabilities.getElementsByTagName("os") && domainCapabilities.getElementsByTagName("os")[0];
                     const loaderElems = osElem && osElem.getElementsByTagName("loader");
 
-                    this.setState({ loaderElems });
+                    if (this._isMounted)
+                        this.setState({ loaderElems });
                 })
                 .fail(ex => console.warn("getDomainCapabilities failed"));
     }

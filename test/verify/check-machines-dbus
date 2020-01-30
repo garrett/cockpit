@@ -108,9 +108,9 @@ class TestMachinesDBus(machineslib.TestMachines):
 
         self.login_and_go("/machines")
         b.wait_in_text("body", "Virtual Machines")
-        b.wait_in_text("tbody tr th", "subVmTest1")
+        b.wait_in_text("tbody tr[data-row-id=vm-subVmTest1-system] td[data-label=Name]", "subVmTest1")
 
-        b.click("tbody tr th") # click on the row header
+        b.click("tbody tr[data-row-id=vm-subVmTest1-system] .pf-c-table__toggle button") # click on the toggle button
         b.wait_in_text("#vm-subVmTest1-state", "running")
 
 
@@ -147,9 +147,9 @@ class TestMachinesDBus(machineslib.TestMachines):
 
         self.login_and_go("/machines")
         b.wait_in_text("body", "Virtual Machines")
-        b.wait_in_text("tbody tr th", "subVmTest1")
+        b.wait_in_text("tbody tr[data-row-id=vm-subVmTest1-system] td[data-label=Name]", "subVmTest1")
 
-        b.click("tbody tr th") # click on the row header
+        b.click("tbody tr[data-row-id=vm-subVmTest1-system] .pf-c-table__toggle button") # click on the toggle button
         b.wait_in_text("#vm-subVmTest1-state", "running")
 
         # Wait for the edit button
@@ -237,7 +237,7 @@ class TestMachinesDBus(machineslib.TestMachines):
         b.click(".modal-footer button:contains(Create)")
         b.wait_not_present("#create-vm-dialog")
 
-        b.wait_in_text("tbody tr[data-row-id=vm-VmNotInstalled] th", "VmNotInstalled")
+        b.wait_in_text("tbody tr[data-row-id=vm-VmNotInstalled-system] td[data-label=Name]", "VmNotInstalled")
 
         # Change autostart
         autostart = not b.get_checked("#vm-VmNotInstalled-autostart-checkbox")
@@ -299,8 +299,8 @@ class TestMachinesDBus(machineslib.TestMachines):
 
             m.execute("mount -t tmpfs tmpfs " + ovmf_path)
             self.addCleanup(m.execute, "umount {0} || true".format(ovmf_path))
-            b.click("tbody tr[data-row-id=vm-VmNotInstalled] th") # Close and re-expand the row for the new configuration to be read
-            b.click("tbody tr[data-row-id=vm-VmNotInstalled] th")
+            b.click("tbody tr[data-row-id=vm-VmNotInstalled-system] th") # Close and re-expand the row for the new configuration to be read
+            b.click("tbody tr[data-row-id=vm-VmNotInstalled-system] th")
 
             # HACK: Capabilities are not updated dynamically
             # https://bugzilla.redhat.com/show_bug.cgi?id=1807198
@@ -310,7 +310,7 @@ class TestMachinesDBus(machineslib.TestMachines):
                     # We don't get events for shut off VMs so reload the page
                     b.reload()
                     b.enter_page('/machines')
-                    b.click("tbody tr[data-row-id=vm-VmNotInstalled] th")
+                    b.click("tbody tr[data-row-id=vm-VmNotInstalled-system] th")
 
             hack_broken_caps()
 
@@ -396,8 +396,8 @@ class TestMachinesDBus(machineslib.TestMachines):
 
         self.login_and_go("/machines")
         b.wait_in_text("body", "Virtual Machines")
-        b.wait_in_text("tbody tr[data-row-id=vm-subVmTest1] th", "subVmTest1")
-        b.click("tbody tr[data-row-id=vm-subVmTest1] th") # click on the row header
+        b.wait_in_text("tbody tr[data-row-id=vm-subVmTest1-system] td[data-label=Name]", "subVmTest1")
+        b.click("tbody tr[data-row-id=vm-subVmTest1-system] .pf-c-table__toggle button") # click on the toggle button
         b.wait_in_text("#vm-subVmTest1-state", "running")
         b.click("#vm-subVmTest1-disks") # open the "Disks" subtab
 
@@ -486,9 +486,9 @@ class TestMachinesDBus(machineslib.TestMachines):
 
         self.login_and_go("/machines")
         b.wait_in_text("body", "Virtual Machines")
-        b.wait_in_text("tbody tr th", "subVmTest1")
+        b.wait_in_text("tbody tr[data-row-id=vm-subVmTest1-system] td[data-label=Name]", "subVmTest1")
 
-        b.click("tbody tr th") # click on the row header
+        b.click("tbody tr[data-row-id=vm-subVmTest1-system] .pf-c-table__toggle button") # click on the toggle button
         b.wait_in_text("#vm-subVmTest1-state", "running")
 
         b.click("#vm-subVmTest1-overview") # open the "Overview" subtab
@@ -573,14 +573,14 @@ class TestMachinesDBus(machineslib.TestMachines):
 
         self.login_and_go("/machines")
         b.wait_in_text("body", "Virtual Machines")
-        b.wait_in_text("tbody tr[data-row-id=vm-subVmTest1] th", "subVmTest1")
+        b.wait_in_text("tbody tr[data-row-id=vm-subVmTest1-system] td[data-label=Name]", "subVmTest1")
 
         # Check kernel is booted before we try detaching disks
         if args["logfile"] is not None:
             wait(lambda: "Linux version" in self.machine.execute("cat {0}".format(args["logfile"])), delay=3)
 
         # Test detaching non permanent disk of a running domain
-        b.click("tbody tr[data-row-id=vm-subVmTest1] th") # click on the row header
+        b.click("tbody tr[data-row-id=vm-subVmTest1-system] .pf-c-table__toggle button") # click on the toggle button
         b.wait_in_text("#vm-subVmTest1-state", "running")
 
         b.click("#vm-subVmTest1-disks") # open the "Disks" subtab
@@ -638,9 +638,9 @@ class TestMachinesDBus(machineslib.TestMachines):
 
         self.login_and_go("/machines")
         b.wait_in_text("body", "Virtual Machines")
-        b.wait_in_text("tbody tr th", "subVmTest1")
+        b.wait_in_text("tbody tr[data-row-id=vm-subVmTest1-system] td[data-label=Name]", "subVmTest1")
 
-        b.click("tbody tr th") # click on the row header
+        b.click("tbody tr[data-row-id=vm-subVmTest1-system] .pf-c-table__toggle button") # click on the toggle button
         b.wait_in_text("#vm-subVmTest1-state", "running")
 
         # Change Boot Order setting
@@ -682,9 +682,9 @@ class TestMachinesDBus(machineslib.TestMachines):
 
         self.login_and_go("/machines")
         b.wait_in_text("body", "Virtual Machines")
-        b.wait_in_text("tbody tr th", "subVmTest1")
+        b.wait_in_text("tbody tr[data-row-id=vm-subVmTest1-system] td[data-label=Name]", "subVmTest1")
 
-        b.click("tbody tr th") # click on the row header
+        b.click("tbody tr[data-row-id=vm-subVmTest1-system] .pf-c-table__toggle button") # click on the toggle button
         b.wait_in_text("#vm-subVmTest1-state", "running")
 
         # Make sure that the Networks are loaded into the global state
@@ -746,8 +746,7 @@ class TestMachinesDBus(machineslib.TestMachines):
         b.wait_in_text("body", "Virtual Machines")
         b.wait_in_text(".cards-pf #card-pf-networks .card-pf-title-link", "Networks")
         b.wait_in_text("#card-pf-networks .card-pf-aggregate-status-count", "2")
-        b.wait_in_text("tbody tr th", "subVmTest1")
-        b.click("tbody tr[data-row-id=vm-subVmTest1] th") # click on the row header
+        b.click("tbody tr[data-row-id=vm-subVmTest1-system] .pf-c-table__toggle button") # click on the toggle button
         b.click("#vm-subVmTest1-networks") # open the "Networks" subtab
 
         # Change network type and source from the bridge NIC
@@ -1042,9 +1041,9 @@ class TestMachinesDBus(machineslib.TestMachines):
 
         self.login_and_go("/machines")
         b.wait_in_text("body", "Virtual Machines")
-        b.wait_in_text("tbody tr th", "subVmTest1")
+        b.wait_in_text("tbody tr[data-row-id=vm-subVmTest1-system] td[data-label=Name]", "subVmTest1")
 
-        b.click("tbody tr th") # click on the row header
+        b.click("tbody tr[data-row-id=vm-subVmTest1-system] .pf-c-table__toggle button") # click on the toggle button
         b.wait_in_text("#vm-subVmTest1-state", "running")
 
 
@@ -1068,7 +1067,7 @@ class TestMachinesDBus(machineslib.TestMachines):
 
         self.login_and_go("/machines")
         b.wait_in_text("body", "Virtual Machines")
-        b.wait_in_text("tbody tr th", "subVmTest1")
+        b.wait_in_text("tbody tr[data-row-id=vm-subVmTest1-system] td[data-label=Name]", "subVmTest1")
 
         b.wait_in_text("#card-pf-storage-pools .card-pf-aggregate-status-count", "1")
         b.wait_in_text(".cards-pf #card-pf-storage-pools .card-pf-title-link", "Storage Pool")
@@ -1103,8 +1102,13 @@ class TestMachinesDBus(machineslib.TestMachines):
 
         # Shuf off the VM in order to allow deleting volumes that are used as
         # disks later
-        b.click("tbody tr th") # click on the row header
+<<<<<<< Updated upstream
+        b.click("tbody tr[data-row-id=vm-subVmTest1] .pf-c-table__toggle button") # click on the toggle button
         b.click("#vm-subVmTest1-off-caret")
+=======
+        b.click("tbody tr[data-row-id=vm-subVmTest1-system] .pf-c-table__toggle button") # click on the toggle button
+        b.click("#vm-subVmTest1-action-kebab")
+>>>>>>> Stashed changes
         b.click("#vm-subVmTest1-forceOff")
         b.wait_in_text("#vm-subVmTest1-state", "shut off")
 
@@ -1905,7 +1909,7 @@ class TestMachinesDBus(machineslib.TestMachines):
 
                 b.click("#pool-{0}-system-storage-volumes".format(self.pool_name)) # open the "Storage Volumes" subtab
 
-                b.click("#create-volume-button") # open the "Storage Volumes" subtab
+                b.click("#{0}-system-create-volume-button".format(self.pool_name)) # open the "Storage Volumes" subtab
 
                 b.wait_present("#create-volume-dialog-modal")
                 b.wait_in_text(".modal-dialog .modal-header .modal-title", "Create Storage Volume")
@@ -2016,7 +2020,7 @@ class TestMachinesDBus(machineslib.TestMachines):
         self.login_and_go("/machines")
         b.wait_in_text("body", "Virtual Machines")
 
-        b.click("tbody tr[data-row-id=vm-subVmTest1] th")
+        b.click("tbody tr[data-row-id=vm-subVmTest1-system] .pf-c-table__toggle button") # click on the toggle button
         b.click("#vm-subVmTest1-networks") # open the Network Interfaces subtab
 
         # Shut off domain
@@ -2123,7 +2127,7 @@ class TestMachinesDBus(machineslib.TestMachines):
                     b.reload()
                     b.enter_page('/machines')
                     b.wait_in_text("body", "Virtual Machines")
-                    b.click("tbody tr[data-row-id=vm-subVmTest1] th")
+                    b.click("tbody tr[data-row-id=vm-subVmTest1-system] th")
                     b.click("#vm-subVmTest1-networks") # open the Network Interfaces subtab
                 else:
                     b.click("#delete-vm-subVmTest1-iface-{0}".format(self.nic_num))

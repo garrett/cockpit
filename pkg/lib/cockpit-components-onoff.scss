@@ -109,7 +109,7 @@ label.onoff-ct {
     /* Approximate Chrome's focus ring, for non-Firefox browsers */
     border: 2px solid rgba(0, 98, 220, 0.4);
 
-    @-moz-document url-prefix() {
+    $-moz-document url-prefix() {
       /* Approximate Firefox's focus ring, for Firefox only */
       border: 1px dotted rgba(0, 0, 0, 0.75);
     }

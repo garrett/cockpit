@@ -2295,7 +2295,7 @@ class TestMachines(MachineCase, StorageHelpers, NetworkHelpers):
 
             if dialog.start_vm:
                 # wait for console tab to open
-                b.wait_present("li.active #vm-{0}-consoles".format(name))
+                b.wait_present("#vm-{0}-consoles.pf-m-current".format(name))
             else:
                 # wait for Overview tab to open
                 b.wait_present("#vm-{0}-memory-count".format(name))
@@ -2316,7 +2316,7 @@ class TestMachines(MachineCase, StorageHelpers, NetworkHelpers):
 
             b.wait_present("tbody tr[data-row-id=vm-{0}]".format(name))
             b.click("#vm-{0}-install".format(name))
-            b.wait_present("li.active #vm-{0}-consoles".format(name))
+            b.wait_present("#vm-{0}-consoles.pf-m-current".format(name))
 
             self.assertCorrectConfiguration(dialog)
 

@@ -38,18 +38,18 @@ export const VmExpandedContent = ({
     vm, vms, config, libvirtVersion, hostDevices, storagePools, onStart, onInstall, onShutdown, onPause, onResume, onForceoff, onReboot, onForceReboot,
     onUsageStartPolling, onUsageStopPolling, onSendNMI, dispatch, networks, interfaces, nodeDevices, resourceHasError, onAddErrorNotification
 }) => {
-    const overviewTabName = (<div id={`${vmId(vm.name)}-overview`}>{_("Overview")}</div>);
-    const usageTabName = (<div id={`${vmId(vm.name)}-usage`}>{_("Usage")}</div>);
-    const disksTabName = (<div id={`${vmId(vm.name)}-disks`}>{_("Disks")}</div>);
-    const networkTabName = (<div id={`${vmId(vm.name)}-networks`}>{_("Network Interfaces")}</div>);
-    const consolesTabName = (<div id={`${vmId(vm.name)}-consoles`}>{_("Consoles")}</div>);
+    const overviewTabName = _("Overview");
+    const usageTabName = _("Usage");
+    const disksTabName = _("Disks");
+    const networkTabName = _("Network Interfaces");
+    const consolesTabName = _("Consoles");
 
     const tabRenderers = [
-        { name: overviewTabName, renderer: VmOverviewTab, data: { vm, config, dispatch, nodeDevices, libvirtVersion } },
-        { name: usageTabName, renderer: VmUsageTab, data: { vm, onUsageStartPolling, onUsageStopPolling }, presence: 'onlyActive' },
-        { name: disksTabName, renderer: VmDisksTab, data: { vm, vms, config, storagePools, onUsageStartPolling, onUsageStopPolling, dispatch, onAddErrorNotification }, presence: 'onlyActive' },
-        { name: networkTabName, renderer: VmNetworkTab, presence: 'onlyActive', data: { vm, dispatch, config, hostDevices, interfaces, networks, nodeDevices, onAddErrorNotification } },
-        { name: consolesTabName, renderer: Consoles, data: { vm, config, dispatch } },
+        { name: overviewTabName, id: cockpit.format("$0-overview", vmId(vm.name)), renderer: VmOverviewTab, data: { vm, config, dispatch, nodeDevices, libvirtVersion } },
+        { name: usageTabName, id: cockpit.format("$0-usage", vmId(vm.name)), renderer: VmUsageTab, data: { vm, onUsageStartPolling, onUsageStopPolling }, presence: 'onlyActive' },
+        { name: disksTabName, id: cockpit.format("$0-disks", vmId(vm.name)), renderer: VmDisksTab, data: { vm, vms, config, storagePools, onUsageStartPolling, onUsageStopPolling, dispatch, onAddErrorNotification }, presence: 'onlyActive' },
+        { name: networkTabName, id: cockpit.format("$0-networks", vmId(vm.name)), renderer: VmNetworkTab, presence: 'onlyActive', data: { vm, dispatch, config, hostDevices, interfaces, networks, nodeDevices, onAddErrorNotification } },
+        { name: consolesTabName, id: cockpit.format("$0-consoles", vmId(vm.name)), renderer: Consoles, data: { vm, config, dispatch } },
     ];
 
     let initiallyActiveTab = null;

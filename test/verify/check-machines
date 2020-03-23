@@ -2278,7 +2278,7 @@ class TestMachines(MachineCase, StorageHelpers, NetworkHelpers):
 
             if dialog.start_vm:
                 # wait for console tab to open
-                b.wait_present("li.active #vm-{0}-consoles".format(name))
+                b.wait_present("#vm-{0}-consoles.pf-m-current".format(name))
             else:
                 # wait for Overview tab to open
                 b.wait_present("#vm-{0}-memory-count".format(name))
@@ -2299,7 +2299,7 @@ class TestMachines(MachineCase, StorageHelpers, NetworkHelpers):
 
             b.wait_in_text("#vm-{0}-row".format(name), name)
             b.click("#vm-{0}-install".format(name))
-            b.wait_present("li.active #vm-{0}-consoles".format(name))
+            b.wait_present("#vm-{0}-consoles.pf-m-current".format(name))
 
             self._assertCorrectConfiguration(dialog)
 
@@ -2712,7 +2712,6 @@ class TestMachines(MachineCase, StorageHelpers, NetworkHelpers):
         b.click("#vm-VmNotInstalled-install")
         # Wait for virt-install to define the VM and then stop it - otherwise we get 'domain is ready being removed' error
         wait(lambda: "VmNotInstalled" in m.execute("virsh list --persistent"), delay=3)
-        b.wait_present("li.active #vm-VmNotInstalled-consoles")
         b.click("#vm-VmNotInstalled-off-caret")
         b.click("#vm-VmNotInstalled-forceOff")
         b.wait_in_text("#vm-VmNotInstalled-state", "shut off")

@@ -174,7 +174,7 @@ class TestMachinesDBus(machineslib.TestMachines):
         b.wait_present("#boot-order-tooltip")
 
         # Shut off domain and check changes are applied
-        b.click("#vm-subVmTest1-off-caret")
+        b.click("#vm-subVmTest1-action-kebab button")
         b.click("#vm-subVmTest1-forceOff")
         b.wait_in_text("#vm-subVmTest1-state", "shut off")
 
@@ -327,7 +327,7 @@ class TestMachinesDBus(machineslib.TestMachines):
         # Install the VM
         b.click("#vm-VmNotInstalled-install")
         b.wait_present("li.active #vm-VmNotInstalled-consoles")
-        b.click("#vm-VmNotInstalled-off-caret")
+        b.click("#vm-VmNotInstalled-action-kebab button")
         b.click("#vm-VmNotInstalled-forceOff")
         b.wait_in_text("#vm-VmNotInstalled-state", "shut off")
 
@@ -430,7 +430,7 @@ class TestMachinesDBus(machineslib.TestMachines):
         b.wait_present("#vm-subVmTest1-disks-vde-access-tooltip")
 
         # Shut off VM and see state has changed
-        b.click("#vm-subVmTest1-off-caret")
+        b.click("#vm-subVmTest1-action-kebab button")
         b.click("#vm-subVmTest1-forceOff")
         b.wait_in_text("#vm-subVmTest1-state", "shut off")
         # Check change has been applied after shutoff
@@ -520,8 +520,7 @@ class TestMachinesDBus(machineslib.TestMachines):
         b.wait_in_text("#vm-subVmTest1-memory-count", "{0} MiB".format(current_memory - 10))
 
         # Shut off domain and check changes are  still there
-        b.click("#vm-subVmTest1-off-caret")
-        b.wait_visible("#vm-subVmTest1-forceOff")
+        b.click("#vm-subVmTest1-action-kebab button")
         b.click("#vm-subVmTest1-forceOff")
         b.wait_in_text("#vm-subVmTest1-state", "shut off")
         b.wait_in_text("#vm-subVmTest1-memory-count", "{0} MiB".format(current_memory - 10))
@@ -594,7 +593,7 @@ class TestMachinesDBus(machineslib.TestMachines):
 
         # Test that detaching disk of a running domain will affect the
         # inactive configuration as well
-        b.click("#vm-subVmTest1-off-caret")
+        b.click("#vm-subVmTest1-action-kebab button")
         b.click("#vm-subVmTest1-forceOff")
         b.wait_in_text("#vm-subVmTest1-state", "shut off")
         b.wait_not_present("#vm-subVmTest1-disks-vdc-device")
@@ -660,7 +659,7 @@ class TestMachinesDBus(machineslib.TestMachines):
         b.wait_not_present(".modal-body")
 
         # Shut off domain
-        b.click("#vm-subVmTest1-off-caret")
+        b.click("#vm-subVmTest1-action-kebab button")
         b.click("#vm-subVmTest1-forceOff")
         b.wait_in_text("#vm-subVmTest1-state", "shut off")
 
@@ -727,7 +726,7 @@ class TestMachinesDBus(machineslib.TestMachines):
         b.wait_present("#vm-subVmTest1-network-1-source-tooltip")
 
         # Shut off domain and check changes are applied
-        b.click("#vm-subVmTest1-off-caret")
+        b.click("#vm-subVmTest1-action-kebab button")
         b.click("#vm-subVmTest1-forceOff")
         b.wait_in_text("#vm-subVmTest1-state", "shut off")
         b.wait_in_text("#vm-subVmTest1-network-1-model", "e1000e")
@@ -843,7 +842,7 @@ class TestMachinesDBus(machineslib.TestMachines):
         m.execute("virsh net-define /tmp/net-test-network.xml && virsh net-start test_network")
 
         # First shut of the VM otherwise the interface will not be the same in the live and config XML https://www.redhat.com/archives/libvir-list/2019-August/msg01034.html
-        b.click("#vm-subVmTest1-off-caret")
+        b.click("#vm-subVmTest1-action-kebab button")
         b.click("#vm-subVmTest1-forceOff")
         b.wait_in_text("#vm-subVmTest1-state", "shut off")
 
@@ -1048,6 +1047,7 @@ class TestMachinesDBus(machineslib.TestMachines):
 
 
         # pause the machine
+        b.click("#vm-subVmTest1-action-kebab button")
         b.click("#vm-subVmTest1-pause")
         b.wait_in_text("#vm-subVmTest1-state", "paused")
         state = m.execute("virsh dominfo subVmTest1 | grep 'State:' | awk '{print $2}'").strip()
@@ -1102,13 +1102,8 @@ class TestMachinesDBus(machineslib.TestMachines):
 
         # Shuf off the VM in order to allow deleting volumes that are used as
         # disks later
-<<<<<<< Updated upstream
-        b.click("tbody tr[data-row-id=vm-subVmTest1] .pf-c-table__toggle button") # click on the toggle button
-        b.click("#vm-subVmTest1-off-caret")
-=======
         b.click("tbody tr[data-row-id=vm-subVmTest1-system] .pf-c-table__toggle button") # click on the toggle button
-        b.click("#vm-subVmTest1-action-kebab")
->>>>>>> Stashed changes
+        b.click("#vm-subVmTest1-action-kebab button")
         b.click("#vm-subVmTest1-forceOff")
         b.wait_in_text("#vm-subVmTest1-state", "shut off")
 
@@ -2024,7 +2019,7 @@ class TestMachinesDBus(machineslib.TestMachines):
         b.click("#vm-subVmTest1-networks") # open the Network Interfaces subtab
 
         # Shut off domain
-        b.click("#vm-subVmTest1-off-caret")
+        b.click("#vm-subVmTest1-action-kebab button")
         b.click("#vm-subVmTest1-forceOff")
         b.wait_in_text("#vm-subVmTest1-state", "shut off")
 
@@ -2197,7 +2192,7 @@ class TestMachinesDBus(machineslib.TestMachines):
         ).execute()
         m.execute("virsh define /tmp/subVmTest1.xml")
 
-        b.click("#vm-subVmTest1-off-caret")
+        b.click("#vm-subVmTest1-action-kebab button")
         b.click("#vm-subVmTest1-forceOff")
         b.wait_in_text("#vm-subVmTest1-state", "shut off")
 

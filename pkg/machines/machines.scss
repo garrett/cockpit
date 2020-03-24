@@ -394,3 +394,7 @@ $toast-anim-speed: 200ms;
     margin-left: 0.3em;
     margin-right: 0.3em;
 }
+
+.pf-c-dropdown__menu-item.pf-m-danger {
+    color: var(--pf-global--danger-color--200);
+}

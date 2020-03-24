@@ -354,15 +354,15 @@ class TestMachines(MachineCase, StorageHelpers, NetworkHelpers):
             wait(lambda: "login as 'cirros' user." in self.machine.execute("cat {0}".format(args["logfile"])), delay=3)
 
         # Send Non-Maskable Interrupt (no change in VM state is expected)
-        b.click("#vm-subVmTest1-off-caret")
+        b.click("#vm-subVmTest1-action-kebab button")
         b.click("#vm-subVmTest1-sendNMI")
-        b.wait_attr("#vm-subVmTest1-off-caret", "aria-expanded", "false")
+        b.wait_attr("#vm-subVmTest1-action kebab > button", "aria-expanded", "false")
 
         if args["logfile"] is not None:
             b.wait(lambda: "NMI received" in self.machine.execute("cat {0}".format(args["logfile"])))
 
         # shut off
-        b.click("#vm-subVmTest1-off-caret")
+        b.click("#vm-subVmTest1-action-kebab button")
         b.click("#vm-subVmTest1-forceOff")
         b.wait_in_text("#vm-subVmTest1-state", "shut off")
 
@@ -393,7 +393,7 @@ class TestMachines(MachineCase, StorageHelpers, NetworkHelpers):
 
         # stop second VM, event handling should still work
         b.click("tbody tr[data-row-id=vm-subVmTest2] .pf-c-table__toggle button") # click on the toggle button
-        b.click("#vm-subVmTest2-off-caret")
+        b.click("#vm-subVmTest2-action-kebab button")
         b.click("#vm-subVmTest2-forceOff")
         b.wait_in_text("#vm-subVmTest2-state", "shut off")
 
@@ -594,7 +594,7 @@ class TestMachines(MachineCase, StorageHelpers, NetworkHelpers):
         # Test remove disk - by external action
         m.execute("virsh detach-disk subVmTest1 vdc")
         print("Restarting vm-subVmTest1, might take a while")
-        b.click("#vm-subVmTest1-reboot-caret")
+        b.click("#vm-subVmTest1-action-kebab button")
         b.click("#vm-subVmTest1-forceReboot")
 
         b.wait_present("#vm-subVmTest1-disks-vda-device")
@@ -927,7 +927,9 @@ class TestMachines(MachineCase, StorageHelpers, NetworkHelpers):
         ).execute()
 
         # shut off
-        b.click("#vm-subVmTest1-off-caret")
+        sit()
+        b.click("#vm-subVmTest1-action-kebab button")
+        sit()
         b.click("#vm-subVmTest1-forceOff")
         b.wait_in_text("#vm-subVmTest1-state", "shut off")
 
@@ -1090,7 +1092,7 @@ class TestMachines(MachineCase, StorageHelpers, NetworkHelpers):
         b.wait_present("#vcpus-tooltip")
 
         # Shut off VM for applying changes after save
-        b.click("#vm-subVmTest1-off-caret")
+        b.click("#vm-subVmTest1-action-kebab button")
         b.click("#vm-subVmTest1-forceOff")
         b.wait_in_text("#vm-subVmTest1-state", "shut off")
 
@@ -1125,7 +1127,7 @@ class TestMachines(MachineCase, StorageHelpers, NetworkHelpers):
         b.wait_not_present("#machines-vcpu-modal-dialog")
 
         # Shut off VM
-        b.click("#vm-subVmTest1-off-caret")
+        b.click("#vm-subVmTest1-action-kebab button")
         b.click("#vm-subVmTest1-forceOff")
         b.wait_in_text("#vm-subVmTest1-state", "shut off")
 
@@ -1272,6 +1274,7 @@ class TestMachines(MachineCase, StorageHelpers, NetworkHelpers):
 
         addDisk(secondDiskVolName, poolName)
 
+        b.click("#vm-{0}-action-kebab button".format(name))
         b.click("#vm-{0}-delete".format(name))
 
         b.wait_present("#vm-{0}-delete-modal-dialog div:contains(The VM is running)".format(name))
@@ -1299,6 +1302,7 @@ class TestMachines(MachineCase, StorageHelpers, NetworkHelpers):
 
         self.machine.execute("virsh -c qemu:///system suspend {0}".format(name))
         b.wait_in_text("#vm-{0}-state".format(name), "paused")
+        b.click("#vm-{0}-action-kebab button".format(name))
         b.click("#vm-{0}-delete".format(name))
         self.browser.reload()
         b.wait_not_present("tbody tr[data-row-id=vm-{0}]".format(name))
@@ -1311,7 +1315,7 @@ class TestMachines(MachineCase, StorageHelpers, NetworkHelpers):
         self.browser.enter_page('/machines')
         b.click("tbody tr[data-row-id=vm-{0}] .pf-c-table__toggle button".format(name)) # click on the toggle button
         b.wait_present("#vm-{0}-delete:disabled".format(name))
-        b.click("#vm-{0}-off-caret".format(name))
+        b.click("#vm-{0}-action-kebab button".format(name))
         b.click("#vm-{0}-forceOff".format(name))
         b.wait_not_present("tbody tr[data-row-id=vm-{0}] td[data-label=Name]".format(name))
         b.wait_not_present(".toast-notifications.list-pf div.pf-c-alert")
@@ -2321,7 +2325,7 @@ class TestMachines(MachineCase, StorageHelpers, NetworkHelpers):
             self.assertCorrectConfiguration(dialog)
 
             # unfinished install script runs indefinitelly, so we need to force it off
-            b.click("#vm-{0}-off-caret".format(name))
+            b.click("#vm-{0}-action-kebab button".format(name))
             b.click("#vm-{0}-forceOff".format(name))
             b.wait_in_text("#vm-{0}-state".format(name), "shut off")
 
@@ -2353,6 +2357,7 @@ class TestMachines(MachineCase, StorageHelpers, NetworkHelpers):
 
         def deleteVm(self, dialog):
             b = self.browser
+            b.click("#vm-{0}-action-kebab button".format(dialog.name))
             vm_delete_button = "#vm-{0}-delete".format(dialog.name)
 
             b.click(vm_delete_button)

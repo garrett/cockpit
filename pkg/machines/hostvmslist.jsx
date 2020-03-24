@@ -88,6 +88,7 @@ class HostVmsList extends React.Component {
 
         return (<div id='virtual-machines-listing' className='container-fluid'>
             <ListingTable caption={_("Virtual Machines")}
+                variant='compact'
                 emptyCaption={_("No VM is running or defined on this host")}
                 actions={actions}
                 columns={[

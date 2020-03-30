@@ -1,5 +1,5 @@
-@import "../../node_modules/@patternfly/patternfly/components/Table/table.scss";
-@import "./system-global.scss";
+@use "../../node_modules/@patternfly/patternfly/components/Table/table.scss";
+@use "./system-global.scss";
 
 /* System Time Modal dialog needs table.css */
 @import "../lib/table.css";

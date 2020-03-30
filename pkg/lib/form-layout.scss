@@ -1,6 +1,6 @@
 /* Form layout */
 
-@import "./variables.scss";
+@use "./variables.scss";
 
 :root {
   // CSS variable to define the number of (label + control) columns.
@@ -363,7 +363,7 @@
   grid-template-columns: max-content 1fr max-content min-content;
 }
 
-@media (max-width: $screen-xs) {
+@media (max-width: variables.$screen-xs) {
   // When inside of lists or modals & the page is *very* narrow,
   // collapse the grid further, so labels are above controls
   //
@@ -391,7 +391,7 @@
 
       // Reduce vertical height spacing between groups of elements
       > hr {
-        height: $padding-large-vertical * 2;
+        height: variables.$padding-large-vertical * 2;
       }
     }
   }

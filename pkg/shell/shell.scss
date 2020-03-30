@@ -19,12 +19,12 @@
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-@import "../lib/page.scss";
-@import "../lib/table.css";
-@import "variables";
-@import "switcher.scss";
-@import "active-pages.scss";
-@import "../../node_modules/@patternfly/patternfly/components/Button/button.scss";
+@forward "../lib/page.scss";
+@forward "../lib/table.css";
+@forward "variables";
+@forward "switcher.scss";
+@forward "active-pages.scss";
+@forward "../../node_modules/@patternfly/patternfly/components/Button/button.scss";
 
 /* Hacks on top for now */
 

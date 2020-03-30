@@ -1,7 +1,8 @@
-@import "./timer.scss";
+@use "sass:meta";
+@use "./timer.scss";
 @import '../lib/journal.css';
 @import "../lib/table.css";
-@import "./system-global.scss";
+@include meta.load-css("./system-global.scss");
 
 #services-page {
     overflow-y: scroll;

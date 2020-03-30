@@ -1,6 +1,6 @@
-@import "../lib/page.scss";
-@import "../lib/table.css";
-@import "../../node_modules/@patternfly/patternfly/components/Button/button.scss";
+@use "../lib/page.scss";
+@use "../lib/table.css";
+@use "../../node_modules/@patternfly/patternfly/components/Button/button.scss";
 
 #dashboard-hosts {
     /* Dashboard list is narrow enough in extreme mobile mode to not overflow */

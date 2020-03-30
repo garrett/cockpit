@@ -1,5 +1,5 @@
-@import "../lib/page.scss";
-@import '../lib/form-layout.scss';
+@use "../lib/page.scss";
+@use '../lib/form-layout.scss';
 
 .pf-c-alert {
     margin-bottom: 24px;

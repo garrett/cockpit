@@ -1,8 +1,9 @@
+@use "sass:meta";
 @import "../lib/plot.css";
-@import "../../node_modules/@patternfly/patternfly/components/Breadcrumb/breadcrumb.scss";
-@import "../../node_modules/@patternfly/patternfly/layouts/Gallery/gallery.scss";
-@import "../../node_modules/@patternfly/patternfly/components/Page/page.scss";
-@import "../../node_modules/@patternfly/patternfly/components/Card/card.scss";
+@include meta.load-css("../../node_modules/@patternfly/patternfly/components/Breadcrumb/breadcrumb.scss");
+@include meta.load-css("../../node_modules/@patternfly/patternfly/layouts/Gallery/gallery.scss");
+@include meta.load-css("../../node_modules/@patternfly/patternfly/components/Page/page.scss");
+@include meta.load-css("../../node_modules/@patternfly/patternfly/components/Card/card.scss");
 
 :root {
   /* Font size for titles */

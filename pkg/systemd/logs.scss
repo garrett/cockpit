@@ -1,6 +1,7 @@
+@use "sass:meta";
 @import "../lib/table.css";
 @import "../lib/journal.css";
-@import "./system-global.scss";
+@include meta.load-css("./system-global.scss");
 
 /* Do not break labels */
 #journal-entry .info-table-ct td:first-child {

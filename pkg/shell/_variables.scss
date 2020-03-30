@@ -1,4 +1,6 @@
-@import "../lib/variables.scss";
+@forward "../lib/variables";
+
+@forward "../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables";
 
 $sidebar-width-full: 180px;
 $sidebar-width-sm: 68px;

@@ -106,7 +106,6 @@ tbody > tr.listing-ct-item.listing-ct-warning {
     background-color: $listing-ct-warning-color;
 }
 
-table.pf-c-table tbody.pf-m-expanded > tr,
 tbody.open > tr.listing-ct-item,
 tbody.open > tr.listing-ct-panel {
     background-color: $listing-ct-active;
@@ -116,36 +115,27 @@ tbody.open > tr.listing-ct-panel {
     border-right: 1px solid $listing-ct-border;
     transition: all 200ms;
 }
-tbody.open > tr.listing-ct-panel {
-    background-color: $listing-ct-active;
-}
 
 tbody.open > tr.listing-ct-item td,
-tbody.pf-m-expanded > tr:first-child td,
-tbody.open > tr.listing-ct-item th,
-tbody.pf-m-expanded > tr:first-child th {
+tbody.open > tr.listing-ct-item th {
     border-top: 1px solid $listing-ct-border;
 }
 
-tbody.open td div.listing-ct-head,
-tbody.pf-m-expanded td div.listing-ct-head {
+tbody.open td div.listing-ct-head {
     background-color: $color-pf-white;
     align-items: end;
 }
 
-tbody.open > .listing-ct-panel > td > .listing-ct-body,
-tbody.pf-m-expanded > .pf-c-table__expandable-row > td > div > .listing-ct-body {
+tbody.open > .listing-ct-panel > td > .listing-ct-body {
     border: none;
     overflow: auto;
 }
 
-tbody.open > tr.listing-ct-panel + tr.listing-ct-body,
-tbody.pf-m-expanded > tr.pf-c-table__expandable-row > td > div > div.listing-ct-body {
+tbody.open > tr.listing-ct-panel + tr.listing-ct-body {
     border-top: none;
 }
 
-tbody.open > tr.listing-ct-panel td div.listing-ct-head,
-tbody.pf-m-expanded > tr.pf-c-table__expandable-row td div.listing-ct-head {
+tbody.open > tr.listing-ct-panel td div.listing-ct-head {
     border: none;
     border-bottom: 1px solid $listing-ct-border;
     padding-top: 0;
@@ -286,16 +276,6 @@ tr.listing-ct-item.listing-ct-selected .badge {
 tr.listing-ct-item td:last-child {
     text-align: right;
 }
-.pf-c-table {
-    tbody, thead:not(.listing-ct-empty) {
-        tr:not(.pf-m-expanded) {
-            td:last-child,
-            th:last-child {
-                text-align: right;
-            }
-        }
-    }
-}
 
 div.listing-ct-panel {
     box-shadow: 1px 1px 1px 1px $listing-ct-open;
@@ -314,11 +294,9 @@ div.listing-ct-head {
     border-style: solid;
     border-width: 1px 1px 0 1px;
     overflow: hidden;
-    align-items: center;
-}
-table:not(.pf-c-table) div.listing-ct-head {
     display: flex;
     flex-flow: row-reverse wrap;
+    align-items: center;
 }
 
 div.listing-ct-head:last-child {
@@ -348,7 +326,18 @@ tbody.active .listing-ct-head {
     padding-right: 7px;
 }
 
-.listing-ct-head .pf-c-nav {
+.listing-ct-head .nav li a {
+    font-size: 13px;
+    /* Counteract listing-ct-head padding */
+    margin-top: -$listing-ct-padding;
+    margin: 0;
+}
+
+.listing-ct-head .nav-tabs {
+    border-bottom: none;
+}
+
+.listing-ct-head .nav-tabs-pf {
     flex: auto;
 }
 
@@ -521,7 +510,6 @@ tbody.active .listing-ct-head {
 /* (HACK: Special-case the user auth dialog) */
 tbody:not(.ssh-key-body) > tr.listing-ct-head,
 tbody > tr.listing-ct-panel,
-tbody > tr.pf-c-table__expandable-row,
 tbody > tr.listing-ct-body {
     display: none;
 
@@ -534,7 +522,6 @@ tbody > tr.listing-ct-body {
 /* ... unless they are in the right state */
 tbody.open > tr.listing-ct-head,
 tbody.open > tr.listing-ct-panel,
-tbody.pf-m-expanded > tr.pf-c-table__expandable-row,
 tbody.open > tr.listing-ct-body {
     display: table-row;
 }
@@ -574,8 +561,7 @@ tbody.open div.listing-ct-head + div.listing-ct-body:not([hidden]):last-child {
     }
 }
 
-tbody.open tr.listing-ct-head,
-tbody.pf-m-expanded tr.listing-ct-head {
+tbody.open tr.listing-ct-head {
     border-color: $listing-ct-border;
     border-style: solid;
     border-width: 1px 1px 0 1px;
@@ -631,6 +617,25 @@ tbody tr.listing-ct-noexpand {
     cursor: default;
 }
 
+/* Fix up nav-tabs-pf to work properly */
+
+.nav-tabs-pf > li:first-child a {
+    margin-left: 0px !important;
+    padding-left: $listing-ct-spacing !important;
+}
+
+.nav-tabs-pf > li a:before {
+    right: 0px !important;
+}
+
+.nav-tabs-pf > li > a:active:before,
+.nav-tabs-pf > li > a:focus:before,
+.nav-tabs-pf > li > a:hover:before,
+.nav-tabs-pf > li.active a:before {
+    height: $listing-ct-open-width;
+    left: 0px;
+}
+
 .listing-ct-item td,
 .listing-ct-item th,
 .listing-ct-body {
@@ -645,14 +650,4 @@ tbody tr.listing-ct-noexpand {
 .listing-ct-body {
     /* 42 = (20px padding + 1px border) * 2 */
     max-width: calc(100vw - 42px);
-}
-
-// FIXME: (Garrett) table-grid.css rules mess with our form-layout.less
-.pf-m-grid-md.pf-c-table tr.pf-c-table__expandable-row [data-label] * {
-    grid-column: unset;
-}
-
-// Make the Nav Tabs wrap when necessary
-.pf-c-nav__tertiary-list {
-    flex-wrap: wrap;
 }

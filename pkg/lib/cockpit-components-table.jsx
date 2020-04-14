@@ -194,9 +194,9 @@ export class ListingTable extends React.Component {
             props.onSelect = this.props.onSelect;
         if (this.props.caption || this.props.actions.length != 0) {
             props.header = (
-                <header>
-                    <h3 className='listing-ct-heading'> {this.props.caption} </h3>
-                    {this.props.actions && <div className='listing-ct-actions'> {this.props.actions} </div>}
+                <header className='ct-table-header'>
+                    <h3 className='ct-table-heading'> {this.props.caption} </h3>
+                    {this.props.actions && <div className='ct-table-actions'> {this.props.actions} </div>}
                 </header>
             );
         }
@@ -228,7 +228,7 @@ export class ListingTable extends React.Component {
             props.borders = false;
             return (
                 <Table {...props}>
-                    <thead className='listing-ct-empty'>
+                    <thead className='ct-table-empty'>
                         <tr><td> {this.props.emptyCaption} </td></tr>
                     </thead>
                 </Table>
@@ -242,6 +242,7 @@ ListingTable.defaultProps = {
     columns: [],
     rows: [],
     actions: [],
+    className: 'ct-table',
 };
 ListingTable.propTypes = {
     caption: PropTypes.string,

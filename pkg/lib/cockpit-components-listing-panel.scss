@@ -6,6 +6,10 @@
       transparent 1px
     );
 
+    .pf-c-nav {
+      margin-left: var(--pf-global--spacer--xs);
+    }
+
     .pf-c-nav__item {
       --pf-c-nav__tertiary-list-item--MarginRight: 0;
       font-size: var(--pf-global--FontSize--sm);

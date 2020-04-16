@@ -44,6 +44,29 @@ const VmActions = ({ vm, dispatch, storagePools, onStart, onInstall, onReboot, o
     const dropdownItems = [];
 
     let shutdown;
+
+    if (LibvirtDBus.canPause(state)) {
+        dropdownItems.push(
+            <DropdownItem key={`${id}-pause`}
+                          id={`${id}-pause`}
+                          onClick={() => onPause()}>
+                {_("Pause")}
+            </DropdownItem>
+        );
+        dropdownItems.push(<DropdownSeparator key="separator-pause" />);
+    }
+
+    if (LibvirtDBus.canResume(state)) {
+        dropdownItems.push(
+            <DropdownItem key={`${id}-resume`}
+                          id={`${id}-resume`}
+                          onClick={() => onResume()}>
+                {_("Resume")}
+            </DropdownItem>
+        );
+        dropdownItems.push(<DropdownSeparator key="separator-resume" />);
+    }
+
     if (LibvirtDBus.canShutdown(state)) {
         shutdown = (<Button key='action-shutdown' variant='secondary' onClick={() => onShutdown()} id={`${id}-shutdown-button`}>
             {_("Shut Down")}
@@ -89,28 +112,6 @@ const VmActions = ({ vm, dispatch, storagePools, onStart, onInstall, onReboot, o
             </DropdownItem>
         );
         dropdownItems.push(<DropdownSeparator key="separator-reset" />);
-    }
-
-    if (LibvirtDBus.canPause(state)) {
-        dropdownItems.push(
-            <DropdownItem key={`${id}-pause`}
-                          id={`${id}-pause`}
-                          onClick={() => onPause()}>
-                {_("Pause")}
-            </DropdownItem>
-        );
-        dropdownItems.push(<DropdownSeparator key="separator-pause" />);
-    }
-
-    if (LibvirtDBus.canResume(state)) {
-        dropdownItems.push(
-            <DropdownItem key={`${id}-resume`}
-                          id={`${id}-resume`}
-                          onClick={() => onResume()}>
-                {_("Resume")}
-            </DropdownItem>
-        );
-        dropdownItems.push(<DropdownSeparator key="separator-resume" />);
     }
 
     let run = null;

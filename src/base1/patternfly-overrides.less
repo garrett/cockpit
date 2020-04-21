@@ -492,10 +492,6 @@ small {
     .breadcrumb + & {
       padding-top: 0;
     }
-
-    .cards-pf + & {
-      padding-top: 1rem;
-    }
   }
 
   // Rely on page-ct padding; don't duplicate
@@ -507,6 +503,16 @@ small {
   // Remove excess padding from dialogs
   .modal-dialog .content {
     padding: 0;
+  }
+}
+
+// Bump content away from cards
+.content,
+.page-ct,
+.container,
+.container-fluid {
+  .cards-pf + & {
+    padding-top: 1rem;
   }
 }
 

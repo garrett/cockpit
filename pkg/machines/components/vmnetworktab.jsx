@@ -282,7 +282,6 @@ class VmNetworkTab extends React.Component {
                     {_("Add Network Interface")}
                 </Button>
 
-                <div className="ct-table-wrapper">
                 {this.state.showAddNICModal && this.state.networkDevices !== undefined &&
                     <AddNIC dispatch={dispatch}
                         idPrefix={`${id}-add-iface`}
@@ -291,12 +290,14 @@ class VmNetworkTab extends React.Component {
                         availableSources={availableSources}
                         interfaces={interfaces}
                         close={this.close} />}
-                <ListingTable aria-label={`VM ${vm.name} Network Interface Cards`}
-                    variant='compact'
-                    emptyCaption={_("No network interfaces defined for this VM")}
-                    columns={columnTitles}
-                    rows={rows} />
-            </div>
+
+                <div className="ct-table-wrapper">
+                    <ListingTable aria-label={`VM ${vm.name} Network Interface Cards`}
+                        variant='compact'
+                        emptyCaption={_("No network interfaces defined for this VM")}
+                        columns={columnTitles}
+                        rows={rows} />
+                </div>
             </div>
         );
     }

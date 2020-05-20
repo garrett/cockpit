@@ -477,7 +477,22 @@ select.form-control {
 
 // Standardize small font size to PF4 small font
 small {
-	font-size: var(--pf-global--FontSize--sm);
+  font-size: var(--pf-global--FontSize--sm);
+}
+
+// Bump content away from cards
+.content,
+.page-ct,
+.container,
+.container-fluid {
+  --container-padding-x: var(--pf-global--spacer--md);
+  --container-padding-y: var(--pf-global--spacer--lg);
+  --container-padding: var(--container-padding-y) var(--container-padding-x);
+  padding: var(--container-padding);
+
+  .cards-pf + & {
+    padding-top: var(--pf-global--spacer--md);
+  }
 }
 
 @media screen and (min-width: 768px) {
@@ -486,7 +501,8 @@ small {
   .page-ct,
   .container,
   .container-fluid {
-    padding: 2rem 3rem;
+    --container-padding-x: var(--pf-global--spacer--lg);
+    --container-padding-y: var(--pf-global--spacer--xl);
 
     .breadcrumb,
     .breadcrumb + & {
@@ -503,16 +519,6 @@ small {
   // Remove excess padding from dialogs
   .modal-dialog .content {
     padding: 0;
-  }
-}
-
-// Bump content away from cards
-.content,
-.page-ct,
-.container,
-.container-fluid {
-  .cards-pf + & {
-    padding-top: 1rem;
   }
 }
 

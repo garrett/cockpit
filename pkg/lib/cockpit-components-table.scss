@@ -4,8 +4,15 @@
 .ct-table {
     &-wrapper {
         --outer-padding: 42px;
+        --padding-offset-border: 1px;
+        --padding-offset-x: calc(var(--pf-global--spacer--lg) + (var(--padding-offset-border) * 2));
+        --padding-offset-y: 1rem;
         max-width: calc(100vw - var(--outer-padding));
         overflow: auto;
+        clear: both;
+        padding-bottom: var(--padding-offset-y);
+        margin-bottom: calc(var(--padding-offset-y) * -1);
+        margin: 0 calc(var(--padding-offset-x) * -1) calc(var(--padding-offset-y) * -1);
     }
 
     &.pf-m-compact {

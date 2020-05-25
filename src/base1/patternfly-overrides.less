@@ -6,8 +6,21 @@
 
 // Fonts
 @import (inline, once) "../../node_modules/@redhat/redhat-font/webfonts/red-hat-font.css";
-@font-family-base: "RedHatText", "Open Sans", Helvetica, Arial, sans-serif;
+
+@font-face {
+  font-family: "tabular-numbers";
+  // Use system Sans Serif fonts with a fallback to Open Sans
+  src: local(".SFNSText-Light"), local(".HelveticaNeueDeskInterface-Light"), local(".LucidaGrandeUI"), local("Segoe UI Light"), local("Roboto-Light"), local("DroidSans"), local("Tahoma"), local("Cantarell"), url('../../static/fonts/OpenSans-Regular-webfont.woff') format('woff');
+  unicode-range: U+0030-0039;
+  font-size-adjust: 0.51;
+}
+
+@font-family-base: "tabular-numbers", "RedHatText", "Open Sans", Helvetica, Arial, sans-serif;
 @font-family-mono: SFMono-Regular, menlo, monaco, consolas, "Liberation Mono", Courier New, monospace;
+
+* {
+  font-family: @font-family-base;
+}
 
 // Resize headings
 h1, h2, h3, h4, h5, h6 {

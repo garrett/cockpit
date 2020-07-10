@@ -37,6 +37,7 @@ import { BootOrderModal } from './vm/bootOrderModal.jsx';
 import { FirmwareModal } from './vm/firmwareModal.jsx';
 import WarningInactive from './warningInactive.jsx';
 import { supportsUefiXml, labelForFirmwarePath } from './vm/helpers.js';
+import { StateIcon } from './vm/stateIcon.jsx';
 import LibvirtDBus, { getDomainCapabilities } from '../libvirt-dbus.js';
 import { getDomainCapLoader, getDomainCapMaxVCPU } from '../libvirt-common.js';
 
@@ -258,6 +259,8 @@ class VmOverviewTabLibvirt extends React.Component {
                         <Text component={TextVariants.h4} className='ct-form-full'>
                             {_("General")}
                         </Text>
+                        <label className='control-label' htmlFor={`${idPrefix}-state`}>{_("State")}</label>
+                        <StateIcon state={vm.state} valueId={`${idPrefix}-state`} showIcon />
                         <label className='control-label' htmlFor={`${idPrefix}-memory-count`}>{_("Memory")}</label>
                         {memoryLink}
                         <label className='control-label' htmlFor={`${idPrefix}-vcpus-count`}>{_("vCPUs")}</label>

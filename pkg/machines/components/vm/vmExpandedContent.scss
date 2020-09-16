@@ -36,16 +36,18 @@
 }
 
 .ct-vm-overview {
-  @media screen and (max-width: 800px) {
+  $ctVmBreakpoint: 1000px;
+
+  @media screen and (max-width: $ctVmBreakpoint) {
     --pf-l-gallery--GridTemplateColumns: 1fr;
   }
 
-  @media screen and (min-width: 801px) {
-    --pf-l-gallery--GridTemplateColumns: minmax(auto, 25rem) 1fr;
+  @media screen and (min-width: $ctVmBreakpoint + 1) {
+    --pf-l-gallery--GridTemplateColumns: minmax(max-content, 20rem) 1fr;
 
     .consoles-card {
         grid-row: 1 / span 2;
-        grid-column-end: -1;
+        grid-column: 2 / -1;
     }
 
     .usage-card {

@@ -26,7 +26,7 @@ import {
     Card, CardTitle, CardActions, CardHeader, CardBody, CardFooter,
     Page, PageSection, PageSectionVariants,
 } from '@patternfly/react-core';
-import { ExternalLinkSquareAltIcon } from '@patternfly/react-icons';
+import { ExpandIcon } from '@patternfly/react-icons';
 
 import { vmId } from "../../helpers.js";
 
@@ -93,14 +93,15 @@ export const VmExpandedContent = ({
         {
             id: `${vmId(vm.name)}-consoles`,
             className: "consoles-card",
-            title: <Button variant="link"
+            title: _("Console"),
+            actions: <Button variant="link"
                            isDisabled={vm.state == "shut off"}
                            onClick={() => {
                                const urlOptions = { name: vm.name, connection: vm.connectionName };
                                return cockpit.location.go(["vm", "console"], { ...cockpit.location.options, ...urlOptions });
                            }}
-                           icon={<ExternalLinkSquareAltIcon />}
-                           iconPosition="right">{_("Console")}</Button>,
+                           icon={<ExpandIcon />}
+                           iconPosition="right">{_("Expand")}</Button>,
             body: <Consoles vm={vm} config={config} dispatch={dispatch}
                             onAddErrorNotification={onAddErrorNotification} />,
         },

@@ -58,7 +58,7 @@
 }
 
 /* Ensure zoom button is proper width */
-.zoom-controls > .btn {
+.zoom-controls > .pf-c-button {
     display: flex;
     justify-content: center;
     align-items: center;

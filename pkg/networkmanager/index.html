@@ -59,7 +59,7 @@
         </div>
       </div>
 
-      <section id="networking-graphs" class="pf-c-page__main-section pf-m-light">
+      <section id="networking-graphs" class="networking-graphs pf-c-page__main-section pf-m-light">
         <div id="networking-graph-toolbar" class="zoom-controls standard-zoom-controls">
           <div class="dropdown">
             <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -405,7 +405,7 @@
               </ol>
           </nav>
       </section>
-      <section class="pf-c-page__main-section pf-m-light">
+      <section class="networking-graphs pf-c-page__main-section pf-m-light">
         <div id="network-interface-graph-toolbar" class="zoom-controls standard-zoom-controls">
           <div class="dropdown">
             <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -434,24 +434,24 @@
             </button>
           </div>
         </div>
-        <div class="col-sm-6">
+        <div class="networking-graph">
           <div>
             <span class="plot-unit" id="network-interface-tx-unit"></span><span class="plot-title" translate="yes">Sending</span>
           </div>
-          <div id="network-interface-tx-graph"></div>
+          <div id="network-interface-tx-graph" class="networking-graph-graph"></div>
         </div>
-        <div class="col-sm-6">
+        <div class="networking-graph">
           <div>
             <span class="plot-unit" id="network-interface-rx-unit"></span><span class="plot-title" translate="yes">Receiving</span>
           </div>
-          <div id="network-interface-rx-graph"></div>
+          <div id="network-interface-rx-graph" class="networking-graph-graph"></div>
         </div>
       </section>
       <section class="pf-c-page__main-section">
         <div class="pf-l-gallery pf-m-gutter">
-            <div class="pf-c-card">
+            <div class="pf-c-card network-interface-details">
               <div class="pf-c-card__header">
-                <div class="pf-c-card__title">
+                <div class="pf-c-card__title network-interface-title">
                   <span id="network-interface-name"></span>
                   <span id="network-interface-hw"></span>
                   <span id="network-interface-mac"></span>
@@ -467,7 +467,7 @@
                 </table>
               </div>
             </div>
-            <div class="pf-c-card" id="network-interface-members">
+            <div class="pf-c-card network-interface-members" id="network-interface-members">
               <table class="table table-hover">
                 <thead>
                   <tr>

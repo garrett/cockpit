@@ -22,10 +22,13 @@
     }
 }
 
+// Mixin to extend for both Firewall switches:
+// In the Network Overview page and the Firewall page
 %firewall-switch {
     padding-left: var(--pf-global--spacer--md);
 }
 
+// General networking page overview
 .networking-page {
     .firewall-switch {
         @extend %firewall-switch;
@@ -43,6 +46,16 @@
             margin-bottom: 0.5rem;
         }
     }
+ 
+    .pf-c-card__header > .pf-c-card__title {
+        padding: 0;
+        font-weight: normal;
+        font-size: var(--pf-global--FontSize--2xl);
+    }
+
+    .cockpit-log-panel {
+        max-width: 100vw;
+    }
 }
 
 #network-interface {
@@ -54,25 +67,15 @@
         padding: 0;
     }
 
-    #network-interface-hw, #network-interface-mac {
-        font-size: var(--pf-global--FontSize--md);
-        font-weight: var(--pf-global--FontWeight--normal);
-    }
+    @at-root {
+        #network-interface-hw, #network-interface-mac {
+            font-size: var(--pf-global--FontSize--md);
+            font-weight: var(--pf-global--FontWeight--normal);
+        }
 
-    .network-interface-status > span {
-        overflow-wrap: anywhere;
-    }
-}
-
-.networking-page {
-    .pf-c-card__header > .pf-c-card__title {
-        padding: 0;
-        font-weight: normal;
-        font-size: var(--pf-global--FontSize--2xl);
-    }
-
-    .cockpit-log-panel {
-        max-width: 100vw;
+        .network-interface-status > span {
+            overflow-wrap: anywhere;
+        }
     }
 }
 
@@ -91,95 +94,92 @@
     width: 4em;
 }
 
-.network-ip-settings-row {
-    border-bottom: 1px solid lightgray;
-    padding-bottom: 10px;
-
-    &:last-of-type {
-        border-bottom: none;
-        padding-bottom: 0;
-    }
-
-    table {
-        margin-top: 20px;
-    }
-
-    tr {
-        background: #F4F4F4;
-        border: 1px solid #BABABA;
-
-        td {
-            padding: 4px;
-        }
-    }
-
-    .pf-m-secondary {
-        margin-right: 5px;
-    }
-
-    tr td .pf-m-secondary {
-        margin-right: 4px;
-    }
-}
-
-#networking-graphs {
+.networking-graphs {
     display: grid;
     grid-gap: 0 var(--pf-global--spacer--md);
-    grid-template-columns: repeat(var(--graph-columns, 2), 1fr);
+    grid-template-columns: repeat(var(--ct-graph-columns, 2), 1fr);
 
-    @media (max-width: $pf-global--breakpoint--sm) {
-        --graph-columns: 1;
+    // Remove the top padding when following a breadcrumb
+    .pf-c-page__main-breadcrumb + & {
+        padding-top: 0;
     }
 
+    // Make zoom controls area span across
     .zoom-controls {
         grid-column: 1 / -1;
     }
-
-    @at-root .networking-graph {
-        &-graph {
-            height: calc(10 * var(--pf-global--spacer--md));
-        }
+    
+    // Set height of the graphs
+    .networking-graph-graph {
+        height: calc(var(--ct-graph-height-multiplier, 10) * var(--pf-global--spacer--md));
     }
-
+    
+    // Collapse down to 1 column and half height on very narrow screens
+    @media (max-width: $pf-global--breakpoint--sm) {
+        --ct-graph-columns: 1;
+        --ct-graph-height-multiplier: 5;
+    }
 }
 
+// Constrain widths of networking headers (on both the main page and in network-interface-members)
 th {
     &.networking-speed {
         width: 20%;
     }
 
     &.networking-spacer {
-        width: 10em;
+        width: var(--pf-global--spacer--4xl);
     }
 
     &.networking-action {
-        width: 28px;
+        width: var(--pf-global--spacer--3xl);
     }
 }
 
-td.networking-row-configure {
-    text-align: right;
-}
-
-#network-interface-hw {
-    margin-left: 20px;
-    margin-right: 20px;
-}
-
-#network-interface-delete {
-    margin-right: 20px;
-}
-
-td.networking-controls {
-    label {
-        font-weight: inherit;
+.network-interface-details {
+    &-title {
+        display: grid;
+        grid-auto-flow: column;
+        grid-gap: var(--pf-global--spacer--md);
     }
 
-    input {
-        margin-left: 0px;
+    &-delete {
+        margin-right: var(--pf-global--spacer--lg);
+    }
+
+    // Seems to be used for the "general" checkbox
+    .networking-controls {
+        label {
+            font-weight: inherit;
+        }
+
+        input {
+            margin-left: 0px;
+        }
+    }
+
+#networking-interfaces, #networking-unmanaged-interfaces {
+    td[data-label=Name] {
+        font-weight: var(--pf-global--FontWeight--bold);
     }
 }
 
+}
+
+.network-interface-members {
+    // Align network-interface-members toggle to the right
+    .networking-row-configure {
+        text-align: right;
+    }
+
+    // Old-style table shouldn't have margins on the card
+    .table:last-child {
+        margin-bottom: 0;
+    }
+}
+
+// Dropdown menu that's behind an add button on the network interface members section _and_ the network bonds dialog
+// ideally, this should be a dropdown button with a caret to indicate there are choices underneith
 ul.add-button {
     right: 0px;
     left: auto;
@@ -187,39 +187,75 @@ ul.add-button {
     text-align: left;
 }
 
-span.inverted-switchbox {
-    margin-right: 10px;
-}
+// IPv4 / IPv6 settings
+#network-ip-settings-dialog {
+    @at-root {
+        // Used in IPv4 / IPv6 automatic to manual selections
+        .inverted-switchbox {
+            margin-right: var(--pf-global--spacer--md);
+        }
+     
+        .network-ip-settings-row {
+            border-bottom: 1px solid lightgray;
+            padding-bottom: 10px;
 
-.network-ip-settings-row td {
-    text-align: right;
-    padding-right: 0;
+            &:last-of-type {
+                border-bottom: none;
+                padding-bottom: 0;
+            }
 
-    &:last-child {
-        width: 28px;
+            .pf-m-secondary {
+                margin-right: 5px;
+            }
+
+            table {
+                margin-top: 20px;
+            }
+
+            tr {
+                background: #F4F4F4;
+                border: 1px solid #BABABA;
+            }
+
+            td {
+                padding: 4px;
+                text-align: right;
+                padding-right: 0;
+
+                &:last-child {
+                    width: 28px;
+                }
+                
+                .pf-m-secondary {
+                    margin-right: 4px;
+                }
+            }
+        }
     }
 }
 
-#network-mtu-settings-dialog label {
-    font-weight: normal;
+#network-mtu-settings {
+    &-dialog label {
+        input[type=radio] {
+            position: relative;
+            top: 3px;
+            margin-right: 0.5em;
+        }
+    }
 
-    input[type=radio] {
-        position: relative;
-        top: 3px;
-        margin-right: 0.5em;
+    &-input {
+        margin-left: 0.5em;
+        width: 5em;
+        display: inline;
     }
 }
 
-#network-mtu-settings-input {
-    margin-left: 0.5em;
-    width: 5em;
-    display: inline;
-}
-
+#network-mtu-settings-dialog label,
 #network-mac-settings-dialog label {
     font-weight: normal;
 }
 
+// Temporary curtain to hide the conten as it loads
 #testing-connection-curtain {
     z-index: 2000;
 }
@@ -231,25 +267,69 @@ span.inverted-switchbox {
     margin-right: 20px;
 }
 
-.modal-title {
-    display: inline-block;
+// Some old PF3 dialogs are still in use within the networking page
+.modal {
+    @at-root {
+        .modal-title {
+            display: inline-block;
+            background: pink;
+            color: red;
+        }
+
+        .modal-header {
+            button {
+                margin-left: 10px;
+                background: pink;
+                color: red;
+            }
+
+            i.fa {
+                margin-right: 2px;
+                background: pink;
+                color: red;
+            }
+        }
+    }
 }
 
-.modal-header {
-    button {
-        margin-left: 10px;
+// Handle form error state highlighting
+// This is done natively by PF4, but this is specifically for widgets on the networking page
+// (Can be removed once ported to PF4)
+.form-control.error {
+    border-color: #cc0000;
+
+    &:hover {
+        border-color: #990000;
     }
 
-    i.fa {
-        margin-right: 2px;
+    &:focus {
+        border-color: #990000;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ff3333;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ff3333;
     }
 }
 
-.popover-content a {
-    display: block;
-    padding-top: 1em;
+// Mixin to use to highlight what is thought to be deprecated, in case it does show up
+%deprecated {
+    color: red;
+    background-color: lightpink;
+    outline: 1px dotted darkred;
 }
 
+// CSS that seems to be unused
+#deprecated {
+    @at-root {
+        .popover-content a {
+            display: block;
+            padding-top: 1em;
+            @extend %deprecated;
+        }
+    }
+}
+
+/********** Firewall section **********/
+
+// Firewall's toggle
 h2 + .onoff-ct {
     @extend %firewall-switch;
 }
@@ -258,9 +338,6 @@ h2 + .onoff-ct {
     cursor: pointer;
     background-color: var(--color-ct-list-hover-bg);
 }
-
-/* set min-height to the same as max-height, so that the list doesn't shrink
- * when filtering */
 
 #add-services-dialog {
     .dialog-list-ct {
@@ -312,20 +389,6 @@ h2 + .onoff-ct {
         &:empty {
             display: none;
         }
-    }
-}
-
-.form-control.error {
-    border-color: #cc0000;
-
-    &:hover {
-        border-color: #990000;
-    }
-
-    &:focus {
-        border-color: #990000;
-        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ff3333;
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ff3333;
     }
 }
 
@@ -482,16 +545,8 @@ h2 + .onoff-ct {
     line-height: 1;
 }
 
-#networking-interfaces, #networking-unmanaged-interfaces {
-    td[data-label=Name] {
-        font-weight: var(--pf-global--FontWeight--bold);
-    }
-}
-
-#network-interface-members table {
-    margin-bottom: 0;
-}
-
+// Animation for Firewall's add service dialog,
+// as a sudden transition would be (otherwise) too jarring
 @keyframes error-slide-down {
     0% {
         line-height: 0;
@@ -506,3 +561,5 @@ h2 + .onoff-ct {
         opacity: 1;
     }
 }
+
+/* End Firewall specific CSS */

@@ -13,6 +13,9 @@
 @import "../../node_modules/@patternfly/patternfly/layouts/Bullseye/bullseye.css";
 @import "../../node_modules/@patternfly/patternfly/components/ModalBox/modal-box.css";
 
+// Pull in variables (especially for breakpoints)
+@import "_global-variables.scss";
+
 #networking, #network-interface {
     .pf-l-gallery {
         --pf-l-gallery--GridTemplateColumns: 1fr;
@@ -119,18 +122,25 @@
     }
 }
 
-/* Fix padding for network graph controls */
+#networking-graphs {
+    display: grid;
+    grid-gap: 0 var(--pf-global--spacer--md);
+    grid-template-columns: repeat(var(--graph-columns, 2), 1fr);
 
-#networking-graph-toolbar,
-#network-interface-graph-toolbar {
-    margin-right: 20px;
-}
+    @media (max-width: $pf-global--breakpoint--sm) {
+        --graph-columns: 1;
+    }
 
-#networking-rx-graph,
-#networking-tx-graph,
-#network-interface-tx-graph,
-#network-interface-rx-graph {
-    height: 120px;
+    .zoom-controls {
+        grid-column: 1 / -1;
+    }
+
+    @at-root .networking-graph {
+        &-graph {
+            height: calc(10 * var(--pf-global--spacer--md));
+        }
+    }
+
 }
 
 th {
@@ -330,17 +340,6 @@ h2 + .onoff-ct {
 #firewall-heading,
 #networking-graphs {
     background: var(--color-white);
-}
-
-#networking-graphs {
-    margin: 0;
-
-    /* Bootstrap uses 20px padding for row children. Compensate. */
-    padding: 1rem calc(3rem - 20px);
-
-    .row {
-        margin: 0;
-    }
 }
 
 #firewall-heading {

@@ -359,6 +359,7 @@ $desktop: $phone + 1px;
 
   > .pf-c-select {
     height: 100%;
+    display: flex;
 
     .pf-c-select__toggle-text {
       text-align: left;

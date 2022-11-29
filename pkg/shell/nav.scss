@@ -582,7 +582,7 @@ $desktop: $phone + 1px;
 
   // Use the "current" background for actions color when item is selected
   .pf-m-current + .nav-item-actions {
-    --pf-c-nav__link--BackgroundColor: var(--pf-c-nav--m-dark__item--m-current--BackgroundColor);
+    background-color: var(--pf-c-nav__link--m-current--BackgroundColor);
   }
 }
 
@@ -751,8 +751,10 @@ $desktop: $phone + 1px;
   }
 
   // Redefine the background color for current links
-  .pf-theme-dark .area-ct-subnav .pf-c-nav__link {
-    --pf-c-nav__link--m-current--BackgroundColor: var(--pf-global--BackgroundColor--dark-200);
+  .area-ct-subnav .pf-c-nav__item {
+    > .pf-m-current, .pf-m-current + .nav-item-actions {
+      --pf-c-nav__link--m-current--BackgroundColor: var(--pf-global--BackgroundColor--dark-200);
+    }
   }
 
   // Add a border to the right of the sidebar (without affecting flow)

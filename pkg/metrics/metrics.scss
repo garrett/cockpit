@@ -417,11 +417,6 @@ $graphs: cpu, memory, disks, network;
 
     &-expander {
       min-inline-size: 3rem;
-
-      // Flip expander for RTL
-      [dir="rtl"] & {
-        transform: scaleX(-1);
-      }
     }
 
     time:first-child {

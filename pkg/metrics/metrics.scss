@@ -43,12 +43,12 @@ html {
 
   // the cards already have padding, align the "top 5" tables with the other content
   .pf-c-table {
-    --pf-c-table--m-compact--cell--first-last-child--Paddinginset-inline-start: 0;
+    --pf-c-table--m-compact--cell--first-last-child--PaddingLeft: 0;
     --pf-c-table--m-compact--cell--first-last-child--PaddingRight: 0;
 
     tr > * {
-      --pf-c-table--cell--Paddinginset-block-start: var(--pf-global--spacer--xs);
-      --pf-c-table--cell--Paddinginset-block-end: var(--pf-global--spacer--xs);
+      --pf-c-table--cell--PaddingTop: var(--pf-global--spacer--xs);
+      --pf-c-table--cell--PaddingBottom: var(--pf-global--spacer--xs);
     }
   }
 
@@ -230,10 +230,10 @@ html {
     }
 
     tbody tr:not(.pf-c-table__expandable-row) {
-      --pf-c-table-tr--responsive--Paddinginset-block-start: var(--pf-global--spacer--sm);
+      --pf-c-table-tr--responsive--PaddingTop: var(--pf-global--spacer--sm);
       --pf-c-table-tr--responsive--PaddingRight: 0;
-      --pf-c-table-tr--responsive--Paddinginset-block-end: var(--pf-global--spacer--sm);
-      --pf-c-table-tr--responsive--Paddinginset-inline-start: 0;
+      --pf-c-table-tr--responsive--PaddingBottom: var(--pf-global--spacer--sm);
+      --pf-c-table-tr--responsive--PaddingLeft: 0;
       --pf-c-table-tr--responsive--border-width--base: 1px;
 
       &:last-child {
@@ -241,8 +241,8 @@ html {
       }
 
       > * {
-        --pf-c-table--cell--responsive--Paddinginset-block-start: 0;
-        --pf-c-table--cell--responsive--Paddinginset-block-end: 0;
+        --pf-c-table--cell--responsive--PaddingTop: 0;
+        --pf-c-table--cell--responsive--PaddingBottom: 0;
       }
     }
   }
@@ -289,12 +289,12 @@ html {
 
   // Shave off a few pixels from cards
   .pf-c-card__header, .pf-c-card__title, .pf-c-card__body, .pf-c-card__footer {
-    --pf-c-card--first-child--Paddinginset-block-start: var(--pf-global--spacer--sm);
-    --pf-c-card__title--not--last-child--Paddinginset-block-end: var(--pf-global--spacer--sm);
-    --pf-c-card--child--Paddinginset-block-start: var(--pf-global--spacer--sm);
+    --pf-c-card--first-child--PaddingTop: var(--pf-global--spacer--sm);
+    --pf-c-card__title--not--last-child--PaddingBottom: var(--pf-global--spacer--sm);
+    --pf-c-card--child--PaddingTop: var(--pf-global--spacer--sm);
     --pf-c-card--child--PaddingRight: var(--pf-global--spacer--md);
-    --pf-c-card--child--Paddinginset-block-end: var(--pf-global--spacer--sm);
-    --pf-c-card--child--Paddinginset-inline-start: var(--pf-global--spacer--md);
+    --pf-c-card--child--PaddingBottom: var(--pf-global--spacer--sm);
+    --pf-c-card--child--PaddingLeft: var(--pf-global--spacer--md);
   }
 }
 

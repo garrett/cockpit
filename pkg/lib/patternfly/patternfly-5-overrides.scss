@@ -403,9 +403,24 @@ ul.pf-v5-c-select__menu {
   margin-inline: var(--pf-v5-c-data-list__item-action--MarginLeft) 0;
 }
 
+// RTL fix: checkboxes and dropdown fixes
+.pf-v5-c-data-list__item-control {
+  margin-inline: var(--pf-v5-c-data-list__item-control--MarginLeft, 0) var(--pf-v5-c-data-list__item-control--MarginRight);
+}
+
+// RTL fix: Controls in groups
+.pf-v5-c-form__group-control.pf-m-inline > * {
+  margin-inline: var(--pf-v5-c-form__group-control--m-inline--child--MarginLeft, 0) var(--pf-v5-c-form__group-control--m-inline--child--MarginRight);
+}
+
 // RTL fix: Align right utilities in flexes
 .pf-v5-l-flex > .pf-m-align-right {
   margin-inline: auto 0;
+}
+
+// RTL fix: Toolbar items
+.pf-v5-c-toolbar__item {
+  margin-inline: unset var(--pf-v5-c-toolbar--spacer);
 }
 
 // Override PF to fix Right to Left languages

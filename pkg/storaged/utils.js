@@ -245,6 +245,10 @@ export function block_name(block) {
     return decode_filename(block.PreferredDevice);
 }
 
+export function block_short_name(block) {
+    return block_name(block).replace(/^\/dev\//, "");
+}
+
 export function mdraid_name(mdraid) {
     if (!mdraid.Name)
         return "";
@@ -339,7 +343,7 @@ export function get_block_link_parts(client, path) {
             location = ["vdo", vdo.name];
             link = cockpit.format(_("VDO device $0"), vdo.name);
         } else {
-            location = [block_name(block).replace(/^\/dev\//, "")];
+            location = [block_short_name(block)];
             if (client.drives[block.Drive])
                 link = drive_name(client.drives[block.Drive]);
             else

@@ -29,7 +29,7 @@ import { StorageButton } from "../storage-controls.jsx";
 import { StorageCard, StorageDescription, PageTable, new_page, new_card, get_crossrefs, navigate_away_from_card } from "../pages.jsx";
 import { make_block_page } from "../block/create-pages.jsx";
 import {
-    block_name, mdraid_name, encode_filename, decode_filename,
+    block_short_name, mdraid_name, encode_filename, decode_filename,
     fmt_size, fmt_size_long, get_active_usage, teardown_active_usage,
     get_available_spaces, prepare_available_spaces,
     reload_systemd,
@@ -212,7 +212,7 @@ export function make_mdraid_page(parent, mdraid) {
         title: _("MDRAID device"),
         next: disks_card,
         page_location: ["mdraid", mdraid.UUID],
-        page_name: block ? block_name(block) : mdraid_name(mdraid),
+        page_name: block ? block_short_name(block) : mdraid_name(mdraid),
         page_size: mdraid.Size,
         type_extra: !block && _("stopped"),
         id_extra: block && _("MDRAID device"),

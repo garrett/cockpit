@@ -91,6 +91,7 @@ const DriveCard = ({ card, page, drive }) => {
         <StorageCard card={card}>
             <CardBody>
                 <DescriptionList className="pf-m-horizontal-on-sm">
+                    <StorageDescription title={_("Vendor")} value={drive.Vendor} />
                     <StorageDescription title={_("Model")} value={drive.Model} />
                     <StorageDescription title={_("Firmware version")} value={drive.Revision} />
                     <StorageDescription title={_("Serial number")} value={drive.Serial} />

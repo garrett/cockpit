@@ -27,7 +27,6 @@ import { DescriptionList } from "@patternfly/react-core/dist/esm/components/Desc
 
 import { StorageCard, StorageDescription, new_card, register_crossref } from "../pages.jsx";
 import { format_dialog } from "../block/format-dialog.jsx";
-import { fmt_size } from "../utils.js";
 import { std_lock_action } from "../crypto/actions.jsx";
 import { StorageUsageBar } from "../storage-controls.jsx";
 
@@ -69,17 +68,14 @@ export function make_lvm2_physical_volume_card(next, backing_block, content_bloc
         let remove_excuse = null;
 
         if (vgroup.MissingPhysicalVolumes && vgroup.MissingPhysicalVolumes.length > 0) {
-            remove_excuse = _("Physical volumes can not be removed while a volume group is missing physical volumes.");
+            remove_excuse = _("Volume group is missing physical volumes");
         } else if (pvols.length === 1) {
-            remove_excuse = _("The last physical volume of a volume group cannot be removed.");
+            remove_excuse = _("Last cannot be removed");
         } else if (block_pvol.FreeSize < block_pvol.Size) {
             if (block_pvol.Size <= vgroup.FreeSize)
                 remove_action = pvol_empty_and_remove;
             else
-                remove_excuse = cockpit.format(
-                    _("There is not enough free space elsewhere to remove this physical volume. At least $0 more free space is needed."),
-                    fmt_size(block_pvol.Size - vgroup.FreeSize)
-                );
+                remove_excuse = _("Not enough free space");
         } else {
             remove_action = pvol_remove;
         }

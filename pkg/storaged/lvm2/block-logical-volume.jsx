@@ -180,13 +180,7 @@ export function make_block_logical_volume_card(next, vgroup, lvol, block) {
     let { info, shrink_excuse, grow_excuse } = get_resize_info(client, block, unused_space);
 
     if (!unused_space && !grow_excuse && !pool && vgroup.FreeSize == 0) {
-        grow_excuse = (
-            <div>
-                {_("Not enough space to grow.")}
-                <br />
-                {_("Free up space in this group: Shrink or delete other logical volumes or add another physical volume.")}
-            </div>
-        );
+        grow_excuse = _("Not enough space to grow");
     }
 
     let repair_action = null;

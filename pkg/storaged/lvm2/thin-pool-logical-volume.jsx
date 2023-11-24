@@ -91,15 +91,8 @@ export function make_thin_pool_logical_volume_page(parent, vgroup, lvol) {
 
 function make_lvm2_thin_pool_card(next, vgroup, lvol) {
     let grow_excuse = null;
-    if (vgroup.FreeSize == 0) {
-        grow_excuse = (
-            <div>
-                {_("Not enough space to grow.")}
-                <br />
-                {_("Free up space in this group: Shrink or delete other logical volumes or add another physical volume.")}
-            </div>
-        );
-    }
+    if (vgroup.FreeSize == 0)
+        grow_excuse = _("Not enough space");
 
     const card = new_card({
         title: _("Pool for thinly provisioned LVM2 logical volumes"),

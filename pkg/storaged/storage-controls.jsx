@@ -228,6 +228,8 @@ export const StorageSize = ({ size }) => {
 
 export const StorageMenuItem = ({ onClick, onlyNarrow, danger, excuse, children }) => (
     <DropdownItem className={(onlyNarrow ? "show-only-when-narrow" : "") + (danger ? " delete-resource-red" : "")}
+                  description={excuse}
+                  isDisabled={!!excuse}
                   onKeyDown={checked(onClick, null, excuse)}
                   onClick={checked(onClick, null, excuse)}>
         {children}

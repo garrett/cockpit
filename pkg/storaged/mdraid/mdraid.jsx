@@ -190,7 +190,7 @@ export function make_mdraid_page(parent, mdraid) {
 
     let add_excuse = false;
     if (!block)
-        add_excuse = _("The MDRAID device must be running in order to add spare disks.");
+        add_excuse = _("MDRAID device must be running");
 
     const disks_card = new_card({
         title: _("MDRAID disks"),

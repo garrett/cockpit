@@ -89,13 +89,13 @@ export function make_mdraid_disk_card(next, backing_block, content_block) {
 
         let remove_excuse = null;
         if (!running)
-            remove_excuse = _("The MDRAID device must be running in order to remove disks.");
+            remove_excuse = _("The MDRAID device must be running");
         else if ((is_in_sync && n_recovering > 0) || is_recovering)
-            remove_excuse = _("This disk cannot be removed while the MDRAID device is recovering.");
+            remove_excuse = _("MDRAID device is recovering");
         else if (is_in_sync && n_spares < 1)
-            remove_excuse = _("A spare disk needs to be added first before this disk can be removed.");
+            remove_excuse = _("Need a spare disk");
         else if (members.length <= 1)
-            remove_excuse = _("The last disk of a MDRAID device cannot be removed.");
+            remove_excuse = _("Last disk can not be removed");
 
         let remove_action = null;
         if (mdraid.Level != "raid0")

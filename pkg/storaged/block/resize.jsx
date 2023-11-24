@@ -243,7 +243,7 @@ export function get_resize_info(client, block, to_fit) {
 
             if (!cleartext) {
                 info = { };
-                shrink_excuse = grow_excuse = _("Encrypted volumes need to be unlocked before they can be resized.");
+                shrink_excuse = grow_excuse = _("Unlock before resizing");
             } else {
                 return get_resize_info(client, cleartext, to_fit);
             }
@@ -252,15 +252,20 @@ export function get_resize_info(client, block, to_fit) {
 
             if (!info) {
                 info = { };
-                shrink_excuse = grow_excuse = cockpit.format(_("$0 filesystems can not be resized here."),
+                shrink_excuse = grow_excuse = cockpit.format(_("$0 can not be resized here"),
                                                              block.IdType);
             } else {
-                if (!info.can_shrink)
-                    shrink_excuse = cockpit.format(_("$0 filesystems can not be made smaller."),
-                                                   block.IdType);
-                if (!info.can_grow)
-                    grow_excuse = cockpit.format(_("$0 filesystems can not be made larger."),
-                                                 block.IdType);
+                if (!info.can_shrink && !info.can_grow) {
+                    shrink_excuse = grow_excuse = cockpit.format(_("$0 can not be resized"),
+                                                                 block.IdType);
+                } else {
+                    if (!info.can_shrink)
+                        shrink_excuse = cockpit.format(_("$0 can not be made smaller"),
+                                                       block.IdType);
+                    if (!info.can_grow)
+                        grow_excuse = cockpit.format(_("$0 can not be made larger"),
+                                                     block.IdType);
+                }
             }
         } else if (client.blocks_stratis_blockdev[block.path] && client.features.stratis_grow_blockdevs) {
             info = {
@@ -271,7 +276,7 @@ export function get_resize_info(client, block, to_fit) {
             shrink_excuse = _("Stratis blockdevs can not be made smaller");
         } else if (block.IdUsage == 'raid') {
             info = { };
-            shrink_excuse = grow_excuse = _("Physical volumes can not be resized here.");
+            shrink_excuse = grow_excuse = _("Physical volumes can not be resized here");
         } else if (client.legacy_vdo_overlay.find_by_backing_block(block)) {
             info = {
                 can_shrink: false,
@@ -292,7 +297,7 @@ export function get_resize_info(client, block, to_fit) {
                 can_grow: true,
                 grow_needs_unmount: true
             };
-            shrink_excuse = _("Unrecognized data can not be made smaller here.");
+            shrink_excuse = _("Unrecognized data can not be made smaller here");
         }
         if (to_fit) {
             // Shrink to fit doesn't need to resize the content
@@ -300,7 +305,7 @@ export function get_resize_info(client, block, to_fit) {
         }
     } else {
         info = { };
-        shrink_excuse = grow_excuse = _("This volume needs to be activated before it can be resized.");
+        shrink_excuse = grow_excuse = _("Activate before resizing");
     }
 
     return { info, shrink_excuse, grow_excuse };

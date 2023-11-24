@@ -326,7 +326,7 @@ export function make_stratis_pool_page(parent, pool) {
                 title: _("Create new filesystem"),
                 action: () => create_fs(pool),
                 excuse: (managed_fsys_sizes && stats.pool_free < fsys_min_size
-                    ? _("Not enough space for new filesystems")
+                    ? _("Not enough space")
                     : null),
             },
         ],

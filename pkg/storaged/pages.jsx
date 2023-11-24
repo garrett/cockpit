@@ -221,7 +221,7 @@ function make_page_kebab(page) {
         // "Extended partition") get all their actions in the
         // menu, because there is no other place.
 
-        return !page.location || !action.excuse;
+        return true;
     }
 
     function card_item_group(card) {

@@ -217,7 +217,7 @@ export function make_lvm2_volume_group_page(parent, vgroup) {
 
     let lvol_excuse = null;
     if (has_missing_pvs)
-        lvol_excuse = _("New logical volumes can not be created while a volume group is missing physical volumes.");
+        lvol_excuse = _("Bolume group is missing physical volumes");
     else if (vgroup.FreeSize == 0)
         lvol_excuse = _("No free space");
 

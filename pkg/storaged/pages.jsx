@@ -262,17 +262,42 @@ function make_actions_kebab(actions) {
 const ActionButtons = ({ card }) => {
     const narrow = useIsNarrow();
 
-    if (narrow)
-        return make_actions_kebab(card.actions);
+    function for_menu(action) {
+        // Determine whether a action should get a button or be in the
+        // menu
+
+        // In a narrow layout, everything goes to the menu
+        if (narrow)
+            return true;
+
+        // Everything that is dangerous goes to the menu
+        if (action.danger)
+            return true;
+
+        return false;
+    }
+
+    const buttons = [];
+    const items = [];
 
     if (!card.actions)
         return null;
 
-    return card.actions.map(a =>
-        <StorageButton key={a.title} onClick={() => a.action(false)}
-                       kind={a.danger ? "danger" : null} excuse={a.excuse}>
-            {a.title}
-        </StorageButton>);
+    for (const a of card.actions) {
+        if (for_menu(a))
+            items.push(make_menu_item(a));
+        else
+            buttons.push(
+                <StorageButton key={a.title} onClick={() => a.action(false)}
+                               kind={a.danger ? "danger" : null} excuse={a.excuse}>
+                    {a.title}
+                </StorageButton>);
+    }
+
+    if (items.length > 0)
+        buttons.push(<StorageBarMenu key="menu" menuItems={items} isKebab />);
+
+    return buttons;
 };
 
 function page_type_extra(page) {

@@ -24,6 +24,7 @@ import client from "../client";
 import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
 import { CardBody } from "@patternfly/react-core/dist/esm/components/Card/index.js";
 import { DescriptionList } from "@patternfly/react-core/dist/esm/components/DescriptionList/index.js";
+import { VolumeIcon } from "@patternfly/react-icons";
 
 import { StorageButton } from "../storage-controls.jsx";
 import { StorageCard, StorageDescription, PageTable, new_page, new_card, get_crossrefs, navigate_away_from_card } from "../pages.jsx";
@@ -213,6 +214,7 @@ export function make_mdraid_page(parent, mdraid) {
         next: disks_card,
         page_location: ["mdraid", mdraid.UUID],
         page_name: block ? block_short_name(block) : mdraid_name(mdraid),
+        page_icon: VolumeIcon,
         page_size: mdraid.Size,
         type_extra: !block && _("stopped"),
         id_extra: block && _("MDRAID device"),

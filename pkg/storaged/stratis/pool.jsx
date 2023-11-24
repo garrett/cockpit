@@ -26,6 +26,7 @@ import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js
 import { CardBody } from "@patternfly/react-core/dist/esm/components/Card/index.js";
 import { DescriptionList } from "@patternfly/react-core/dist/esm/components/DescriptionList/index.js";
 import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
+import { VolumeIcon } from "@patternfly/react-icons";
 
 import { fmt_to_fragments } from "utils.jsx";
 
@@ -301,6 +302,7 @@ export function make_stratis_pool_page(parent, pool) {
         next: blockdevs_card,
         page_location: ["pool", pool.Uuid],
         page_name: pool.Name,
+        page_icon: VolumeIcon,
         page_size: ((!managed_fsys_sizes && use)
             ? <StorageUsageBar key="s" stats={use} short />
             : Number(pool.TotalPhysicalSize)),

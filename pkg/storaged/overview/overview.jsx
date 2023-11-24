@@ -185,6 +185,7 @@ const OverviewCard = ({ card, plot_state }) => {
                     <CardBody className="contains-list">
                         <ChildrenTable emptyCaption={_("No storage found")}
                                        aria-label={_("Storage")}
+                                       show_icons
                                        page={card.page} />
                     </CardBody>
                 </StorageCard>

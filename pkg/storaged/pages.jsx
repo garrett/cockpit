@@ -60,6 +60,12 @@ function name_from_card(card) {
     return name_from_card(card.next) || card.page_name;
 }
 
+function icon_from_card(card) {
+    if (!card)
+        return null;
+    return icon_from_card(card.next) || card.page_icon;
+}
+
 function key_from_card(card) {
     if (!card)
         return null;
@@ -84,6 +90,7 @@ export function new_page(parent, card, options) {
     const page = {
         location: location_from_card(card),
         name: name_from_card(card),
+        icon: icon_from_card(card),
         key: key_from_card(card),
         parent,
         children: [],
@@ -116,7 +123,7 @@ export function new_page(parent, card, options) {
 export function new_card({
     title, location, next,
     type_extra, id_extra,
-    page_name, page_key, page_location, page_size,
+    page_name, page_icon, page_key, page_location, page_size,
     page_block,
     for_summary,
     has_warning, has_danger, job_path,
@@ -135,6 +142,7 @@ export function new_card({
         next,
         type_extra,
         page_name,
+        page_icon,
         page_key,
         page_location,
         page_size,
@@ -377,7 +385,7 @@ export const useIsNarrow = (onChange) => {
     return narrow_query.matches;
 };
 
-export const PageTable = ({ emptyCaption, aria_label, pages, crossrefs, sorted }) => {
+export const PageTable = ({ emptyCaption, aria_label, pages, crossrefs, sorted, show_icons }) => {
     const [collapsed, setCollapsed] = useState(true);
     const firstKeys = useRef(false);
     const narrow = useIsNarrow(() => { firstKeys.current = false });
@@ -415,6 +423,7 @@ export const PageTable = ({ emptyCaption, aria_label, pages, crossrefs, sorted }
         else if (card_has_warning(page.card))
             info = <>{"\n"}<ExclamationTriangleIcon className="ct-icon-exclamation-triangle" />{info}</>;
 
+        const icon = (show_icons && page.icon) ? <page.icon /> : null;
         const name = crossref ? page.name : page_display_name(page);
         const type = crossref ? page_block_summary(page) : page_type(page);
         const location = crossref ? crossref.extra : page.columns[1];
@@ -452,6 +461,7 @@ export const PageTable = ({ emptyCaption, aria_label, pages, crossrefs, sorted }
                                  (is_new ? " ct-new-item" : "")}>
                     <CardBody>
                         <Split hasGutter>
+                            { icon && <SplitItem>{icon}</SplitItem> }
                             <SplitItem isFilled><strong>{name}</strong>{info}</SplitItem>
                             <SplitItem>{actions}</SplitItem>
                         </Split>
@@ -470,6 +480,8 @@ export const PageTable = ({ emptyCaption, aria_label, pages, crossrefs, sorted }
                 <Td key="4" className="ct-size-column">{size}</Td>,
                 <Td key="5" className="pf-v5-c-table__action">{actions || <div /> }</Td>,
             ];
+            if (show_icons)
+                cols.unshift(<Td key="0">{icon}</Td>);
 
             rows.push(
                 <Tr key={key}
@@ -547,6 +559,7 @@ export const PageTable = ({ emptyCaption, aria_label, pages, crossrefs, sorted }
                     { pages &&
                     <Thead>
                         <Tr>
+                            { show_icons && <Th /> }
                             <Th>{_("ID")}</Th>
                             <Th>{_("Type")}</Th>
                             <Th>{_("Location")}</Th>
@@ -563,11 +576,12 @@ export const PageTable = ({ emptyCaption, aria_label, pages, crossrefs, sorted }
         </div>);
 };
 
-export const ChildrenTable = ({ emptyCaption, aria_label, page }) => {
+export const ChildrenTable = ({ emptyCaption, aria_label, page, show_icons }) => {
     return <PageTable emptyCaption={emptyCaption}
                       aria_label={aria_label}
                       pages={page.children}
-                      sorted={page.options.sorted} />;
+                      sorted={page.options.sorted}
+                      show_icons={show_icons} />;
 };
 
 function page_id_extra(page) {

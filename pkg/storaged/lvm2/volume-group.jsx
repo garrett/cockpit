@@ -24,6 +24,8 @@ import client from "../client";
 import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
 import { CardBody } from "@patternfly/react-core/dist/esm/components/Card/index.js";
 import { DescriptionList } from "@patternfly/react-core/dist/esm/components/DescriptionList/index.js";
+import { VolumeIcon } from "@patternfly/react-icons";
+
 import { useObject } from "hooks";
 
 import { StorageButton, StorageLink } from "../storage-controls.jsx";
@@ -240,6 +242,7 @@ export function make_lvm2_volume_group_page(parent, vgroup) {
         next: pvols_card,
         page_location: ["vg", vgroup.Name],
         page_name: vgroup.Name,
+        page_icon: VolumeIcon,
         page_size: vgroup.Size,
         job_path: vgroup.path,
         component: LVM2VolumeGroupCard,

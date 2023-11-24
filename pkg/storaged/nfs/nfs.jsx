@@ -24,6 +24,7 @@ import client from "../client";
 import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
 import { CardBody } from "@patternfly/react-core/dist/esm/components/Card/index.js";
 import { DescriptionList } from "@patternfly/react-core/dist/esm/components/DescriptionList/index.js";
+import { NetworkIcon } from "@patternfly/react-icons";
 
 import {
     dialog_open, TextInput, ComboBox, CheckBoxes,
@@ -291,6 +292,7 @@ export function make_nfs_page(parent, entry) {
         next: null,
         page_location: ["nfs", remote, local],
         page_name: remote,
+        page_icon: NetworkIcon,
         page_size: <NfsEntryUsageBar key="size" entry={entry} not_mounted_text={null} short />,
         component: NfsCard,
         props: { entry },

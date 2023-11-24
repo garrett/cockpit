@@ -196,7 +196,7 @@ tr[class*="content-level-"] {
   --multiplier: 0;
   --offset: calc(var(--pf-v5-global--spacer--lg) * var(--multiplier));
 
-  > td:first-child {
+  > td:nth-child(2) {
     position: relative;
     inset-inline-start: var(--offset);
   }

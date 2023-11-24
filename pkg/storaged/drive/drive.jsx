@@ -24,6 +24,7 @@ import client from "../client";
 import { CardBody } from "@patternfly/react-core/dist/esm/components/Card/index.js";
 import { DescriptionList } from "@patternfly/react-core/dist/esm/components/DescriptionList/index.js";
 import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
+import { OutlinedHddIcon, MicrochipIcon, SaveIcon } from "@patternfly/react-icons";
 
 import { StorageCard, StorageDescription, new_card, new_page } from "../pages.jsx";
 import { block_name, drive_name, format_temperature, fmt_size_long } from "../utils.js";
@@ -46,10 +47,29 @@ export function make_drive_page(parent, drive) {
     if (!block)
         return;
 
+    let cls;
+    if (drive.MediaRemovable || drive.Media)
+        cls = "media";
+    else
+        cls = (drive.RotationRate === 0) ? "ssd" : "hdd";
+
+    const drive_title = {
+        media: _("Media drive"),
+        ssd: _("Solid State Drive"),
+        hdd: _("Hard Disk Drive"),
+    };
+
+    const drive_icon = {
+        media: SaveIcon,
+        ssd: MicrochipIcon,
+        hdd: OutlinedHddIcon,
+    };
+
     const drive_card = new_card({
-        title: _("Drive"),
+        title: drive_title[cls],
         next: null,
         page_block: block,
+        page_icon: drive_icon[cls],
         for_summary: true,
         id_extra: drive_name(drive),
         job_path: drive.path,

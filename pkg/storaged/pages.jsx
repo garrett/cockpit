@@ -619,13 +619,12 @@ const PageCardStackItems = ({ page, plot_state }) => {
     let c = page.card;
     while (c) {
         items.push(<React.Fragment key={items.length}>
-            { (items.length > 0) &&
+            { c.next &&
             <Bullseye>
                 <Icon size="lg">
                     <LongArrowAltDownIcon />
                 </Icon>
-            </Bullseye>
-            }
+            </Bullseye> }
             <StackItem>
                 <c.component card={c} plot_state={plot_state} {...c.props} />
             </StackItem>
@@ -635,11 +634,6 @@ const PageCardStackItems = ({ page, plot_state }) => {
 
     if (page.parent && page.parent.parent) {
         items.push(<React.Fragment key={items.length}>
-            <Bullseye>
-                <Icon size="lg">
-                    <LongArrowAltDownIcon />
-                </Icon>
-            </Bullseye>
             <StackItem>
                 <Bullseye>
                     <Card data-test-card-title="_parent">
@@ -649,10 +643,15 @@ const PageCardStackItems = ({ page, plot_state }) => {
                     </Card>
                 </Bullseye>
             </StackItem>
+            <Bullseye>
+                <Icon size="lg">
+                    <LongArrowAltDownIcon />
+                </Icon>
+            </Bullseye>
         </React.Fragment>);
     }
 
-    return items;
+    return items.reverse();
 };
 
 export function block_location(block) {

@@ -117,6 +117,8 @@ This assertion method requires at least a CSS selector and an image title.
 Pixel tests are generated in five layouts by default: desktop, medium, mobile,
 dark and rtl.
 
+FIXME: #detail-content no longer exists
+
 Take a screenshot of the content in `#detail-content`:
 ```python
 browser.assert_pixels("#detail-content", "filesystem")

@@ -34,7 +34,7 @@ class TestStorageMsDOS(storagelib.StorageCase):
         b.click(self.card_row("Storage", name=disk))
 
         # Format it with a DOS partition table
-        b.click(self.card_button("Solid State Drive", "Create partition table"))
+        self.click_card_dropdown("Solid State Drive", "Create partition table")
         self.dialog({"type": "dos"})
         b.wait_text(self.card_row_col("Partitions", 1, 1), "Free space")
 
@@ -49,7 +49,7 @@ class TestStorageMsDOS(storagelib.StorageCase):
 
         # Open dialog for formatting the primary partition and check that "dos-extended" is not offered.
         b.click(self.card_row("Partitions", 1))
-        b.click(self.card_button("ext4 filesystem", "Format"))
+        self.click_card_dropdown("ext4 filesystem", "Format")
         self.dialog_wait_open()
         b.wait_not_present("select option[value='dos-extended']")
         self.dialog_cancel()

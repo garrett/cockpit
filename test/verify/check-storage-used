@@ -63,7 +63,7 @@ ExecStart=/usr/bin/sleep infinity
         b.wait_visible(self.card("Solid State Drive"))
 
         b.click(self.card_row("Partitions", 1))
-        b.click(self.card_button("ext2 filesystem", "Format"))
+        self.click_card_dropdown("ext2 filesystem", "Format")
         self.dialog_wait_open()
         b.click("#dialog button:contains(Currently in use)")
         b.wait_in_text(".pf-v5-c-popover", str(sleep_pid))
@@ -76,7 +76,7 @@ ExecStart=/usr/bin/sleep infinity
         self.dialog_cancel()
         self.dialog_wait_close()
 
-        b.click(self.card_button("Partition", "Delete"))
+        self.click_card_dropdown("Partition", "Delete")
         self.dialog_wait_open()
         b.wait_visible("#dialog button:contains(Currently in use)")
         b.assert_pixels('#dialog', "delete")
@@ -100,7 +100,8 @@ ExecStart=/usr/bin/sleep infinity
         def retry_setup():
             self.dialog_set_val("type", "empty")
 
-        self.dialog_with_error_retry(trigger=lambda: b.click(self.card_button("Solid State Drive", "Create partition table")),
+        self.dialog_with_error_retry(trigger=lambda: self.click_card_dropdown("Solid State Drive",
+                                                                              "Create partition table"),
                                      first_setup=first_setup,
                                      retry_setup=retry_setup,
                                      errors=["Timed out waiting for object"])
@@ -129,7 +130,7 @@ ExecStart=/usr/bin/sleep infinity
         # group.
 
         b.click(self.card_row("Storage", name=dev_1))
-        b.click(self.card_button("Solid State Drive", "Create partition table"))
+        self.click_card_dropdown("Solid State Drive", "Create partition table")
         b.wait_in_text('#dialog', "remove from LVM2, initialize")
         self.dialog_apply()
         self.dialog_wait_close()
@@ -140,7 +141,7 @@ ExecStart=/usr/bin/sleep infinity
 
         b.go("#/")
         b.click(self.card_row("Storage", name=dev_2))
-        b.click(self.card_button("Block device", "Create partition table"))
+        self.click_card_dropdown("Block device", "Create partition table")
         b.wait_in_text('#dialog', "remove from LVM2, initialize")
         self.dialog_apply()
         self.dialog_wait_close()
@@ -171,7 +172,7 @@ ExecStart=/usr/bin/sleep infinity
 
         m.spawn("cd /mnt; sleep infinity; true", "sleep")
 
-        b.click(self.card_button("Solid State Drive", "Create partition table"))
+        self.click_card_dropdown("Solid State Drive", "Create partition table")
         self.dialog_wait_open()
         b.wait_visible("#dialog tbody:first-of-type button:contains(Currently in use)")
         self.dialog_wait_apply_enabled()
@@ -182,7 +183,7 @@ ExecStart=/usr/bin/sleep infinity
         self.dialog_cancel()
         self.dialog_wait_close()
 
-        b.click(self.card_button("Solid State Drive", "Create partition table"))
+        self.click_card_dropdown("Solid State Drive", "Create partition table")
         self.dialog_wait_open()
         b.wait_visible("#dialog button:contains(Currently in use)")
         self.dialog_apply()

@@ -168,7 +168,7 @@ class TestStorageLvm2(storagelib.StorageCase):
         self.dialog({"size": 30})
 
         # format and mount it
-        b.click(self.card_button("Unformatted data", "Format"))
+        self.click_card_dropdown("Unformatted data", "Format")
         self.dialog({"type": "ext4",
                      "mount_point": mount_point_one})
         self.wait_mounted("ext4 filesystem")
@@ -185,7 +185,7 @@ class TestStorageLvm2(storagelib.StorageCase):
         self.dialog({"size": 10})
 
         # delete it
-        b.click(self.card_button("LVM2 logical volume", "Delete"))
+        self.click_card_dropdown("LVM2 logical volume", "Delete")
         self.confirm()
         b.wait_visible(self.card("LVM2 logical volumes"))
         b.wait_not_present(self.card_row("LVM2 logical volumes", name="lvol1"))
@@ -229,7 +229,7 @@ class TestStorageLvm2(storagelib.StorageCase):
 
         # use almost all of the pool by erasing the thin volume
         b.click(self.card_row("Thinly provisioned LVM2 logical volumes", 1))
-        b.click(self.card_button("Unformatted data", "Format"))
+        self.click_card_dropdown("Unformatted data", "Format")
         self.dialog({"erase.on": True,
                      "type": "ext4",
                      "mount_point": mount_point_thin})
@@ -240,7 +240,7 @@ class TestStorageLvm2(storagelib.StorageCase):
         b.assert_pixels('body', "pool-page")
 
         # remove pool
-        b.click(self.card_button("Pool for thinly provisioned LVM2 logical volumes", "Delete"))
+        self.click_card_dropdown("Pool for thinly provisioned LVM2 logical volumes", "Delete")
         self.confirm()
         b.wait_visible(self.card("LVM2 logical volumes"))
         b.wait_not_present(self.card_row("LVM2 logical volumes", name="pool"))
@@ -254,7 +254,7 @@ class TestStorageLvm2(storagelib.StorageCase):
                     values={"purpose": "block"})
         b.wait_text(self.card_row_col("LVM2 logical volumes", 1, 1), "lvol0")
         b.click(self.card_row("LVM2 logical volumes", 1))
-        b.click(self.card_button("Unformatted data", "Format"))
+        self.click_card_dropdown("Unformatted data", "Format")
         self.dialog({"type": "ext4",
                      "mount_point": mount_point_one})
         self.assert_in_configuration("/dev/vgroup0/lvol0", "fstab", "dir", mount_point_one)
@@ -274,7 +274,7 @@ class TestStorageLvm2(storagelib.StorageCase):
         self.dialog_wait_close()
 
         # remove volume group
-        b.click(self.card_button("LVM2 volume group", "Delete"))
+        self.click_card_dropdown("LVM2 volume group", "Delete")
         self.confirm()
         b.wait_visible(self.card("Storage"))
         b.wait_not_present(self.card_row("Storage", name="vgroup1"))
@@ -673,7 +673,7 @@ class TestStorageLvm2(storagelib.StorageCase):
 
             b.wait_in_text(self.card_desc("LVM2 logical volume", "Size"), mb(expected_size))
 
-            b.click(self.card_button("LVM2 logical volume", "Delete"))
+            self.click_card_dropdown("LVM2 logical volume", "Delete")
             self.confirm()
             b.wait_visible(self.card("LVM2 logical volumes"))
             b.wait_not_present(self.card_row("LVM2 logical volumes", name="lvol0"))
@@ -768,7 +768,7 @@ class TestStorageLvm2(storagelib.StorageCase):
 
             b.wait_in_text(self.card_desc("LVM2 logical volume", "Size"), mb(expected_size))
 
-            b.click(self.card_button("LVM2 logical volume", "Delete"))
+            self.click_card_dropdown("LVM2 logical volume", "Delete")
             self.confirm()
             b.wait_visible(self.card("LVM2 logical volumes"))
             b.wait_not_present(self.card_row("LVM2 logical volumes", name="lvol0"))

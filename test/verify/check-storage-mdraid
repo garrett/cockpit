@@ -169,7 +169,7 @@ class TestStorageMdRaid(storagelib.StorageCase):
         part_prefix = "/dev/md/raid0p"
 
         # Create Partition Table
-        b.click(self.card_button("MDRAID device", "Create partition table"))
+        self.click_card_dropdown("MDRAID device", "Create partition table")
         self.dialog({"type": "gpt"})
         b.wait_text(self.card_row_col("Partitions", 1, 1), "Free space")
 
@@ -232,7 +232,7 @@ class TestStorageMdRaid(storagelib.StorageCase):
 
         # Remove it by formatting DISK2
         b.click(self.card_row("MDRAID disks", name=disk2))
-        b.click(self.card_button("Solid State Drive", "Create partition table"))
+        self.click_card_dropdown("Solid State Drive", "Create partition table")
         b.wait_in_text('#dialog', "remove from MDRAID, initialize")
         self.dialog_set_val("type", "empty")
         self.dialog_apply()

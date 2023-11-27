@@ -46,7 +46,7 @@ class TestStorageLuks(storagelib.StorageCase):
         # Add a disk and partition it
         disk = self.add_ram_disk(100)
         b.click(self.card_row("Storage", name=disk))
-        b.click(self.card_button("Solid State Drive", "Create partition table"))
+        self.click_card_dropdown("Solid State Drive", "Create partition table")
         self.dialog({"type": "gpt"})
         b.wait_text(self.card_row_col("Partitions", 1, 1), "Free space")
 
@@ -167,7 +167,7 @@ class TestStorageLuks(storagelib.StorageCase):
         self.assert_in_configuration(cleartext_dev, "fstab", "opts", "ro")
 
         # Delete the partition.
-        b.click(self.card_button("Partition", "Delete"))
+        self.click_card_dropdown("Partition", "Delete")
         self.confirm()
         b.wait_text(self.card_row_col("Partitions", 1, 1), "Free space")
         # luksmeta-monitor-hack.py races with the partition deletion
@@ -196,7 +196,7 @@ class TestStorageLuks(storagelib.StorageCase):
         disk = self.add_ram_disk()
         b.click(self.card_row("Storage", name=disk))
 
-        b.click(self.card_button("Unformatted data", "Format"))
+        self.click_card_dropdown("Unformatted data", "Format")
         self.dialog({"type": "empty",
                      "crypto": self.default_crypto_type,
                      "passphrase": "vainu-reku-toma-rolle-kaja",
@@ -224,7 +224,7 @@ class TestStorageLuks(storagelib.StorageCase):
         self.dialog({"passphrase": "vainu-reku-toma-rolle-kaja"})
 
         # Try to format it, just for kicks
-        b.click(self.card_button("Unformatted data", "Format"))
+        self.click_card_dropdown("Unformatted data", "Format")
         self.dialog({"type": "ext4",
                      "mount_point": "/run/foo"})
         b.wait_visible(self.card("ext4 filesystem"))
@@ -239,7 +239,7 @@ class TestStorageLuks(storagelib.StorageCase):
         disk = self.add_ram_disk()
         b.click(self.card_row("Storage", name=disk))
 
-        b.click(self.card_button("Unformatted data", "Format"))
+        self.click_card_dropdown("Unformatted data", "Format")
         self.dialog({"type": "ext4",
                      "crypto": self.default_crypto_type,
                      "passphrase": "vainu-reku-toma-rolle-kaja",
@@ -249,7 +249,7 @@ class TestStorageLuks(storagelib.StorageCase):
 
         # Format it again but keep the keys
 
-        b.click(self.card_button("ext4 filesystem", "Format"))
+        self.click_card_dropdown("ext4 filesystem", "Format")
         self.dialog({"type": "ext4",
                      "crypto": " keep",
                      "mount_point": "/run/foo"})
@@ -264,7 +264,7 @@ class TestStorageLuks(storagelib.StorageCase):
         # Format it again and keep the keys.  Because it's locked, we
         # need the old passphrase.
 
-        b.click(self.card_button("Filesystem", "Format"))
+        self.click_card_dropdown("Filesystem", "Format")
         self.dialog({"type": "ext4",
                      "crypto": " keep",
                      "old_passphrase": "vainu-reku-toma-rolle-kaja",
@@ -299,7 +299,7 @@ class TestStorageLuksDestructive(storagelib.StorageCase):
         dev = "/dev/sda"
         b.click(self.card_row("Storage", name=dev))
         # create volume and passphrase
-        b.click(self.card_button("Unformatted data", "Format"))
+        self.click_card_dropdown("Unformatted data", "Format")
         self.dialog({"type": "ext4",
                      "crypto": "luks1",
                      "name": "ENCRYPTED",
@@ -439,7 +439,7 @@ class TestStorageLuksDestructive(storagelib.StorageCase):
         m.add_disk("50M", serial="MYDISK")
         b.click(self.card_row("Storage", name=dev))
 
-        b.click(self.card_button("Unformatted data", "Format"))
+        self.click_card_dropdown("Unformatted data", "Format")
         self.dialog({"type": "ext4",
                      "crypto": self.default_crypto_type,
                      "passphrase": "vainu-reku-toma-rolle-kaja",
@@ -486,7 +486,7 @@ class TestStorageNBDE(storagelib.StorageCase, packagelib.PackageCase):
         m.add_disk("50M", serial="MYDISK")
         b.click(self.card_row("Storage", name=dev))
 
-        b.click(self.card_button("Unformatted data", "Format"))
+        self.click_card_dropdown("Unformatted data", "Format")
         self.dialog({"type": "ext4",
                      "crypto": self.default_crypto_type,
                      "name": "ENCRYPTED",

@@ -590,8 +590,11 @@ grubby --update-kernel=ALL --args="root=UUID=$uuid rootflags=defaults rd.luks.uu
         self.browser.click(self.dropdown_toggle(parent))
         self.browser.click(self.dropdown_action(parent, title))
 
+    def click_card_dropdown(self, card_title, button_title):
+        self.click_dropdown(self.card_header(card_title), button_title)
+
     def click_devices_dropdown(self, title):
-        self.click_dropdown(self.card_header("Storage"), title)
+        self.click_card_dropdown("Storage", title)
 
     def wait_mounted(self, card_title):
         with self.browser.wait_timeout(30):

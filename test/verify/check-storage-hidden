@@ -52,7 +52,7 @@ class TestStorageHiddenLuks(storagelib.StorageCase):
         b.wait_text(self.card_row_col("LVM2 logical volumes", 1, 1), "lvol")
 
         b.click(self.card_row("LVM2 logical volumes", 1))
-        b.click(self.card_button("Unformatted data", "Format"))
+        self.click_card_dropdown("Unformatted data", "Format")
         self.dialog({"type": "ext4",
                      "crypto": self.default_crypto_type,
                      "name": "FS",
@@ -75,7 +75,7 @@ class TestStorageHiddenLuks(storagelib.StorageCase):
         b.wait_text(self.card_row_col("LVM2 logical volumes", 1, 2), "Inactive logical volume")
 
         # Deleting the volume group should still remove the fstab entry
-        b.click(self.card_button("LVM2 volume group", "Delete"))
+        self.click_card_dropdown("LVM2 volume group", "Delete")
         self.confirm()
         b.wait_visible(self.card("Storage"))
         self.assertEqual(m.execute(f"grep {mount_point_1} /etc/fstab || true"), "")
@@ -108,7 +108,7 @@ class TestStorageHidden(storagelib.StorageCase):
 
         b.click(self.card_row("Storage", name="/dev/md/ARR"))
         b.wait_visible(self.card("MDRAID device"))
-        b.click(self.card_button("Unformatted data", "Format"))
+        self.click_card_dropdown("Unformatted data", "Format")
         self.dialog({"type": "ext4",
                      "name": "FS2",
                      "mount_point": mount_point_2})
@@ -118,7 +118,7 @@ class TestStorageHidden(storagelib.StorageCase):
         # we need to wait for mdadm --monitor to stop using the device before delete
         m.execute("while fuser -s /dev/md127; do sleep 0.2; done", timeout=20)
 
-        b.click(self.card_button("MDRAID device", "Delete"))
+        self.click_card_dropdown("MDRAID device", "Delete")
         self.confirm()
         b.wait_visible(self.card("Storage"))
         self.assertEqual(m.execute(f"grep {mount_point_2} /etc/fstab || true"), "")

@@ -105,7 +105,7 @@ class TestStorageISCSI(storagelib.StorageCase):
         # Make a filesystem on it to prove that the disk really works.
 
         b.click(self.card_row("iSCSI drives", 1))
-        b.click(self.card_button("Unformatted data", "Format"))
+        self.click_card_dropdown("Unformatted data", "Format")
         self.dialog({"type": "ext4",
                      "name": "FILESYSTEM",
                      "mount_point": "/data"})

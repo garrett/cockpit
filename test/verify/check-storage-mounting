@@ -39,7 +39,7 @@ class TestStorageMounting(storagelib.StorageCase):
 
         # Format it
 
-        b.click(self.card_button("Unformatted data", "Format"))
+        self.click_card_dropdown("Unformatted data", "Format")
         self.dialog_wait_open()
         self.dialog_set_val("type", "ext4")
         self.dialog_set_val("name", "FILESYSTEM")
@@ -137,7 +137,7 @@ ExecStart=/usr/bin/sleep infinity
 
         # Format it
 
-        b.click(self.card_button("Unformatted data", "Format"))
+        self.click_card_dropdown("Unformatted data", "Format")
         self.dialog_wait_open()
         self.dialog_set_val("type", "ext4")
         self.dialog_set_val("name", "FILESYSTEM")
@@ -226,7 +226,7 @@ ExecStart=/usr/bin/sleep infinity
         disk = self.add_ram_disk()
         b.click(self.card_row("Storage", name=disk))
 
-        b.click(self.card_button("Unformatted data", "Format"))
+        self.click_card_dropdown("Unformatted data", "Format")
         self.dialog({"type": "ext4",
                      "mount_point": "/run/foo"},
                     secondary=True)
@@ -281,7 +281,7 @@ ExecStart=/usr/bin/sleep infinity
         disk = self.add_ram_disk()
         b.click(self.card_row("Storage", name=disk))
 
-        b.click(self.card_button("Unformatted data", "Format"))
+        self.click_card_dropdown("Unformatted data", "Format")
         self.dialog({"type": "ext4",
                      "mount_point": "/foo",
                      "at_boot": "local",
@@ -342,7 +342,7 @@ class TestStorageMountingLUKS(storagelib.StorageCase):
 
         # Format it with encryption
 
-        b.click(self.card_button("Unformatted data", "Format"))
+        self.click_card_dropdown("Unformatted data", "Format")
         self.dialog_wait_open()
         self.dialog_set_val("type", "ext4")
         self.dialog_set_val("name", "FILESYSTEM")
@@ -429,7 +429,7 @@ class TestStorageMountingLUKS(storagelib.StorageCase):
 
         # Encrypt and format the first and give it /run/data as the mount point
         b.click(self.card_row("LVM2 logical volumes", 1))
-        b.click(self.card_button("Unformatted data", "Format"))
+        self.click_card_dropdown("Unformatted data", "Format")
         self.dialog({"type": "ext4",
                      "crypto": self.default_crypto_type,
                      "passphrase": "vainu-reku-toma-rolle-kaja",
@@ -441,7 +441,7 @@ class TestStorageMountingLUKS(storagelib.StorageCase):
 
         # Format the second and also try to use /run/data as the mount point
         b.click(self.card_row("LVM2 logical volumes", 2))
-        b.click(self.card_button("Unformatted data", "Format"))
+        self.click_card_dropdown("Unformatted data", "Format")
         self.dialog_wait_open()
         self.dialog_set_val("type", "ext4")
         self.dialog_set_val("mount_point", "/run/data")
@@ -457,7 +457,7 @@ class TestStorageMountingLUKS(storagelib.StorageCase):
         # Format the first and re-use /run/data as the mount point.
         # This should be allowed.
         b.click(self.card_row("LVM2 logical volumes", 1))
-        b.click(self.card_button("ext4 filesystem", "Format"))
+        self.click_card_dropdown("ext4 filesystem", "Format")
         self.dialog({"type": "ext4",
                      "mount_point": "/run/data"})
         b.click(self.card_parent_link())
@@ -474,7 +474,7 @@ class TestStorageMountingLUKS(storagelib.StorageCase):
         disk = self.add_ram_disk()
         b.click(self.card_row("Storage", name=disk))
 
-        b.click(self.card_button("Unformatted data", "Format"))
+        self.click_card_dropdown("Unformatted data", "Format")
         self.dialog({"type": "ext4",
                      "crypto": self.default_crypto_type,
                      "passphrase": "vainu-reku-toma-rolle-kaja",
@@ -533,7 +533,7 @@ class TestStorageMountingLUKS(storagelib.StorageCase):
         disk = self.add_ram_disk(100)
         b.click(self.card_row("Storage", name=disk))
 
-        b.click(self.card_button("Solid State Drive", "Create partition table"))
+        self.click_card_dropdown("Solid State Drive", "Create partition table")
         self.dialog({"type": "gpt"})
         b.wait_text(self.card_row_col("Partitions", 1, 1), "Free space")
 
@@ -617,7 +617,8 @@ class TestStorageMountingLUKS(storagelib.StorageCase):
             b.wait_text("#dialog tbody:nth-of-type(1) td[data-label=Location]", "/run/foo/bar")
             b.wait_text("#dialog tbody:nth-of-type(2) td[data-label=Location]", "/run/foo")
 
-        self.dialog_with_error_retry(trigger=lambda: b.click(self.card_button("Solid State Drive", "Create partition table")),
+        self.dialog_with_error_retry(trigger=lambda: self.click_card_dropdown("Solid State Drive",
+                                                                              "Create partition table"),
                                      first_setup=first_setup,
                                      errors=["Timed out waiting for object"])
 

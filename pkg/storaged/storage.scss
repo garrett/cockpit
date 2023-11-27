@@ -339,6 +339,12 @@ a.disabled {
     white-space: nowrap !important;
 }
 
+.pf-v5-c-table__tbody .storage-device-icon {
+  // Ensure the icon's cell size is as minimal as the icon allows
+  width: 0;
+  padding-inline-end: 0;
+}
+
 .storage-size-column {
     text-align: end;
     white-space: nowrap !important;

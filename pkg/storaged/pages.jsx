@@ -481,7 +481,7 @@ export const PageTable = ({ emptyCaption, aria_label, pages, crossrefs, sorted, 
                 <Td key="5" className="pf-v5-c-table__action">{actions || <div /> }</Td>,
             ];
             if (show_icons)
-                cols.unshift(<Td key="0">{icon}</Td>);
+                cols.unshift(<Td key="0" className="storage-device-icon">{icon}</Td>);
 
             rows.push(
                 <Tr key={key}

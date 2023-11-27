@@ -201,13 +201,13 @@ export const StorageUsageBar = ({ stats, critical, block, offset, total, short }
             <span className="pf-v5-u-text-nowrap">
                 {labelText}
             </span>
-            <div className={"ct-progress" + (fraction > critical ? " ct-danger" : "") + (short ? " ct-short" : "")}
+            <div className={"usage-bar" + (fraction > critical ? " usage-bar-danger" : "") + (short ? " usage-bar-short" : "")}
                  role="progressbar"
                  aria-valuemin="0" aria-valuemax={stats[1]} aria-valuenow={stats[0]}
                  aria-label={cockpit.format(_("Usage of $0"), block)}
                  aria-valuetext={labelText}>
-                <div className="ct-progress-indicator ct-progress-other" aria-hidden="true" style={{ width: total_fraction * 100 + "%" }} />
-                <div className="ct-progress-indicator" style={{ insetInlineStart: off_fraction * 100 + "%", width: fraction * 100 + "%" }} />
+                <div className="usage-bar-indicator usage-bar-other" aria-hidden="true" style={{ width: total_fraction * 100 + "%" }} />
+                <div className="usage-bar-indicator" style={{ insetInlineStart: off_fraction * 100 + "%", width: fraction * 100 + "%" }} />
             </div>
         </div>);
 };
@@ -222,12 +222,12 @@ export const StorageSize = ({ size }) => {
             <span className="pf-v5-u-text-nowrap">
                 {utils.fmt_size(size)}
             </span>
-            <div className="ct-progress ct-short ct-empty" />
+            <div className="usage-bar usage-bar-short usage-bar-empty" />
         </div>);
 };
 
 export const StorageMenuItem = ({ onClick, onlyNarrow, danger, excuse, children }) => (
-    <DropdownItem className={(onlyNarrow ? "show-only-when-narrow" : "") + (danger ? " delete-resource-red" : "")}
+    <DropdownItem className={(onlyNarrow ? "show-only-when-narrow" : "") + (danger ? " delete-resource-dangerous" : "")}
                   description={excuse}
                   isDisabled={!!excuse}
                   onKeyDown={checked(onClick, null, excuse)}

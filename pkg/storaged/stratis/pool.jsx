@@ -353,7 +353,7 @@ const StratisFilesystemsCard = ({ card, pool, degraded_ops, can_grow, managed_fs
                    variant="warning"
                    title={_("This pool does not use all the space on its block devices.")}>
                 {_("Some block devices of this pool have grown in size after the pool was created. The pool can be safely grown to use the newly available space.")}
-                <div className="storage_alert_action_buttons">
+                <div className="storage-alert-actions">
                     <StorageButton onClick={grow_blockdevs}>
                         {_("Grow the pool to take all space")}
                     </StorageButton>
@@ -367,7 +367,7 @@ const StratisFilesystemsCard = ({ card, pool, degraded_ops, can_grow, managed_fs
             <Alert isInline key="degraded"
                    variant="warning"
                    title={_("This pool is in a degraded state.")}>
-                <div className="storage_alert_action_buttons">
+                <div className="storage-alert-actions">
                     <Button variant="link" isInline onClick={goToStratisLogs}>
                         {_("View logs")}
                     </Button>

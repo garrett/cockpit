@@ -281,7 +281,7 @@ const MDRaidCard = ({ card, mdraid, block }) => {
         alerts.push(
             <Alert isInline variant="warning" key="bitmap"
                    title={_("This MDRAID device has no write-intent bitmap. Such a bitmap can reduce sychronization times significantly.")}>
-                <div className="storage_alert_action_buttons">
+                <div className="storage-alert-actions">
                     <StorageButton onClick={fix_bitmap}>{_("Add a bitmap")}</StorageButton>
                 </div>
             </Alert>);

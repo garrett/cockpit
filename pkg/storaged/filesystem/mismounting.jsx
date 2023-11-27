@@ -217,7 +217,7 @@ export const MismountAlert = ({ warning, fstab_config, forced_options, backing_b
         <Alert variant="warning" isInline
                title={_("Inconsistent filesystem mount")}>
             {text}
-            <div className="storage_alert_action_buttons">
+            <div className="storage-alert-actions">
                 <StorageButton onClick={fix_config}>{fix_config_text}</StorageButton>
                 { fix_mount_text && <StorageButton onClick={fix_mount}>{fix_mount_text}</StorageButton> }
             </div>

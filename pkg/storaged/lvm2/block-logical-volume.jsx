@@ -276,7 +276,7 @@ const LVM2LogicalVolumeCard = ({ card, vgroup, lvol, block, unused_space_warning
                          {cockpit.format(_("Volume size is $0. Content size is $1."),
                                          fmt_size(unused_space_warning.volume_size),
                                          fmt_size(unused_space_warning.content_size))}
-                         <div className='storage_alert_action_buttons'>
+                         <div className='storage-alert-actions'>
                              <StorageButton onClick={shrink_to_fit}>{_("Shrink volume")}</StorageButton>
                              <StorageButton onClick={grow_to_fit}>{_("Grow content")}</StorageButton>
                          </div>

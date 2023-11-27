@@ -221,7 +221,7 @@ const EncryptionCard = ({ card, block }) => {
     return (
         <StorageCard card={card}>
             <CardBody>
-                <DescriptionList className="pf-m-horizontal-on-sm ct-wide-labels">
+                <DescriptionList className="pf-m-horizontal-on-sm wide-label">
                     <StorageDescription title={_("Encryption type")}>
                         { luks_info.luks_version ? "LUKS" + luks_info.luks_version : "-" }
                     </StorageDescription>

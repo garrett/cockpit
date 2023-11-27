@@ -237,7 +237,7 @@ function make_page_kebab(page) {
         if (a.length > 0) {
             let result = <DropdownList key={items.length}>{a.map(make_menu_item)}</DropdownList>;
             if (card.title) {
-                result = <DropdownGroup key={items.length} label={card.title} className="ct-menu-title">
+                result = <DropdownGroup key={items.length} label={card.title} className="storage-menu-title">
                     {result}
                 </DropdownGroup>;
             }
@@ -477,7 +477,7 @@ export const PageTable = ({ emptyCaption, aria_label, pages, crossrefs, sorted, 
                 <Td key="1"><span>{name}{info}</span></Td>,
                 <Td key="2">{type}</Td>,
                 <Td key="3">{location}</Td>,
-                <Td key="4" className="ct-size-column">{size}</Td>,
+                <Td key="4" className="storage-size-column">{size}</Td>,
                 <Td key="5" className="pf-v5-c-table__action">{actions || <div /> }</Td>,
             ];
             if (show_icons)
@@ -486,7 +486,7 @@ export const PageTable = ({ emptyCaption, aria_label, pages, crossrefs, sorted, 
             rows.push(
                 <Tr key={key}
                     className={"content-level-" + level +
-                               (border ? "" : " ct-no-border") +
+                               (border ? "" : " remove-border") +
                                (is_new ? " ct-new-item" : "")}
                     data-test-row-name={page.name} data-test-row-location={page.columns[1]}
                     isClickable={!!page.location} onRowClick={onClick}>
@@ -563,7 +563,7 @@ export const PageTable = ({ emptyCaption, aria_label, pages, crossrefs, sorted, 
                             <Th>{_("ID")}</Th>
                             <Th>{_("Type")}</Th>
                             <Th>{_("Location")}</Th>
-                            <Th className="ct-size-column-header">{_("Size")}</Th>
+                            <Th className="storage-size-column-header">{_("Size")}</Th>
                         </Tr>
                     </Thead>
                     }

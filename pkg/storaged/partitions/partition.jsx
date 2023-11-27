@@ -126,7 +126,7 @@ const PartitionCard = ({ card, block, unused_space_warning, resize_info }) => {
                          {cockpit.format(_("Partition size is $0. Content size is $1."),
                                          fmt_size(unused_space_warning.volume_size),
                                          fmt_size(unused_space_warning.content_size))}
-                         <div className='storage_alert_action_buttons'>
+                         <div className='storage-alert-actions'>
                              <StorageButton onClick={shrink_to_fit}>
                                  {_("Shrink partition")}
                              </StorageButton>

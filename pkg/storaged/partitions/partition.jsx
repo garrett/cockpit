@@ -138,11 +138,11 @@ const PartitionCard = ({ card, block, unused_space_warning, resize_info }) => {
             <CardBody>
                 <DescriptionList className="pf-m-horizontal-on-sm">
                     <StorageDescription title={_("Name")} value={block_part.Name || "-"} />
+                    <StorageDescription title={_("UUID")} value={block_part.UUID} />
+                    <StorageDescription title={_("Type")} value={block_part.Type} />
                     { !unused_space &&
                     <StorageDescription title={_("Size")} value={fmt_size(block_part.Size)} />
                     }
-                    <StorageDescription title={_("UUID")} value={block_part.UUID} />
-                    <StorageDescription title={_("Type")} value={block_part.Type} />
                 </DescriptionList>
             </CardBody>
         </StorageCard>);

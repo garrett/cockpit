@@ -26,7 +26,7 @@ import { CardBody } from "@patternfly/react-core/dist/esm/components/Card/index.
 import { DescriptionList } from "@patternfly/react-core/dist/esm/components/DescriptionList/index.js";
 import { VolumeIcon } from "@patternfly/react-icons";
 
-import { StorageButton } from "../storage-controls.jsx";
+import { StorageButton, StorageLink } from "../storage-controls.jsx";
 import { StorageCard, StorageDescription, PageTable, new_page, new_card, get_crossrefs, navigate_away_from_card } from "../pages.jsx";
 import { make_block_page } from "../block/create-pages.jsx";
 import {
@@ -138,10 +138,12 @@ function start_stop_action(mdraid) {
     if (running === undefined)
         running = mdraid.ActiveDevices && mdraid.ActiveDevices.length > 0;
 
-    if (running)
-        return { title: _("Stop"), action: () => mdraid_stop(mdraid), tag: "device" };
-    else
+    // "Stop" is only in the card, to discourage stopping.
+
+    if (!running)
         return { title: _("Start"), action: () => mdraid_start(mdraid), tag: "device" };
+    else
+        return null;
 }
 
 function add_disk(mdraid) {
@@ -290,11 +292,14 @@ const MDRaidCard = ({ card, mdraid, block }) => {
             <CardBody>
                 <DescriptionList className="pf-m-horizontal-on-sm">
                     <StorageDescription title={_("Name")} value={mdraid_name(mdraid)} />
-                    <StorageDescription title={_("Device")} value={block ? decode_filename(block.PreferredDevice) : "-"} />
-                    <StorageDescription title={_("UUID")} value={mdraid.UUID} />
-                    <StorageDescription title={_("Capacity")} value={fmt_size_long(mdraid.Size)} />
                     <StorageDescription title={_("RAID level")} value={level} />
-                    <StorageDescription title={_("State")} value={block ? _("Running") : _("Not running")} />
+                    <StorageDescription title={_("State")} value={block ? _("Running") : _("Not running")}
+                                        action={block && <StorageLink onClick={() => mdraid_stop(mdraid)}>
+                                            {_("Stop")}
+                                        </StorageLink>} />
+                    <StorageDescription title={_("UUID")} value={mdraid.UUID} />
+                    <StorageDescription title={_("Device")} value={block ? decode_filename(block.PreferredDevice) : "-"} />
+                    <StorageDescription title={_("Capacity")} value={fmt_size_long(mdraid.Size)} />
                 </DescriptionList>
             </CardBody>
         </StorageCard>

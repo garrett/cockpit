@@ -287,13 +287,13 @@ const LVM2LogicalVolumeCard = ({ card, vgroup, lvol, block, unused_space_warning
                            action={<StorageLink onClick={rename}>
                                {_("edit")}
                            </StorageLink>} />
+                    { !unused_space &&
+                    <StorageDescription title={_("Size")} value={fmt_size(lvol.Size)} />
+                    }
                     { (layout && layout != "linear") &&
                     <StorageDescription title={_("Layout")} value={layout_desc[layout] || layout} />
                     }
                     <StructureDescription client={client} lvol={lvol} />
-                    { !unused_space &&
-                    <StorageDescription title={_("Size")} value={fmt_size(lvol.Size)} />
-                    }
                 </DescriptionList>
             </CardBody>
         </StorageCard>);

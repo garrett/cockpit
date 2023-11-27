@@ -232,7 +232,7 @@ class TestStorageMdRaid(storagelib.StorageCase):
 
         # Remove it by formatting DISK2
         b.click(self.card_row("MDRAID disks", name=disk2))
-        b.click(self.card_button("Drive", "Create partition table"))
+        b.click(self.card_button("Solid State Drive", "Create partition table"))
         b.wait_in_text('#dialog', "remove from MDRAID, initialize")
         self.dialog_set_val("type", "empty")
         self.dialog_apply()

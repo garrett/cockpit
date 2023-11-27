@@ -65,7 +65,7 @@ class TestStoragePartitions(storagelib.StorageCase):
         disk = self.add_ram_disk()
         b.click(self.card_row("Storage", name=disk))
 
-        b.click(self.card_button("Drive", "Create partition table"))
+        b.click(self.card_button("Solid State Drive", "Create partition table"))
         self.dialog({"type": "gpt"})
         b.wait_text(self.card_row_col("Partitions", 1, 1), "Free space")
 
@@ -122,7 +122,7 @@ class TestStoragePartitions(storagelib.StorageCase):
         disk = self.add_ram_disk(100)
         b.click(self.card_row("Storage", name=disk))
 
-        b.click(self.card_button("Drive", "Create partition table"))
+        b.click(self.card_button("Solid State Drive", "Create partition table"))
         self.dialog({"type": "gpt"})
         b.wait_text(self.card_row_col("Partitions", 1, 1), "Free space")
 

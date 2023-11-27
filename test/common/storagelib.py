@@ -563,6 +563,7 @@ grubby --update-kernel=ALL --args="root=UUID=$uuid rootflags=defaults rd.luks.uu
         if index is not None:
             return self.card(title) + f" tbody tr:nth-child({index})"
         elif name is not None:
+            name = name.replace("/dev/", "")
             return self.card(title) + f" tbody [data-test-row-name='{name}']"
         else:
             return self.card(title) + f" tbody [data-test-row-location='{location}']"

@@ -123,7 +123,7 @@ ExecStart=/usr/bin/sleep infinity
         wait_ratio_in_range(bar_selector, 0.0, 0.1)
 
         b.click(self.card_row("Storage", location=mount_point_bar))
-        b.wait_in_text(self.card_desc("Drive", "Serial number"), "8000")  # scsi_debug serial
+        b.wait_in_text(self.card_desc("Solid State Drive", "Serial number"), "8000")  # scsi_debug serial
 
     def testMountingHelp(self):
         m = self.machine
@@ -533,7 +533,7 @@ class TestStorageMountingLUKS(storagelib.StorageCase):
         disk = self.add_ram_disk(100)
         b.click(self.card_row("Storage", name=disk))
 
-        b.click(self.card_button("Drive", "Create partition table"))
+        b.click(self.card_button("Solid State Drive", "Create partition table"))
         self.dialog({"type": "gpt"})
         b.wait_text(self.card_row_col("Partitions", 1, 1), "Free space")
 
@@ -617,7 +617,7 @@ class TestStorageMountingLUKS(storagelib.StorageCase):
             b.wait_text("#dialog tbody:nth-of-type(1) td[data-label=Location]", "/run/foo/bar")
             b.wait_text("#dialog tbody:nth-of-type(2) td[data-label=Location]", "/run/foo")
 
-        self.dialog_with_error_retry(trigger=lambda: b.click(self.card_button("Drive", "Create partition table")),
+        self.dialog_with_error_retry(trigger=lambda: b.click(self.card_button("Solid State Drive", "Create partition table")),
                                      first_setup=first_setup,
                                      errors=["Timed out waiting for object"])
 

@@ -43,12 +43,12 @@ class TestStorageBasic(storagelib.StorageCase):
         disk = self.add_ram_disk()
 
         b.click(self.card_row("Storage", name=disk))
-        b.wait_visible(self.card("Drive"))
+        b.wait_visible(self.card("Solid State Drive"))
 
-        b.wait_text(self.card_desc("Drive", "Model"), "scsi_debug")
-        b.wait_in_text(self.card_desc("Drive", "Capacity"), "50 MiB")
+        b.wait_text(self.card_desc("Solid State Drive", "Model"), "scsi_debug")
+        b.wait_in_text(self.card_desc("Solid State Drive", "Capacity"), "50 MiB")
 
-        self.assertEqual(self.inode(b.text(self.card_desc("Drive", "Device file"))), self.inode(disk))
+        self.assertEqual(self.inode(b.text(self.card_desc("Solid State Drive", "Device file"))), self.inode(disk))
 
         m.execute(f'parted -s {disk} mktable gpt')
         m.execute(f'parted -s {disk} mkpart primary ext2 1M 8M')

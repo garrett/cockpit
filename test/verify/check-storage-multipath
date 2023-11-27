@@ -56,7 +56,7 @@ class TestStorageMultipath(storagelib.StorageCase):
         dev1 = "/dev/" + info1["dev"]
 
         b.click(self.card_row("Storage", name=dev1))
-        b.wait_text(self.card_desc("Drive", "Device file"), dev1)
+        b.wait_text(self.card_desc("Solid State Drive", "Device file"), dev1)
 
         # Add another disk with the same serial, which fools
         # multipathd into treating it as another path to the first
@@ -67,9 +67,9 @@ class TestStorageMultipath(storagelib.StorageCase):
         info2 = m.add_disk("10M", serial="MYSERIAL")
         dev2 = "/dev/" + info2["dev"]
 
-        b.wait_text(self.card_desc("Drive", "Device file"), "-")
-        b.wait_in_text(self.card_desc("Drive", "Multipathed devices"), dev1)
-        b.wait_in_text(self.card_desc("Drive", "Multipathed devices"), dev2)
+        b.wait_text(self.card_desc("Solid State Drive", "Device file"), "-")
+        b.wait_in_text(self.card_desc("Solid State Drive", "Multipathed devices"), dev1)
+        b.wait_in_text(self.card_desc("Solid State Drive", "Multipathed devices"), dev2)
 
         # Check that neither is offered as a free block device
         b.go("#/")

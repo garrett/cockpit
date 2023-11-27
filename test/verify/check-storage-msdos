@@ -34,7 +34,7 @@ class TestStorageMsDOS(storagelib.StorageCase):
         b.click(self.card_row("Storage", name=disk))
 
         # Format it with a DOS partition table
-        b.click(self.card_button("Drive", "Create partition table"))
+        b.click(self.card_button("Solid State Drive", "Create partition table"))
         self.dialog({"type": "dos"})
         b.wait_text(self.card_row_col("Partitions", 1, 1), "Free space")
 

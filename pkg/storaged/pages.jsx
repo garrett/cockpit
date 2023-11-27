@@ -563,7 +563,7 @@ export const PageTable = ({ emptyCaption, aria_label, pages, crossrefs, sorted, 
                             <Th>{_("ID")}</Th>
                             <Th>{_("Type")}</Th>
                             <Th>{_("Location")}</Th>
-                            <Th>{_("Size")}</Th>
+                            <Th className="ct-size-column-header">{_("Size")}</Th>
                         </Tr>
                     </Thead>
                     }

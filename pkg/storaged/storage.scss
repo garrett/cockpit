@@ -561,3 +561,12 @@ td button.pf-m-link {
     text-align: end;
     white-space: nowrap !important;
 }
+
+.ct-size-column-header {
+    text-align: end;
+    // Align the "Size" header with the text of the usage bars.
+    // var(--pf-v5-global--spacer--sm): padding of compat td cells
+    // 3.5em: width of short progress bars
+    // 1em: margin between text and progress bar
+    padding-inline-end: calc(var(--pf-v5-global--spacer--sm) + 3.5em + 1em) !important;
+}

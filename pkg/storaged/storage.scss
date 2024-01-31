@@ -342,7 +342,7 @@ a.disabled {
 }
 
 .pf-v5-c-table__tbody .storage-device-icon {
-  --icon-size: 18px;
+  --icon-size: var(--pf-v5-global--icon--FontSize--lg);
   // Ensure the icon's cell size is as minimal as the icon allows
   // (WebKit needs a size; 0 doesn't work for it)
   inline-size: 1px;
@@ -350,9 +350,9 @@ a.disabled {
   padding-inline-end: 0;
 
   > svg {
-    // Bump the icon down to align with text, based on the difference between icon and text size, just for the top
-    inset-block-start: calc((var(--pf-v5-global--spacer--md) * var(--pf-v5-global--LineHeight--md) - var(--icon-size)) / 2);
-    position: relative;
+    block-size: var(--icon-size);
+    inline-size: auto;
+    vertical-align: middle;
 
     path {
       fill: var(--pf-v5-global--Color--200);

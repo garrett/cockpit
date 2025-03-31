@@ -243,9 +243,33 @@ $desktop: $phone + 1px;
   // so we can color it easier.
   //
   // Or we can see about modifying it inline in scss and changing color there somehow
-  --pf-v6-c-about-modal-box--BackgroundImage: url(../shell/images/cockpit-icon-gray.svg);
+  --pf-v6-c-about-modal-box--BackgroundImage: url(../shell/images/cockpit-icon-dark.svg);
   --pf-v6-c-about-modal-box--BackgroundPosition: max(25rem, 143%) 10rem;
   --pf-v6-c-about-modal-box--BackgroundSize--min-width: 786px;
+  --screen: 10%;
+  /* Screen the background color on top of the logo */
+  /* ... linear-gradient makes the color an "image" */
+  background-image: linear-gradient(color-mix(in srgb, var(--pf-v6-c-about-modal-box--BackgroundColor), transparent var(--screen))), var(--pf-v6-c-about-modal-box--BackgroundImage);
+
+  .pf-v6-theme-dark & {
+    --pf-v6-c-about-modal-box--BackgroundImage: url(../shell/images/cockpit-icon.svg);
+  }
+
+  .pf-v6-c-about-modal-box__brand-image {
+    --screen: 80;
+    opacity: var(--screen);
+
+    .pf-v6-theme-dark & {
+      filter: invert(1);
+    }
+  }
+
+  .pf-v6-c-content {
+    /* Don't wrap package names */
+    --pf-v6-c-content--dl--GridTemplateColumns--dt: auto;
+    /* Tidy up the vertical space usage between packages */
+    --pf-v6-c-content--dl--RowGap: var(--pf-t--global--spacer--sm);
+  }
 
   [dir="rtl"] {
     --pf-v6-c-about-modal-box--BackgroundPosition: calc(100% - 30rem) 10rem;

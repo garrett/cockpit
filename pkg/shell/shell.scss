@@ -244,20 +244,21 @@ $desktop: $phone + 1px;
   //
   // Or we can see about modifying it inline in scss and changing color there somehow
   --pf-v6-c-about-modal-box--BackgroundImage: url(../shell/images/cockpit-icon-dark.svg);
-  --pf-v6-c-about-modal-box--BackgroundPosition: max(25rem, 143%) 10rem;
-  --pf-v6-c-about-modal-box--BackgroundSize--min-width: 786px;
-  --screen: 10%;
-  /* Screen the background color on top of the logo */
-  /* ... linear-gradient makes the color an "image" */
-  background-image: linear-gradient(color-mix(in srgb, var(--pf-v6-c-about-modal-box--BackgroundColor), transparent var(--screen))), var(--pf-v6-c-about-modal-box--BackgroundImage);
+  background-image: none;
 
-  .pf-v6-theme-dark & {
-    --pf-v6-c-about-modal-box--BackgroundImage: url(../shell/images/cockpit-icon.svg);
+  &::after {
+    content: "";
+    background: var(--pf-t--global--border--color--control--read-only);
+    pointer-events: none;
+    opacity: var(--screen);
+
+    mask: var(--pf-v6-c-about-modal-box--BackgroundImage) no-repeat calc(100% + 10rem) calc(100% + 10rem);
+    inset: 0;
+    position: absolute;
   }
 
   .pf-v6-c-about-modal-box__brand-image {
-    --screen: 80;
-    opacity: var(--screen);
+    opacity: 80%;
 
     .pf-v6-theme-dark & {
       filter: invert(1);

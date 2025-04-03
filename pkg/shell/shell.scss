@@ -247,6 +247,13 @@ $desktop: $phone + 1px;
   --pf-v6-c-about-modal-box--BackgroundPosition: max(25rem, 143%) 10rem;
   --pf-v6-c-about-modal-box--BackgroundSize--min-width: 786px;
 
+  .pf-v6-c-content {
+    /* Don't wrap package names */
+    --pf-v6-c-content--dl--GridTemplateColumns--dt: auto;
+    /* Tidy up the vertical space usage between packages */
+    --pf-v6-c-content--dl--RowGap: var(--pf-t--global--spacer--sm);
+  }
+
   [dir="rtl"] {
     --pf-v6-c-about-modal-box--BackgroundPosition: calc(100% - 30rem) 10rem;
   }
